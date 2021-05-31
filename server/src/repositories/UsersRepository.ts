@@ -22,13 +22,13 @@ class UsersRepository extends Repository<User> {
     return { responseStatus: 201, message: this.getSafeUserCredentials(user) };
   };
 
-  // show = async (id: string) => {
-  //   const user = await this.findOne({ id });
-  //   if (!user) {
-  //     return { responseStatus: 404, message: "User not found" };
-  //   }
-  //   return { responseStatus: 200, message: this.getSafeUserCredentials };
-  // };
+  show = async (id: string) => {
+    const user = await this.findOne({ id });
+    if (!user) {
+      return { responseStatus: 404, message: "User not found" };
+    }
+    return { responseStatus: 200, message: this.getSafeUserCredentials };
+  };
 
   private isEmailInUse = async (email: string) => {
     if (await this.findOne({ email: email })) {
