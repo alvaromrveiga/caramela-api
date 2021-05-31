@@ -22,9 +22,10 @@ class UserController {
     try {
       const usersRepository = getCustomRepository(UsersRepository);
 
-      const { responseStatus, message } = await usersRepository.show(
+      const { responseStatus, message } = await usersRepository.showPublic(
         req.params.id
       );
+
       res.status(responseStatus).json(message);
     } catch (e) {
       console.error(e);

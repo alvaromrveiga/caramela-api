@@ -22,12 +22,15 @@ class UsersRepository extends Repository<User> {
     return { responseStatus: 201, message: this.getSafeUserCredentials(user) };
   };
 
-  show = async (id: string) => {
+  showPublic = async (id: string) => {
     const user = await this.findOne({ id });
     if (!user) {
       return { responseStatus: 404, message: "User not found" };
     }
-    return { responseStatus: 200, message: this.getSafeUserCredentials };
+    return {
+      responseStatus: 200,
+      message: this.getPublicUserCredentials(user),
+    };
   };
 
   private isEmailInUse = async (email: string) => {
@@ -49,6 +52,15 @@ class UsersRepository extends Repository<User> {
 
     newUser.created_at = user.created_at;
     newUser.email = user.email;
+    newUser.name = user.name;
+
+    return newUser;
+  };
+
+  private getPublicUserCredentials = (user: User) => {
+    const newUser = new User();
+
+    newUser.created_at = user.created_at;
     newUser.name = user.name;
 
     return newUser;

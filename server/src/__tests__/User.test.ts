@@ -115,8 +115,19 @@ describe("Users", () => {
   });
 
   describe("Show", () => {
-    it("Should show user information", async () => {
-      await request(app).get(`/users/${userOne.id}`).send().expect(200);
+    it("Should show public user information", async () => {
+      const response = await request(app)
+        .get(`/users/${userOne.id}`)
+        .send()
+        .expect(200);
+
+      expect(Object.keys(response.body)).not.toContain("password");
+      expect(Object.keys(response.body)).not.toContain("id");
+      expect(Object.keys(response.body)).not.toContain("email");
+
+      //TODO
+      // Rename to showPublic profile
+      // Only showPublic if user is authetincated
     });
   });
 });
