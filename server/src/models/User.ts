@@ -17,7 +17,7 @@ class User {
   @CreateDateColumn()
   created_at: Date;
 
-  @Column("simple-array")
+  @Column("varchar", { array: true })
   tokens: string[];
 
   constructor() {}

@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from "typeorm";
 import { User } from "../models/User";
 import { hashPasswordAsync } from "../utils/bcrypt";
+import { generateAuthToken } from "../utils/auth";
 
 @EntityRepository(User)
 class UsersRepository extends Repository<User> {
@@ -17,16 +18,20 @@ class UsersRepository extends Repository<User> {
 
     user.password = await hashPasswordAsync(user.password);
 
+    generateAuthToken(user);
+
     await this.save(user);
 
-    return { responseStatus: 201, message: this.getSafeUserCredentials(user) };
+    return { responseStatus: 201, message: this.getUserCredentials(user) };
   };
 
   showPublic = async (id: string) => {
     const user = await this.findOne({ id });
+
     if (!user) {
       return { responseStatus: 404, message: "User not found" };
     }
+
     return {
       responseStatus: 200,
       message: this.getPublicUserCredentials(user),
@@ -47,12 +52,13 @@ class UsersRepository extends Repository<User> {
     return false;
   };
 
-  private getSafeUserCredentials = (user: User) => {
+  private getUserCredentials = (user: User) => {
     const newUser = new User();
 
     newUser.created_at = user.created_at;
     newUser.email = user.email;
     newUser.name = user.name;
+    newUser.tokens = user.tokens;
 
     return newUser;
   };
