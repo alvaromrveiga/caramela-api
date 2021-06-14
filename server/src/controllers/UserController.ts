@@ -1,15 +1,11 @@
 import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
 import { UsersRepository } from "./UsersRepository";
 
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      const usersRepository = getCustomRepository(UsersRepository);
-
-      const { responseStatus, message } = await usersRepository.createAndSave(
-        req.body
-      );
+      const { responseStatus, message } =
+        await UsersRepository.getInstance().createAndSave(req.body);
 
       res.status(responseStatus).json(message);
     } catch (e) {
@@ -20,11 +16,8 @@ class UserController {
 
   async show(req: Request, res: Response) {
     try {
-      const usersRepository = getCustomRepository(UsersRepository);
-
-      const { responseStatus, message } = await usersRepository.showPublic(
-        req.params.id
-      );
+      const { responseStatus, message } =
+        await UsersRepository.getInstance().showPublic(req.params.id);
 
       res.status(responseStatus).json(message);
     } catch (e) {

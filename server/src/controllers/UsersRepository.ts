@@ -1,10 +1,14 @@
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, getCustomRepository, Repository } from "typeorm";
 import { User } from "../models/User";
 import { hashPasswordAsync } from "../utils/bcrypt";
 import { generateAuthToken } from "../middleware/authentication";
 
 @EntityRepository(User)
 class UsersRepository extends Repository<User> {
+  static getInstance(): UsersRepository {
+    return getCustomRepository(this);
+  }
+
   createAndSave = async (body: User) => {
     if (await this.isEmailInUse(body.email)) {
       return { responseStatus: 400, message: "E-mail already in use" };
