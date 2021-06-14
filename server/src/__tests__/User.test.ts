@@ -1,7 +1,7 @@
 import request from "supertest";
 import { Connection } from "typeorm";
 import { app } from "../app";
-import { UsersRepository } from "../repositories/UsersRepository";
+import { UsersRepository } from "../controllers/UsersRepository";
 import { resetDatabase, saveUser, userOne, connect } from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";
 import { User } from "../models/User";
