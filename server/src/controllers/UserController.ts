@@ -5,7 +5,7 @@ class UserController {
   async create(req: Request, res: Response) {
     try {
       const { responseStatus, message } =
-        await UsersRepository.getInstance().createAndSave(req.body);
+        await UsersRepository.instance.createAndSave(req.body);
 
       res.status(responseStatus).json(message);
     } catch (e) {
@@ -17,7 +17,7 @@ class UserController {
   async show(req: Request, res: Response) {
     try {
       const { responseStatus, message } =
-        await UsersRepository.getInstance().showPublic(req.params.id);
+        await UsersRepository.instance.showPublic(req.params.id);
 
       res.status(responseStatus).json(message);
     } catch (e) {

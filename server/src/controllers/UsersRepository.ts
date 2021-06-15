@@ -5,15 +5,11 @@ import { generateAuthToken } from "../middleware/authentication";
 
 @EntityRepository(User)
 class UsersRepository extends Repository<User> {
-  static getInstance(): UsersRepository {
+  static get instance(): UsersRepository {
     return getCustomRepository(this);
   }
 
   createAndSave = async (body: User) => {
-    if (await this.isEmailInUse(body.email)) {
-      return { responseStatus: 400, message: "E-mail already in use" };
-    }
-
     if (!this.isPasswordValid(body.password)) {
       return { responseStatus: 400, message: "Password not valid" };
     }

@@ -12,7 +12,7 @@ const connect = async () => {
     connection = await createConnection();
     await connection.runMigrations();
 
-    usersRepository = UsersRepository.getInstance();
+    usersRepository = UsersRepository.instance;
     createUsers();
   }
 
