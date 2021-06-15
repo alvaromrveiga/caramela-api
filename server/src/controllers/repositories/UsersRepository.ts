@@ -5,7 +5,7 @@ import { generateAuthToken } from "../../middleware/authentication";
 import { v4 as uuidv4 } from "uuid";
 
 @EntityRepository(User)
-class UsersRepository extends Repository<User> {
+export class UsersRepository extends Repository<User> {
   static get instance(): UsersRepository {
     return getCustomRepository(this);
   }
@@ -36,6 +36,22 @@ class UsersRepository extends Repository<User> {
     };
   };
 
+  showSelf = async (id: string) => {
+    const user = await this.findOne({ id });
+
+    if (!user) {
+      return {
+        status: 401,
+        message: "Please authenticate",
+      };
+    }
+
+    return {
+      status: 200,
+      message: this.getUserCredentials(user),
+    };
+  };
+
   private getUserCredentials = (user: User) => {
     const newUser = new User();
 
@@ -56,4 +72,3 @@ class UsersRepository extends Repository<User> {
     return newUser;
   };
 }
-export { UsersRepository };
