@@ -16,7 +16,7 @@ export const authenticate = async (
     const token = req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      res.status(401).send("Please authenticate");
+      res.status(401).send("Please Authenticate");
       return;
     }
 
@@ -28,7 +28,7 @@ export const authenticate = async (
     const user = await UsersRepository.instance.findOne({ id: decoded.id });
 
     if (!user) {
-      res.status(401).send("Please authenticate");
+      res.status(401).send("Please Authenticate");
       return;
     }
 
@@ -44,6 +44,11 @@ export const generateAuthToken = (user: User) => {
   if (!process.env.JWT_SECRET) {
     throw new Error("No JWT_SECRET defined on .env");
   }
+
+  if (!user.id) {
+    throw new Error("No user.id");
+  }
+
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 
   if (!user.tokens) {
