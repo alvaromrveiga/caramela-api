@@ -10,10 +10,6 @@ class UsersRepository extends Repository<User> {
   }
 
   createAndSave = async (body: User) => {
-    if (!this.isPasswordValid(body.password)) {
-      return { responseStatus: 400, message: "Password not valid" };
-    }
-
     const user = this.create(body);
 
     user.password = await hashPasswordAsync(user.password);
@@ -36,20 +32,6 @@ class UsersRepository extends Repository<User> {
       responseStatus: 200,
       message: this.getPublicUserCredentials(user),
     };
-  };
-
-  private isEmailInUse = async (email: string) => {
-    if (await this.findOne({ email: email })) {
-      return true;
-    }
-    return false;
-  };
-
-  private isPasswordValid = (password: string) => {
-    if (password.length >= 8) {
-      return true;
-    }
-    return false;
   };
 
   private getUserCredentials = (user: User) => {
