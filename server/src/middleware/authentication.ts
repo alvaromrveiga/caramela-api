@@ -1,9 +1,46 @@
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { UsersRepository } from "../controllers/repositories/UsersRepository";
 import { User } from "../models/User";
 
-const auth = async (req: Request, res: Response) => {};
+interface Decoded {
+  id: string;
+}
 
-const generateAuthToken = (user: User) => {
+export const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+
+    if (!token) {
+      res.status(401).send("Please authenticate");
+      return;
+    }
+
+    if (!process.env.JWT_SECRET) {
+      throw new Error("No JWT_SECRET defined on .env");
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as Decoded;
+    const user = await UsersRepository.instance.findOne({ id: decoded.id });
+
+    if (!user) {
+      res.status(401).send("Please authenticate");
+      return;
+    }
+
+    next();
+    return;
+  } catch (error) {
+    res.status(401).send("Please Authenticate");
+    return;
+  }
+};
+
+export const generateAuthToken = (user: User) => {
   if (!process.env.JWT_SECRET) {
     throw new Error("No JWT_SECRET defined on .env");
   }
@@ -12,7 +49,5 @@ const generateAuthToken = (user: User) => {
   if (!user.tokens) {
     user.tokens = [];
   }
-  user.tokens.push(token);
+  user.tokens = user.tokens.concat(token);
 };
-
-export { generateAuthToken };
