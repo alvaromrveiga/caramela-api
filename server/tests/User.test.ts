@@ -5,6 +5,7 @@ import { UsersRepository } from "../src/controllers/repositories/UsersRepository
 import { resetDatabase, saveUser, userOne, connect } from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";
 import { User } from "../src/models/User";
+import jwt from "jsonwebtoken";
 
 let connection: Connection;
 let usersRepository: UsersRepository;
@@ -112,6 +113,21 @@ describe("Users", () => {
         .expect(201);
 
       expect(Object.keys(response.body)).not.toContain("password");
+    });
+
+    it("Should containd id information insde JsonWebToken", async () => {
+      expect(process.env.JWT_SECRET).not.toBeUndefined();
+
+      if (!process.env.JWT_SECRET) {
+        throw new Error("No JWT_TOKEN on .env file");
+      }
+
+      const token = userOne.tokens[0];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+        id: string;
+      };
+
+      expect(decoded.id).toEqual(userOne.id);
     });
   });
 
