@@ -26,7 +26,7 @@ const resetDatabase = async () => {
 };
 
 const saveUser = async (user: User) => {
-  await usersRepository.createAndSave(user);
+  await usersRepository.save(user);
 };
 
 let userOne: User;
