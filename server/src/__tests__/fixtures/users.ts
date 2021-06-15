@@ -1,4 +1,4 @@
-import { UsersRepository } from "../../controllers/UsersRepository";
+import { UsersRepository } from "../../controllers/repositories/UsersRepository";
 import createConnection from "../../connection";
 import { Connection, getCustomRepository } from "typeorm";
 import { User } from "../../models/User";

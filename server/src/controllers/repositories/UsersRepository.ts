@@ -1,7 +1,7 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
-import { User } from "../models/User";
-import { hashPasswordAsync } from "../utils/bcrypt";
-import { generateAuthToken } from "../middleware/authentication";
+import { User } from "../../models/User";
+import { hashPasswordAsync } from "../../utils/bcrypt";
+import { generateAuthToken } from "../../middleware/authentication";
 
 @EntityRepository(User)
 class UsersRepository extends Repository<User> {
