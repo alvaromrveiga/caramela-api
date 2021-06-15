@@ -23,6 +23,17 @@ class UserController {
       res.status(500).send();
     }
   }
+
+  async showSelf(req: Request, res: Response) {
+    try {
+      const result = await UsersRepository.instance.showSelf(req.body.id);
+
+      res.status(result.status).send(result.message);
+    } catch (e) {
+      console.error(e);
+      res.status(500).send();
+    }
+  }
 }
 
 export { UserController };
