@@ -149,4 +149,14 @@ describe("Users", () => {
       await request(app).get(`/users/${userOne.id}`).send().expect(401);
     });
   });
+
+  describe("Show self", () => {
+    it("Should show private user information", async () => {
+      const response = await request(app)
+        .get(`/users/profile`)
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send()
+        .expect(200);
+    });
+  });
 });
