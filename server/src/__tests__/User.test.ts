@@ -71,6 +71,7 @@ describe("Users", () => {
       const usersWithEmail = await usersRepository.find({
         email: userOne.email,
       });
+
       expect(usersWithEmail.length).toEqual(1);
     });
 
@@ -118,16 +119,13 @@ describe("Users", () => {
     it("Should show public user information", async () => {
       const response = await request(app)
         .get(`/users/${userOne.id}`)
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send()
         .expect(200);
 
       expect(Object.keys(response.body)).not.toContain("password");
       expect(Object.keys(response.body)).not.toContain("id");
       expect(Object.keys(response.body)).not.toContain("email");
-
-      //TODO
-      // Rename to showPublic profile
-      // Only showPublic if user is authetincated
     });
   });
 });
