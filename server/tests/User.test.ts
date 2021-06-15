@@ -1,10 +1,10 @@
 import request from "supertest";
 import { Connection } from "typeorm";
-import { app } from "../app";
-import { UsersRepository } from "../controllers/repositories/UsersRepository";
+import { app } from "../src/app";
+import { UsersRepository } from "../src/controllers/repositories/UsersRepository";
 import { resetDatabase, saveUser, userOne, connect } from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";
-import { User } from "../models/User";
+import { User } from "../src/models/User";
 
 let connection: Connection;
 let usersRepository: UsersRepository;

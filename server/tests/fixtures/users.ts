@@ -1,9 +1,9 @@
 import { Connection } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import createConnection from "../../connection";
-import { UsersRepository } from "../../controllers/repositories/UsersRepository";
-import { generateAuthToken } from "../../middleware/authentication";
-import { User } from "../../models/User";
+import createConnection from "../../src/connection";
+import { UsersRepository } from "../../src/controllers/repositories/UsersRepository";
+import { generateAuthToken } from "../../src/middleware/authentication";
+import { User } from "../../src/models/User";
 
 let connection: Connection;
 let usersRepository: UsersRepository;
