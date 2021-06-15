@@ -4,10 +4,9 @@ import { UsersRepository } from "./repositories/UsersRepository";
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      const { responseStatus, message } =
-        await UsersRepository.instance.createAndSave(req.body);
+      const result = await UsersRepository.instance.createAndSave(req.body);
 
-      res.status(responseStatus).json(message);
+      res.status(result.status).json(result.message);
     } catch (e) {
       console.error(e);
       res.status(500).send();
@@ -16,10 +15,9 @@ class UserController {
 
   async show(req: Request, res: Response) {
     try {
-      const { responseStatus, message } =
-        await UsersRepository.instance.showPublic(req.params.id);
+      const result = await UsersRepository.instance.showPublic(req.params.id);
 
-      res.status(responseStatus).json(message);
+      res.status(result.status).json(result.message);
     } catch (e) {
       console.error(e);
       res.status(500).send();
