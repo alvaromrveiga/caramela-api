@@ -2,6 +2,7 @@ import { EntityRepository, getCustomRepository, Repository } from "typeorm";
 import { User } from "../../models/User";
 import { hashPasswordAsync } from "../../utils/bcrypt";
 import { generateAuthToken } from "../../middleware/authentication";
+import { v4 as uuidv4 } from "uuid";
 
 @EntityRepository(User)
 class UsersRepository extends Repository<User> {
@@ -12,6 +13,7 @@ class UsersRepository extends Repository<User> {
   createAndSave = async (body: User) => {
     const user = this.create(body);
 
+    user.id = uuidv4();
     user.password = await hashPasswordAsync(user.password);
 
     generateAuthToken(user);
