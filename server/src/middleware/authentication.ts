@@ -3,12 +3,12 @@ import jwt from "jsonwebtoken";
 import { UsersRepository } from "../controllers/repositories/UsersRepository";
 import { User } from "../models/User";
 
-interface Decoded {
-  id: string;
+interface RequestWithBody extends Request {
+  body: { [key: string]: string | undefined };
 }
 
 export const authenticate = async (
-  req: Request,
+  req: RequestWithBody,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -24,13 +24,15 @@ export const authenticate = async (
       throw new Error("No JWT_SECRET defined on .env");
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as Decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
     const user = await UsersRepository.instance.findOne({ id: decoded.id });
 
     if (!user) {
       res.status(401).send("Please Authenticate");
       return;
     }
+
+    req.body.id = user.id;
 
     next();
     return;
