@@ -126,6 +126,11 @@ describe("Users", () => {
       expect(Object.keys(response.body)).not.toContain("password");
       expect(Object.keys(response.body)).not.toContain("id");
       expect(Object.keys(response.body)).not.toContain("email");
+      expect(Object.keys(response.body)).not.toContain("tokens");
+    });
+
+    it("Should not show public user information if not authenticated", async () => {
+      await request(app).get(`/users/${userOne.id}`).send().expect(401);
     });
   });
 });
