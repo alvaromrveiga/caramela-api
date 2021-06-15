@@ -7,7 +7,7 @@ import { validatePassword } from "./middleware/validatePassword";
 const router = Router();
 
 const userController = new UserController();
-router.post("/users", validateEmail, validatePassword, userController.create);
+router.post("/signup", validateEmail, validatePassword, userController.create);
 router.get("/users/:id", authenticate, userController.show);
 
 export { router };

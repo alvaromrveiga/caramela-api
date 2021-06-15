@@ -34,7 +34,7 @@ describe("Users", () => {
   describe("Create", () => {
     it("Should create new user", async () => {
       await request(app)
-        .post("/users")
+        .post("/signup")
         .send({
           name: "notEqualUserOne",
           email: "notEqualUserOne@test.com",
@@ -62,7 +62,7 @@ describe("Users", () => {
 
     it("Should not create user with email already in use", async () => {
       await request(app)
-        .post("/users")
+        .post("/signup")
         .send({
           email: userOne.email,
           password: "DoesNotMatter",
@@ -78,7 +78,7 @@ describe("Users", () => {
 
     it("Should not create user with invalid password", async () => {
       await request(app)
-        .post("/users")
+        .post("/signup")
         .send({
           email: "notUserOneEmail@test.com",
           password: "123",
@@ -88,7 +88,7 @@ describe("Users", () => {
 
     it("Should not save password as plain text", async () => {
       await request(app)
-        .post("/users")
+        .post("/signup")
         .send({
           email: "noUser@test.com",
           password: "shouldNotBePlainText",
@@ -104,7 +104,7 @@ describe("Users", () => {
 
     it("Should not response user password", async () => {
       const response = await request(app)
-        .post("/users")
+        .post("/signup")
         .send({
           name: "Tester",
           email: "test@test.com",
