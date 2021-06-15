@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
 @Entity("users")
 class User {
   @PrimaryColumn()
-  readonly id: string;
+  id: string;
 
   @Column()
   name: string;
