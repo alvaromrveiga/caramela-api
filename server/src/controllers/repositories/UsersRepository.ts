@@ -18,18 +18,18 @@ class UsersRepository extends Repository<User> {
 
     await this.save(user);
 
-    return { responseStatus: 201, message: this.getUserCredentials(user) };
+    return { status: 201, message: this.getUserCredentials(user) };
   };
 
   showPublic = async (id: string) => {
     const user = await this.findOne({ id });
 
     if (!user) {
-      return { responseStatus: 404, message: "User not found" };
+      return { status: 404, message: "User not found" };
     }
 
     return {
-      responseStatus: 200,
+      status: 200,
       message: this.getPublicUserCredentials(user),
     };
   };
