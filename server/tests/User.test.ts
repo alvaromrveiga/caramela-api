@@ -168,5 +168,9 @@ describe("Users", () => {
         tokens: userTwo.tokens,
       });
     });
+
+    it("Should not show private user information if unauthenticated", async () => {
+      await request(app).get("/users/profile").send().expect(401);
+    });
   });
 });
