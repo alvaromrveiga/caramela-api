@@ -2,7 +2,13 @@ import request from "supertest";
 import { Connection } from "typeorm";
 import { app } from "../src/app";
 import { UsersRepository } from "../src/controllers/repositories/UsersRepository";
-import { resetDatabase, saveUser, userOne, connect } from "./fixtures/users";
+import {
+  resetDatabase,
+  saveUser,
+  userOne,
+  userTwo,
+  connect,
+} from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";
 import { User } from "../src/models/User";
 import jwt from "jsonwebtoken";
@@ -29,6 +35,7 @@ describe("Users", () => {
   beforeEach(async () => {
     await resetDatabase();
     await saveUser(userOne);
+    await saveUser(userTwo);
   });
 
   describe("Create", () => {
@@ -55,9 +62,6 @@ describe("Users", () => {
       });
       expect(user.password).not.toEqual("tester-pass");
       expect(user).toHaveProperty("created_at");
-
-      const allUsers = await usersRepository.find();
-      expect(allUsers.length).toEqual(2);
     });
 
     it("Should not create user with email already in use", async () => {
@@ -154,9 +158,15 @@ describe("Users", () => {
     it("Should show private user information", async () => {
       const response = await request(app)
         .get(`/users/profile`)
-        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .set("Authorization", `Bearer ${userTwo.tokens[0]}`)
         .send()
         .expect(200);
+
+      expect(response.body).toMatchObject({
+        email: userTwo.email,
+        name: userTwo.name,
+        tokens: userTwo.tokens,
+      });
     });
   });
 });
