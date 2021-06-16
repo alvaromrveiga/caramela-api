@@ -30,12 +30,14 @@ const saveUser = async (user: User) => {
 };
 
 let userOne: User;
+let userTwo: User;
 
-const userOneId = uuidv4();
 const createUsers = () => {
   if (!process.env.JWT_SECRET) {
     throw new Error("No JWT_SECRET defined on .env");
   }
+
+  const userOneId = uuidv4();
   userOne = usersRepository.create({
     id: userOneId,
     name: "userOne",
@@ -43,6 +45,15 @@ const createUsers = () => {
     password: "userOne-password",
   });
   generateAuthToken(userOne);
+
+  const userTwoId = uuidv4();
+  userTwo = usersRepository.create({
+    id: userTwoId,
+    name: "userTwo",
+    email: "userTwo@test.com",
+    password: "userTwo-password",
+  });
+  generateAuthToken(userTwo);
 };
 
-export { resetDatabase, saveUser, userOne, connect };
+export { resetDatabase, saveUser, userOne, userTwo, connect };
