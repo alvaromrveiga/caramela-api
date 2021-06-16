@@ -1,8 +1,7 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
+import { generateAuthToken } from "../../middleware/authentication";
 import { User } from "../../models/User";
 import { hashPasswordAsync } from "../../utils/bcrypt";
-import { generateAuthToken } from "../../middleware/authentication";
-import { v4 as uuidv4 } from "uuid";
 
 @EntityRepository(User)
 export class UsersRepository extends Repository<User> {
@@ -13,7 +12,6 @@ export class UsersRepository extends Repository<User> {
   createAndSave = async (body: User) => {
     const user = this.create(body);
 
-    user.id = uuidv4();
     user.password = await hashPasswordAsync(user.password);
 
     generateAuthToken(user);
@@ -53,22 +51,18 @@ export class UsersRepository extends Repository<User> {
   };
 
   private getUserCredentials = (user: User) => {
-    const newUser = new User();
-
-    newUser.created_at = user.created_at;
-    newUser.email = user.email;
-    newUser.name = user.name;
-    newUser.tokens = user.tokens;
-
-    return newUser;
+    return {
+      created_at: user.created_at,
+      email: user.email,
+      name: user.name,
+      tokens: user.tokens,
+    };
   };
 
   private getPublicUserCredentials = (user: User) => {
-    const newUser = new User();
-
-    newUser.created_at = user.created_at;
-    newUser.name = user.name;
-
-    return newUser;
+    return {
+      created_at: user.created_at,
+      name: user.name,
+    };
   };
 }
