@@ -1,9 +1,10 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { v4 as uuidv4 } from "uuid";
 
 @Entity("users")
 class User {
   @PrimaryColumn()
-  id: string;
+  readonly id: string;
 
   @Column()
   name: string;
@@ -20,7 +21,11 @@ class User {
   @Column("varchar", { array: true })
   tokens: string[];
 
-  constructor() {}
+  constructor() {
+    if (!this.id) {
+      this.id = uuidv4();
+    }
+  }
 }
 
 export { User };
