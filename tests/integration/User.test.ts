@@ -14,10 +14,9 @@ import { User } from "../../src/models/User";
 import jwt from "jsonwebtoken";
 
 let connection: Connection;
-let usersRepository: UsersRepository;
 
 beforeAll(async () => {
-  ({ connection, usersRepository } = await connect());
+  ({ connection } = await connect());
 });
 
 afterAll(async () => {
@@ -50,7 +49,7 @@ describe("Users", () => {
         .expect(201);
 
       const user =
-        (await usersRepository.findOne({
+        (await UsersRepository.instance.findOne({
           email: "notEqualUserOne@test.com",
         })) || new User();
 
@@ -73,7 +72,7 @@ describe("Users", () => {
         })
         .expect(400);
 
-      const usersWithEmail = await usersRepository.find({
+      const usersWithEmail = await UsersRepository.instance.find({
         email: userOne.email,
       });
 
@@ -99,7 +98,7 @@ describe("Users", () => {
         })
         .expect(201);
 
-      const user = await usersRepository.findOne({
+      const user = await UsersRepository.instance.findOne({
         email: "noUser@test.com",
       });
 
