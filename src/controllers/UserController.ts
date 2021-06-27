@@ -28,7 +28,7 @@ class UserController {
     try {
       const result = await UsersRepository.instance.showSelf(req.body.id);
 
-      res.status(result.status).send(result.message);
+      res.status(result.status).json(result.message);
     } catch (e) {
       console.error(e);
       res.status(500).send();
