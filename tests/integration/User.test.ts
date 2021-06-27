@@ -8,8 +8,8 @@ import {
   userOne,
   userTwo,
   connect,
-} from "./fixtures/users";
-import UUID_RegExp from "./fixtures/UUID_Regex";
+} from "../fixtures/users";
+import UUID_RegExp from "../fixtures/UUID_Regex";
 import { User } from "../../src/models/User";
 import jwt from "jsonwebtoken";
 
