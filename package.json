@@ -13,10 +13,9 @@
     "validator": "^13.6.0"
   },
   "scripts": {
-    "dev": "env-cmd -f ./config/dev.env ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-    "typeorm": "env-cmd -f ./config/dev.env ts-node-dev node_modules/typeorm/cli.js",
-    "typeorm-test": "env-cmd -f ./config/test.env ts-node-dev node_modules/typeorm/cli.js",
-    "test": "env-cmd -f ./config/test.env jest --watchAll --detectOpenHandles --runInBand"
+    "dev": "env-cmd -f .env.local ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
+    "typeorm": "env-cmd -f .env.local ts-node-dev node_modules/typeorm/cli.js",
+    "test": "env-cmd -f .env.local jest --watchAll --detectOpenHandles --runInBand"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
