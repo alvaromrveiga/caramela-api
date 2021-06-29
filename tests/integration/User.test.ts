@@ -2,17 +2,19 @@ import request from "supertest";
 import { Connection } from "typeorm";
 import { app } from "../../src/app";
 import { UsersRepository } from "../../src/controllers/repositories/UsersRepository";
-import { saveUser, userOne, userTwo, createUsers } from "../fixtures/users";
+import { saveUser, createUsers } from "../fixtures/users";
 import UUID_RegExp from "../fixtures/UUID_Regex";
 import { User } from "../../src/models/User";
 import jwt from "jsonwebtoken";
 import { connect, resetDatabase } from "../fixtures/database";
 
 let connection: Connection;
+let userOne: User;
+let userTwo: User;
 
 beforeAll(async () => {
   connection = await connect();
-  createUsers();
+  ({ userOne, userTwo } = createUsers());
 });
 
 afterAll(async () => {
