@@ -32,6 +32,8 @@ const createUsers = () => {
     password: "userTwo-password",
   });
   generateAuthToken(userTwo);
+
+  return { userOne, userTwo };
 };
 
-export { createUsers, saveUser, userOne, userTwo };
+export { createUsers, saveUser };
