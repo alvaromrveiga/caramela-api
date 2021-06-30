@@ -18,7 +18,7 @@ export class UsersRepository extends Repository<User> {
 
     await this.save(user);
 
-    return { status: 201, message: this.getUserCredentials(user) };
+    return this.getUserCredentials(user);
   };
 
   showPublic = async (id: string) => {
