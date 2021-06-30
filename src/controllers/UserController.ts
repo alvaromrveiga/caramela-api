@@ -4,9 +4,9 @@ import { UsersRepository } from "./repositories/UsersRepository";
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      const result = await UsersRepository.instance.createAndSave(req.body);
+      const user = await UsersRepository.instance.createAndSave(req.body);
 
-      res.status(result.status).json(result.message);
+      res.status(201).json(user);
     } catch (e) {
       console.error(e);
       res.status(500).send();
