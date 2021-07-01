@@ -1,5 +1,5 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
-import { ErrorWithStatus } from "../../errors/ErrorWithStatus";
+import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
 import { generateAuthToken } from "../../middleware/authentication";
 import { User } from "../../models/User";
 import { hashPasswordAsync } from "../../utils/bcrypt";
