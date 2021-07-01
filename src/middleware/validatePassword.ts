@@ -8,7 +8,9 @@ export const validatePassword = (
   const minLength = 8;
 
   if (req.body.password.length < minLength) {
-    res.status(400).send(`Password shorter than ${minLength} characters`);
+    res
+      .status(400)
+      .json({ error: `Password shorter than ${minLength} characters` });
     return;
   }
   next();

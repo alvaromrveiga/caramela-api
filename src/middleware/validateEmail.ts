@@ -9,12 +9,12 @@ export const validateEmail = async (
 ): Promise<void> => {
   if (validator.isEmail(req.body.email)) {
     if (await UsersRepo.instance.findOne({ email: req.body.email })) {
-      res.status(400).send("Email already in use!");
+      res.status(400).json({ error: "Email already in use!" });
       return;
     }
     return next();
   } else {
-    res.status(400).send("Invalid email");
+    res.status(400).json({ error: "Invalid email" });
     return;
   }
 };
