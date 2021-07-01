@@ -1,4 +1,5 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
+import { ErrorWithStatus } from "../../errors/ErrorWithStatus";
 import { generateAuthToken } from "../../middleware/authentication";
 import { User } from "../../models/User";
 import { hashPasswordAsync } from "../../utils/bcrypt";
@@ -22,32 +23,23 @@ export class UsersRepository extends Repository<User> {
   };
 
   showPublic = async (id: string) => {
-    const user = await this.findOne({ id });
+    const user = await this.findOne(id);
 
     if (!user) {
-      return { status: 404, message: "User not found" };
+      throw new ErrorWithStatus(404, "User not found");
     }
 
-    return {
-      status: 200,
-      message: this.getPublicUserCredentials(user),
-    };
+    return this.getPublicUserCredentials(user);
   };
 
   showSelf = async (id: string) => {
     const user = await this.findOne({ id });
 
     if (!user) {
-      return {
-        status: 401,
-        message: "Please authenticate",
-      };
+      throw new ErrorWithStatus(401, "Please authenticate");
     }
 
-    return {
-      status: 200,
-      message: this.getUserCredentials(user),
-    };
+    return this.getUserCredentials(user);
   };
 
   private getUserCredentials = (user: User) => {
