@@ -10,7 +10,11 @@ export class UsersRepository extends Repository<User> {
     return getCustomRepository(this);
   }
 
-  createAndSave = async (body: User) => {
+  createAndSave = async (body: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
     const user = this.create(body);
 
     user.password = await hashPasswordAsync(user.password);
