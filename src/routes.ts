@@ -8,6 +8,7 @@ const router = Router();
 
 const userController = new UserController();
 router.post("/signup", validateEmail, validatePassword, userController.create);
+router.post("/users/profile", authenticate, userController.deleteUser);
 router.get("/users/profile", authenticate, userController.showSelf);
 router.get("/users/:id", authenticate, userController.show);
 

@@ -170,4 +170,20 @@ describe("Users", () => {
       await request(app).get("/users/profile").send().expect(401);
     });
   });
+  describe("Delete user", () => {
+    it("Should delete user", async () => {
+      await request(app)
+        .post("/users/profile")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send()
+        .expect(200);
+
+      const user = await UsersRepository.instance.findOne({ id: userOne.id });
+      expect(user).toBeUndefined();
+    });
+
+    it("Should not delete unauthenticated user", async () => {
+      await request(app).post("/users/profile").send().expect(401);
+    });
+  });
 });

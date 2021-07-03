@@ -19,6 +19,12 @@ class UserController {
 
     res.status(200).json(user);
   }
+
+  async deleteUser(req: Request, res: Response) {
+    await UsersRepository.instance.deleteUser(req.body.id);
+
+    res.status(200).json({ message: "User removed successfully!" });
+  }
 }
 
 export { UserController };

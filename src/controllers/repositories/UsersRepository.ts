@@ -46,6 +46,16 @@ export class UsersRepository extends Repository<User> {
     return this.getUserCredentials(user);
   };
 
+  deleteUser = async (id: string) => {
+    const user = await this.delete({ id });
+
+    if (!user) {
+      throw new ErrorWithStatus(401, "Please authenticate");
+    }
+
+    return true;
+  };
+
   private getUserCredentials = (user: User) => {
     return {
       created_at: user.created_at,
