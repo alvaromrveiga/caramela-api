@@ -116,7 +116,7 @@ describe("Users", () => {
       expect(Object.keys(response.body)).not.toContain("password");
     });
 
-    it("Should containd id information insde JsonWebToken", async () => {
+    it("Should contain id information inside JsonWebToken", async () => {
       expect(process.env.JWT_SECRET).not.toBeUndefined();
 
       if (!process.env.JWT_SECRET) {
