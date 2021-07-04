@@ -1,39 +1,45 @@
-import { v4 as uuidv4 } from "uuid";
 import { UsersRepository } from "../../src/controllers/repositories/UsersRepository";
-import { generateAuthToken } from "../../src/middleware/authentication";
-import { User } from "../../src/models/User";
 
-const saveUser = async (user: User) => {
-  await UsersRepository.instance.save(user);
-};
+interface IUserBody {
+  name: string;
+  email: string;
+  password: string;
+}
 
-let userOne: User;
-let userTwo: User;
+const getUsers = async () => {
+  const { rawUserOne, rawUserTwo } = getRawUsers();
 
-const createUsers = () => {
-  if (!process.env.JWT_SECRET) {
-    throw new Error("No JWT_SECRET defined on .env");
+  await UsersRepository.instance.createAndSave(rawUserOne);
+  await UsersRepository.instance.createAndSave(rawUserTwo);
+
+  const userOne = await UsersRepository.instance.findOne({
+    email: rawUserOne.email,
+  });
+  const userTwo = await UsersRepository.instance.findOne({
+    email: rawUserTwo.email,
+  });
+
+  if (!userOne || !userTwo) {
+    throw new Error("Error to save user fixtures");
   }
-
-  const userOneId = uuidv4();
-  userOne = UsersRepository.instance.create({
-    id: userOneId,
-    name: "userOne",
-    email: "userOne@test.com",
-    password: "userOne-password",
-  });
-  generateAuthToken(userOne);
-
-  const userTwoId = uuidv4();
-  userTwo = UsersRepository.instance.create({
-    id: userTwoId,
-    name: "userTwo",
-    email: "userTwo@test.com",
-    password: "userTwo-password",
-  });
-  generateAuthToken(userTwo);
 
   return { userOne, userTwo };
 };
 
-export { createUsers, saveUser };
+const getRawUsers = () => {
+  const rawUserOne = {
+    name: "userOne",
+    email: "userOne@test.com",
+    password: "userOne-pa$sw0rd",
+  };
+
+  const rawUserTwo = {
+    name: "userTwo",
+    email: "userTwo@test.com",
+    password: "userTwo-password",
+  };
+
+  return { rawUserOne, rawUserTwo };
+};
+
+export { getUsers, getRawUsers, IUserBody };
