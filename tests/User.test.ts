@@ -2,7 +2,7 @@ import request from "supertest";
 import { Connection } from "typeorm";
 import { app } from "../src/app";
 import { UsersRepository } from "../src/controllers/repositories/UsersRepository";
-import { saveUser, createUsers } from "./fixtures/users";
+import { getUsers, getRawUsers, IUserBody } from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";
 import { User } from "../src/models/User";
 import jwt from "jsonwebtoken";
@@ -11,10 +11,12 @@ import { connect, resetDatabase } from "./fixtures/database";
 let connection: Connection;
 let userOne: User;
 let userTwo: User;
+let rawUserOne: IUserBody;
+let rawUserTwo: IUserBody;
 
 beforeAll(async () => {
   connection = await connect();
-  ({ userOne, userTwo } = createUsers());
+  ({ rawUserOne, rawUserTwo } = getRawUsers());
 });
 
 afterAll(async () => {
@@ -31,8 +33,7 @@ describe("Connection", () => {
 describe("Users", () => {
   beforeEach(async () => {
     await resetDatabase();
-    await saveUser(userOne);
-    await saveUser(userTwo);
+    ({ userOne, userTwo } = await getUsers());
   });
 
   describe("Create", () => {
@@ -175,15 +176,26 @@ describe("Users", () => {
       await request(app)
         .post("/users/profile")
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
-        .send()
+        .send({ password: rawUserOne.password })
         .expect(200);
 
       const user = await UsersRepository.instance.findOne({ id: userOne.id });
       expect(user).toBeUndefined();
     });
 
+    it("Should not delete authenticated user with invalid password", async () => {
+      await request(app)
+        .post("/users/profile")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send({ password: "wrong password" })
+        .expect(400);
+    });
+
     it("Should not delete unauthenticated user", async () => {
-      await request(app).post("/users/profile").send().expect(401);
+      await request(app)
+        .post("/users/profile")
+        .send({ password: rawUserOne.password })
+        .expect(401);
     });
   });
 });
