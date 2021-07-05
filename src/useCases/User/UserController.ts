@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { UsersRepository } from "../../repositories/UsersRepository";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 import { DeleteUserUseCase } from "./DeleteUserUseCase";
 import { ShowUserUseCase } from "./ShowUserUseCase";
