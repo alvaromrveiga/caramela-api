@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { UserController } from "./controllers/UserController";
-import { authenticate } from "./middleware/authentication";
+import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
 import { validateEmail } from "./middleware/validateEmail";
 import { validatePassword } from "./middleware/validatePassword";
 import { verifyPassword } from "./middleware/verifyPassword";
@@ -12,12 +12,12 @@ router.post("/signup", validateEmail, validatePassword, userController.create);
 
 router.post(
   "/users/profile",
-  authenticate,
+  ensureAuthenticated,
   verifyPassword,
   userController.deleteUser
 );
 
-router.get("/users/profile", authenticate, userController.showSelf);
-router.get("/users/:id", authenticate, userController.show);
+router.get("/users/profile", ensureAuthenticated, userController.showSelf);
+router.get("/users/:id", ensureAuthenticated, userController.show);
 
 export { router };

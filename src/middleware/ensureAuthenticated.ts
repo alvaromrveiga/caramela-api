@@ -7,7 +7,7 @@ interface RequestWithBody extends Request {
   body: { [key: string]: string | undefined };
 }
 
-export const authenticate = async (
+export const ensureAuthenticated = async (
   req: RequestWithBody,
   res: Response,
   next: NextFunction
