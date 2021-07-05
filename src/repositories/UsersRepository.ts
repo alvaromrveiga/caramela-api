@@ -8,26 +8,6 @@ export class UsersRepository extends Repository<User> {
     return getCustomRepository(this);
   }
 
-  showPublic = async (id: string) => {
-    const user = await this.findOne(id);
-
-    if (!user) {
-      throw new ErrorWithStatus(404, "User not found");
-    }
-
-    return this.getPublicUserCredentials(user);
-  };
-
-  showSelf = async (id: string) => {
-    const user = await this.findOne({ id });
-
-    if (!user) {
-      throw new ErrorWithStatus(401, "Please authenticate");
-    }
-
-    return this.getUserCredentials(user);
-  };
-
   deleteUser = async (id: string) => {
     const user = await this.delete({ id });
 
