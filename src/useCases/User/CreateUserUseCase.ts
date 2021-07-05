@@ -14,7 +14,7 @@ export class CreateUserUseCase {
   constructor(private body: IUserCreateCredentials) {}
 
   execute = async () => {
-    await this.validateCredentials(this.body);
+    await this.validateCredentials();
 
     const user = UsersRepository.instance.create(this.body);
 
@@ -27,14 +27,14 @@ export class CreateUserUseCase {
     return UsersRepository.instance.getUserCredentials(user);
   };
 
-  private validateCredentials = async (body: IUserCreateCredentials) => {
-    await this.validateEmail(body.email);
-    await this.validatePassword(body.password);
+  private validateCredentials = async () => {
+    await this.validateEmail();
+    await this.validatePassword();
   };
 
-  private validateEmail = async (email: string) => {
-    if (validator.isEmail(email)) {
-      if (await UsersRepository.instance.findOne({ email })) {
+  private validateEmail = async () => {
+    if (validator.isEmail(this.body.email)) {
+      if (await UsersRepository.instance.findOne({ email: this.body.email })) {
         throw new ErrorWithStatus(400, "Email already in use!");
       }
       return true;
@@ -43,10 +43,10 @@ export class CreateUserUseCase {
     throw new ErrorWithStatus(400, "Invalid email");
   };
 
-  private validatePassword = async (password: string) => {
+  private validatePassword = async () => {
     const minLength = 8;
 
-    if (password.length < minLength) {
+    if (this.body.password.length < minLength) {
       throw new ErrorWithStatus(
         400,
         `Password shorter than ${minLength} characters`
