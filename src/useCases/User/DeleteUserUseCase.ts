@@ -8,11 +8,7 @@ export class DeleteUserUseCase {
   execute = async () => {
     await this.verifyPassword();
 
-    const user = await UsersRepository.instance.delete({ id: this.id });
-
-    if (!user) {
-      throw new ErrorWithStatus(401, "Please authenticate");
-    }
+    await UsersRepository.instance.delete({ id: this.id });
 
     return true;
   };
@@ -24,11 +20,10 @@ export class DeleteUserUseCase {
       throw new ErrorWithStatus(401, "Please authenticate");
     }
 
-    if (!this.password) {
-      throw new ErrorWithStatus(400, "Invalid password");
-    }
-
-    const result = await comparePasswordAsync(this.password, user.password);
+    const result = await UsersRepository.instance.verifyPassword(
+      this.password,
+      user.password
+    );
 
     if (!result) {
       throw new ErrorWithStatus(400, "Invalid password");
