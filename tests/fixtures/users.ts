@@ -10,8 +10,8 @@ interface IUserBody {
 const getUsers = async () => {
   const { rawUserOne, rawUserTwo } = getRawUsers();
 
-  await CreateUserUseCase.execute(rawUserOne);
-  await CreateUserUseCase.execute(rawUserTwo);
+  await new CreateUserUseCase(rawUserOne).execute();
+  await new CreateUserUseCase(rawUserTwo).execute();
 
   const userOne = await UsersRepository.instance.findOne({
     email: rawUserOne.email,
