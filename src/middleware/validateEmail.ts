@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import validator from "validator";
-import { UsersRepository as UsersRepo } from "../controllers/repositories/UsersRepository";
+import { UsersRepository as UsersRepo } from "../repositories/UsersRepository";
 
 export const validateEmail = async (
   req: Request,

@@ -1,4 +1,4 @@
-import { UsersRepository } from "../../src/controllers/repositories/UsersRepository";
+import { UsersRepository } from "../../src/repositories/UsersRepository";
 
 interface IUserBody {
   name: string;

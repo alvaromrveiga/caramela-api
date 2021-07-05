@@ -1,8 +1,8 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
-import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
-import { generateJwt } from "../../utils/generateJwt";
-import { User } from "../../models/User";
-import { hashPasswordAsync } from "../../utils/bcrypt";
+import { ErrorWithStatus } from "../utils/ErrorWithStatus";
+import { generateJwt } from "../utils/generateJwt";
+import { User } from "../models/User";
+import { hashPasswordAsync } from "../utils/bcrypt";
 
 @EntityRepository(User)
 export class UsersRepository extends Repository<User> {

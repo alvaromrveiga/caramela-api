@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UsersRepository } from "../controllers/repositories/UsersRepository";
+import { UsersRepository } from "../repositories/UsersRepository";
 import { comparePasswordAsync } from "../utils/bcrypt";
 
 export const verifyPassword = async (
