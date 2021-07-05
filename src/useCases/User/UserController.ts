@@ -23,7 +23,7 @@ class UserController {
   };
 
   deleteUser = async (req: Request, res: Response) => {
-    await DeleteUserUseCase.execute(req.body.id);
+    await new DeleteUserUseCase(req.body.id, req.body.password).execute();
 
     res.status(200).json({ message: "User removed successfully!" });
   };
