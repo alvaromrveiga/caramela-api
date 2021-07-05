@@ -5,7 +5,7 @@ import { ShowUserUseCase } from "./ShowUserUseCase";
 
 class UserController {
   create = async (req: Request, res: Response) => {
-    const user = await CreateUserUseCase.execute(req.body);
+    const user = await new CreateUserUseCase(req.body).execute();
 
     res.status(201).json(user);
   };
