@@ -11,13 +11,13 @@ class UserController {
   };
 
   show = async (req: Request, res: Response) => {
-    const user = await ShowUserUseCase.publicUser(req.params.id);
+    const user = await new ShowUserUseCase(req.params.id).publicUser();
 
     res.status(200).json(user);
   };
 
   showSelf = async (req: Request, res: Response) => {
-    const user = await ShowUserUseCase.self(req.body.id);
+    const user = await new ShowUserUseCase(req.body.id).self();
 
     res.status(200).json(user);
   };
