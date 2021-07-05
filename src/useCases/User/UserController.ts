@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import { CreateUserUseCase } from "./CreateUserUseCase";
+import { ShowUserUseCase } from "./ShowUserUseCase";
 
 class UserController {
   create = async (req: Request, res: Response) => {
@@ -10,13 +11,13 @@ class UserController {
   };
 
   show = async (req: Request, res: Response) => {
-    const user = await UsersRepository.instance.showPublic(req.params.id);
+    const user = await ShowUserUseCase.publicUser(req.params.id);
 
     res.status(200).json(user);
   };
 
   showSelf = async (req: Request, res: Response) => {
-    const user = await UsersRepository.instance.showSelf(req.body.id);
+    const user = await ShowUserUseCase.self(req.body.id);
 
     res.status(200).json(user);
   };
