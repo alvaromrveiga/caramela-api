@@ -134,6 +134,41 @@ describe("Users", () => {
     });
   });
 
+  describe("Login", () => {
+    it("Should login user", async () => {
+      const response = await request(app)
+        .post("/login")
+        .send({
+          email: userOne.email,
+          password: rawUserOne.password,
+        })
+        .expect(200);
+
+      expect(response.body.name).toEqual(userOne.name);
+      expect(response.body).not.toContain("password");
+      expect(response.body).not.toContain("id");
+    });
+
+    it("Should not login user with wrong password", async () => {
+      await request(app)
+        .post("/login")
+        .send({
+          email: userOne.email,
+          password: "wrong" + rawUserOne.password,
+        })
+        .expect(400);
+    });
+    it("Should not login user with invalid email", async () => {
+      await request(app)
+        .post("/login")
+        .send({
+          email: "wrong" + userOne.email,
+          password: rawUserOne.password,
+        })
+        .expect(400);
+    });
+  });
+
   describe("Show", () => {
     it("Should show public user information", async () => {
       const response = await request(app)
