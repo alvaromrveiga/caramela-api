@@ -1,14 +1,18 @@
 import { UsersRepository } from "../../repositories/UsersRepository";
 import { hashPasswordAsync } from "../../utils/bcrypt";
 import { generateJwt } from "../../utils/generateJwt";
+import validator from "validator";
+import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
 
 export class CreateUserUseCase {
-  static execute = async (body: {
-    name: string;
-    email: string;
-    password: string;
-  }) => {
-    const user = UsersRepository.instance.create(body);
+  constructor(
+    private body: { name: string; email: string; password: string }
+  ) {}
+
+  execute = async () => {
+    await this.validateEmail(this.body.email);
+
+    const user = UsersRepository.instance.create(this.body);
 
     user.password = await hashPasswordAsync(user.password);
 
@@ -17,5 +21,16 @@ export class CreateUserUseCase {
     await UsersRepository.instance.save(user);
 
     return UsersRepository.instance.getUserCredentials(user);
+  };
+
+  validateEmail = async (email: string) => {
+    if (validator.isEmail(email)) {
+      if (await UsersRepository.instance.findOne({ email })) {
+        throw new ErrorWithStatus(400, "Email already in use!");
+      }
+      return true;
+    }
+
+    throw new ErrorWithStatus(400, "Invalid email");
   };
 }
