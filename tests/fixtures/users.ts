@@ -1,12 +1,6 @@
 import { UsersRepository } from "../../src/repositories/UsersRepository";
 import { CreateUserUseCase } from "../../src/useCases/User/CreateUserUseCase";
 
-interface IUserBody {
-  name: string;
-  email: string;
-  password: string;
-}
-
 const getUsers = async () => {
   const { rawUserOne, rawUserTwo } = getRawUsers();
 
@@ -43,4 +37,4 @@ const getRawUsers = () => {
   return { rawUserOne, rawUserTwo };
 };
 
-export { getUsers, getRawUsers, IUserBody };
+export { getUsers, getRawUsers };

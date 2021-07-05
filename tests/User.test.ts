@@ -2,17 +2,18 @@ import request from "supertest";
 import { Connection } from "typeorm";
 import { app } from "../src/app";
 import { UsersRepository } from "../src/repositories/UsersRepository";
-import { getUsers, getRawUsers, IUserBody } from "./fixtures/users";
+import { getUsers, getRawUsers } from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";
 import { User } from "../src/models/User";
 import jwt from "jsonwebtoken";
 import { connect, resetDatabase } from "./fixtures/database";
+import { IUserCreateCredentials } from "../src/useCases/User/CreateUserUseCase";
 
 let connection: Connection;
 let userOne: User;
 let userTwo: User;
-let rawUserOne: IUserBody;
-let rawUserTwo: IUserBody;
+let rawUserOne: IUserCreateCredentials;
+let rawUserTwo: IUserCreateCredentials;
 
 beforeAll(async () => {
   connection = await connect();
