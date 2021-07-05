@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UsersRepository } from "../controllers/repositories/UsersRepository";
+import { UsersRepository } from "../repositories/UsersRepository";
 import { ErrorWithStatus } from "../utils/ErrorWithStatus";
 
 interface RequestWithBody extends Request {

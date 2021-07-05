@@ -1,16 +1,11 @@
-import { UsersRepository } from "../../src/controllers/repositories/UsersRepository";
-
-interface IUserBody {
-  name: string;
-  email: string;
-  password: string;
-}
+import { UsersRepository } from "../../src/repositories/UsersRepository";
+import { CreateUserUseCase } from "../../src/useCases/User/CreateUserUseCase";
 
 const getUsers = async () => {
   const { rawUserOne, rawUserTwo } = getRawUsers();
 
-  await UsersRepository.instance.createAndSave(rawUserOne);
-  await UsersRepository.instance.createAndSave(rawUserTwo);
+  await new CreateUserUseCase(rawUserOne).execute();
+  await new CreateUserUseCase(rawUserTwo).execute();
 
   const userOne = await UsersRepository.instance.findOne({
     email: rawUserOne.email,
@@ -42,4 +37,4 @@ const getRawUsers = () => {
   return { rawUserOne, rawUserTwo };
 };
 
-export { getUsers, getRawUsers, IUserBody };
+export { getUsers, getRawUsers };

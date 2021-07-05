@@ -1,5 +1,5 @@
 import { Connection, createConnection } from "typeorm";
-import { UsersRepository } from "../../src/controllers/repositories/UsersRepository";
+import { UsersRepository } from "../../src/repositories/UsersRepository";
 
 let connection: Connection;
 
