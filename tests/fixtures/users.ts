@@ -1,4 +1,5 @@
 import { UsersRepository } from "../../src/repositories/UsersRepository";
+import { CreateUserUseCase } from "../../src/useCases/User/CreateUserUseCase";
 
 interface IUserBody {
   name: string;
@@ -9,8 +10,8 @@ interface IUserBody {
 const getUsers = async () => {
   const { rawUserOne, rawUserTwo } = getRawUsers();
 
-  await UsersRepository.instance.createAndSave(rawUserOne);
-  await UsersRepository.instance.createAndSave(rawUserTwo);
+  await CreateUserUseCase.execute(rawUserOne);
+  await CreateUserUseCase.execute(rawUserTwo);
 
   const userOne = await UsersRepository.instance.findOne({
     email: rawUserOne.email,

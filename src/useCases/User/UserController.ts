@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { UsersRepository } from "../../repositories/UsersRepository";
+import { CreateUserUseCase } from "./CreateUserUseCase";
 
 class UserController {
   create = async (req: Request, res: Response) => {
-    const user = await UsersRepository.instance.createAndSave(req.body);
+    const user = await CreateUserUseCase.execute(req.body);
 
     res.status(201).json(user);
   };
