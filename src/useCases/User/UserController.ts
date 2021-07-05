@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import { CreateUserUseCase } from "./CreateUserUseCase";
+import { DeleteUserUseCase } from "./DeleteUserUseCase";
 import { ShowUserUseCase } from "./ShowUserUseCase";
 
 class UserController {
@@ -23,7 +24,7 @@ class UserController {
   };
 
   deleteUser = async (req: Request, res: Response) => {
-    await UsersRepository.instance.deleteUser(req.body.id);
+    await DeleteUserUseCase.execute(req.body.id);
 
     res.status(200).json({ message: "User removed successfully!" });
   };
