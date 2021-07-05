@@ -1,6 +1,6 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
 import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
-import { generateAuthToken } from "../../middleware/authentication";
+import { generateJwt } from "../../utils/generateJwt";
 import { User } from "../../models/User";
 import { hashPasswordAsync } from "../../utils/bcrypt";
 
@@ -19,7 +19,7 @@ export class UsersRepository extends Repository<User> {
 
     user.password = await hashPasswordAsync(user.password);
 
-    generateAuthToken(user);
+    generateJwt(user);
 
     await this.save(user);
 
