@@ -27,13 +27,16 @@ class UserController {
   };
 
   showSelf = async (req: Request, res: Response) => {
-    const user = await new ShowUserUseCase(req.body.id).self();
+    const user = await new ShowUserUseCase(res.locals.user.id).self();
 
     res.status(200).json(user);
   };
 
   deleteUser = async (req: Request, res: Response) => {
-    await new DeleteUserUseCase(req.body.id, req.body.password).execute();
+    await new DeleteUserUseCase(
+      res.locals.user.id,
+      req.body.password
+    ).execute();
 
     res.status(200).json({ message: "User removed successfully!" });
   };

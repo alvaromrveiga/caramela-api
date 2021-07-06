@@ -3,12 +3,8 @@ import jwt from "jsonwebtoken";
 import { UsersRepository } from "../repositories/UsersRepository";
 import { ErrorWithStatus } from "../utils/ErrorWithStatus";
 
-interface RequestWithBody extends Request {
-  body: { [key: string]: string | undefined };
-}
-
 export const ensureAuthenticated = async (
-  req: RequestWithBody,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -32,7 +28,9 @@ export const ensureAuthenticated = async (
       return;
     }
 
-    req.body.id = user.id;
+    res.locals.user = user;
+    res.locals.token = token;
+    // http://expressjs.com/en/api.html#res.locals
 
     next();
     return;
