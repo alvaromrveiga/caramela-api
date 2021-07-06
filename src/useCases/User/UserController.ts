@@ -27,7 +27,7 @@ class UserController {
   };
 
   showSelf = async (req: Request, res: Response) => {
-    const user = await new ShowUserUseCase(res.locals.user.id).self();
+    const user = await new ShowUserUseCase().self(res.locals.user);
 
     res.status(200).json(user);
   };
