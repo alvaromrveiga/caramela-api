@@ -132,6 +132,26 @@ describe("Users", () => {
 
       expect(decoded.id).toEqual(userOne.id);
     });
+
+    it("Should show error message if no email field", async () => {
+      await request(app)
+        .post("/signup")
+        .send({
+          name: userOne.name,
+          password: rawUserOne.password,
+        })
+        .expect(400);
+    });
+
+    it("Should show error message if no password field", async () => {
+      await request(app)
+        .post("/signup")
+        .send({
+          name: userOne.name,
+          email: userOne.email,
+        })
+        .expect(400);
+    });
   });
 
   describe("Login", () => {
