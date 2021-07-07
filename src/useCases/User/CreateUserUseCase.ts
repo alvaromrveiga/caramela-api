@@ -33,6 +33,10 @@ export class CreateUserUseCase {
   };
 
   private validateEmail = async () => {
+    if (!this.body.email) {
+      throw new ErrorWithStatus(400, "Invalid email");
+    }
+
     if (validator.isEmail(this.body.email)) {
       if (await UsersRepository.instance.findOne({ email: this.body.email })) {
         throw new ErrorWithStatus(400, "Email already in use!");
@@ -44,6 +48,10 @@ export class CreateUserUseCase {
   };
 
   private validatePassword = async () => {
+    if (!this.body.password) {
+      throw new ErrorWithStatus(400, "Invalid password");
+    }
+
     const minLength = 8;
 
     if (this.body.password.length < minLength) {
