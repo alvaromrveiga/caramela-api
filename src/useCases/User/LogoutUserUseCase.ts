@@ -13,4 +13,12 @@ export class LogoutUserUseCase {
 
     return true;
   };
+
+  logOutAll = async () => {
+    this.user.tokens = [];
+
+    await UsersRepository.instance.save(this.user);
+
+    return true;
+  };
 }
