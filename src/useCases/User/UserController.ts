@@ -12,7 +12,7 @@ class UserController {
     res.status(201).json(user);
   };
 
-  login = async (req: Request, res: Response) => {
+  logIn = async (req: Request, res: Response) => {
     const user = await new LoginUserUseCase(
       req.body.email,
       req.body.password
@@ -21,10 +21,16 @@ class UserController {
     res.status(200).json(user);
   };
 
-  logout = async (req: Request, res: Response) => {
+  logOut = async (req: Request, res: Response) => {
     await new LogoutUserUseCase(res.locals.user, res.locals.token).execute();
 
     res.status(200).json({ message: "Logged out" });
+  };
+
+  logOutAll = async (req: Request, res: Response) => {
+    await new LogoutUserUseCase(res.locals.user, res.locals.token).logOutAll();
+
+    res.status(200).json({ message: "Logged out of all sessions" });
   };
 
   show = async (req: Request, res: Response) => {
