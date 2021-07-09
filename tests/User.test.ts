@@ -254,4 +254,30 @@ describe("Users", () => {
         .expect(401);
     });
   });
+  describe("Logout user", () => {
+    it("Should logout user", async () => {
+      await request(app)
+        .post("/users/logout")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send()
+        .expect(200);
+    });
+
+    it("Should not logout unauthenticated user", async () => {
+      await request(app).post("/users/logout").send().expect(401);
+    });
+    it("Should not be able to logout twice in a row", async () => {
+      await request(app)
+        .post("/users/logout")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send()
+        .expect(200);
+
+      await request(app)
+        .post("/users/logout")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send()
+        .expect(401);
+    });
+  });
 });
