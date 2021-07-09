@@ -17,6 +17,8 @@ export class LoginUserUseCase {
 
     generateJwt(user);
 
+    await UsersRepository.instance.save(user);
+
     return UsersRepository.instance.getUserCredentials(user);
   };
 
