@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 import { DeleteUserUseCase } from "./DeleteUserUseCase";
 import { LoginUserUseCase } from "./LoginUserUseCase";
+import { LogoutUserUseCase } from "./LogoutUserUseCase";
 import { ShowUserUseCase } from "./ShowUserUseCase";
 
 class UserController {
@@ -18,6 +19,12 @@ class UserController {
     ).execute();
 
     res.status(200).json(user);
+  };
+
+  logout = async (req: Request, res: Response) => {
+    await new LogoutUserUseCase(res.locals.user, res.locals.token).execute();
+
+    res.status(200).json({ message: "Logged out" });
   };
 
   show = async (req: Request, res: Response) => {
