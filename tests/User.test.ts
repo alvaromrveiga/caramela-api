@@ -261,11 +261,15 @@ describe("Users", () => {
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send()
         .expect(200);
+
+      const user = await UsersRepository.instance.findOne(userOne.id);
+      expect(user?.tokens).not.toContain(userOne.tokens[0]);
     });
 
     it("Should not logout unauthenticated user", async () => {
       await request(app).post("/users/logout").send().expect(401);
     });
+
     it("Should not be able to logout twice in a row", async () => {
       await request(app)
         .post("/users/logout")
@@ -278,6 +282,23 @@ describe("Users", () => {
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send()
         .expect(401);
+    });
+  });
+  describe("Logout user from all sessions", () => {
+    it("Should log out user from all sessions", async () => {
+      await request(app)
+        .post("/users/logout-all")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send()
+        .expect(200);
+
+      const user = await UsersRepository.instance.findOne(userOne.id);
+
+      expect(user?.tokens.length).toEqual(0);
+    });
+
+    it("Should not log out unauthenticated user from all sessions", async () => {
+      await request(app).post("/users/logout-all").send().expect(401);
     });
   });
 });
