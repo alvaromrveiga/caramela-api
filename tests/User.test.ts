@@ -230,7 +230,7 @@ describe("Users", () => {
   describe("Delete user", () => {
     it("Should delete user", async () => {
       await request(app)
-        .post("/users/profile")
+        .delete("/users/profile")
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send({ password: rawUserOne.password })
         .expect(200);
@@ -241,7 +241,7 @@ describe("Users", () => {
 
     it("Should not delete authenticated user with invalid password", async () => {
       await request(app)
-        .post("/users/profile")
+        .delete("/users/profile")
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send({ password: "wrong password" })
         .expect(400);
@@ -249,7 +249,7 @@ describe("Users", () => {
 
     it("Should not delete unauthenticated user", async () => {
       await request(app)
-        .post("/users/profile")
+        .delete("/users/profile")
         .send({ password: rawUserOne.password })
         .expect(401);
     });
