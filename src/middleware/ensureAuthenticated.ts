@@ -28,6 +28,11 @@ export const ensureAuthenticated = async (
       return;
     }
 
+    if (!isTokenValid(user.tokens, token)) {
+      res.status(401).json({ error: "Please Authenticate" });
+      return;
+    }
+
     res.locals.user = user;
     res.locals.token = token;
     // http://expressjs.com/en/api.html#res.locals
@@ -38,4 +43,8 @@ export const ensureAuthenticated = async (
     res.status(401).json({ error: "Please Authenticate" });
     return;
   }
+};
+
+const isTokenValid = (tokens: string[], thisToken: string) => {
+  return tokens.find((token) => token === thisToken);
 };
