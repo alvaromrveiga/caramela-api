@@ -227,6 +227,7 @@ describe("Users", () => {
       await request(app).get("/users/profile").send().expect(401);
     });
   });
+
   describe("Delete user", () => {
     it("Should delete user", async () => {
       await request(app)
@@ -254,6 +255,7 @@ describe("Users", () => {
         .expect(401);
     });
   });
+
   describe("Logout user", () => {
     it("Should logout user", async () => {
       await request(app)
@@ -284,6 +286,7 @@ describe("Users", () => {
         .expect(401);
     });
   });
+
   describe("Logout user from all sessions", () => {
     it("Should log out user from all sessions", async () => {
       await request(app)
@@ -299,6 +302,83 @@ describe("Users", () => {
 
     it("Should not log out unauthenticated user from all sessions", async () => {
       await request(app).post("/users/logout-all").send().expect(401);
+    });
+  });
+
+  describe("Update user", () => {
+    it("Should update user", async () => {
+      await request(app)
+        .put("/users/profile")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send({
+          name: userOne.name + "Updated",
+          email: userOne.email + "Updated",
+          password: rawUserOne.password + "Updated",
+          currentPassword: rawUserOne.password,
+        })
+        .expect(200);
+
+      const user = await UsersRepository.instance.findOne(userOne.id);
+      expect(user).toMatchObject({
+        name: userOne.name + "Updated",
+        email: userOne.email + "Updated",
+      });
+
+      expect(user?.password).not.toEqual(rawUserOne.password + "Updated");
+
+      await request(app)
+        .post("/login")
+        .send({
+          email: userOne.email + "Updated",
+          password: rawUserOne.password + "Updated",
+        })
+        .expect(200);
+    });
+
+    it("Should update user without current password when not changing password", async () => {
+      await request(app)
+        .put("/users/profile")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send({
+          name: userOne.name + "Updated",
+          email: userOne.email + "Updated",
+        })
+        .expect(200);
+    });
+
+    it("Should not update user password with no current password", async () => {
+      await request(app)
+        .put("/users/profile")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send({
+          name: userOne.name + "Updated",
+          email: userOne.email + "Updated",
+          password: rawUserOne.password + "Updated",
+        })
+        .expect(400);
+    });
+
+    it("Should not update user password with wrong current password", async () => {
+      await request(app)
+        .put("/users/profile")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send({
+          name: userOne.name + "Updated",
+          email: userOne.email + "Updated",
+          password: rawUserOne.password + "Updated",
+          currentPassword: rawUserOne.password + "Wrong",
+        })
+        .expect(400);
+    });
+
+    it("Should not update unauthenticated user", async () => {
+      await request(app)
+        .put("/users/profile")
+        .send({
+          name: userOne.name + "Updated",
+          email: userOne.email + "Updated",
+        })
+        .expect(401);
     });
   });
 });
