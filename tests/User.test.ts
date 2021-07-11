@@ -346,6 +346,20 @@ describe("Users", () => {
         .expect(200);
     });
 
+    it("Should not update user with not allowed field", async () => {
+      await request(app)
+        .put("/users/profile")
+        .set("Authorization", `Bearer ${userOne.tokens[0]}`)
+        .send({
+          id: "10841f14-4768-416d-b1ef-9d60ee87fed8",
+          name: userOne.name + "Updated",
+          email: userOne.email + "Updated",
+          password: rawUserOne.password + "Updated",
+          currentPassword: rawUserOne.password,
+        })
+        .expect(400);
+    });
+
     it("Should not update user password with no current password", async () => {
       await request(app)
         .put("/users/profile")
