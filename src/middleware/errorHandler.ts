@@ -10,5 +10,5 @@ export function errorHandler(
   if (error instanceof ErrorWithStatus) {
     return response.status(error.status).json({ error: error.message });
   }
-  return response.status(500).send();
+  return response.status(500).json({ error: error.message });
 }
