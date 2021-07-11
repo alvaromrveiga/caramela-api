@@ -4,6 +4,7 @@ import { DeleteUserUseCase } from "./DeleteUserUseCase";
 import { LoginUserUseCase } from "./LoginUserUseCase";
 import { LogoutUserUseCase } from "./LogoutUserUseCase";
 import { ShowUserUseCase } from "./ShowUserUseCase";
+import { UpdateUserUseCase } from "./UpdateUserUseCase";
 
 class UserController {
   create = async (req: Request, res: Response) => {
@@ -41,6 +42,15 @@ class UserController {
 
   showSelf = async (req: Request, res: Response) => {
     const user = await new ShowUserUseCase().self(res.locals.user);
+
+    res.status(200).json(user);
+  };
+
+  update = async (req: Request, res: Response) => {
+    const user = await new UpdateUserUseCase(
+      res.locals.user,
+      req.body
+    ).execute();
 
     res.status(200).json(user);
   };
