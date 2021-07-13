@@ -39,6 +39,11 @@ export class CreatePets1626130288780 implements MigrationInterface {
             type: "timestamp",
             default: "now()",
           },
+          {
+            name: "updated_at",
+            type: "timestamp",
+            default: "now()",
+          },
         ],
         foreignKeys: [
           {
