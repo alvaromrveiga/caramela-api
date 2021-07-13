@@ -5,10 +5,10 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { v4 as uuid } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 @Entity("users")
-class User {
+export class User {
   @PrimaryColumn()
   readonly id: string;
 
@@ -32,9 +32,7 @@ class User {
 
   constructor() {
     if (!this.id) {
-      this.id = uuid();
+      this.id = uuidv4();
     }
   }
 }
-
-export { User };
