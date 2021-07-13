@@ -20,9 +20,26 @@ export class CreateUsers1622041560684 implements MigrationInterface {
             name: "email",
             type: "varchar",
           },
-          { name: "password", type: "varchar" },
-          { name: "created_at", type: "timestamp", default: "now()" },
-          { name: "tokens", type: "varchar", isNullable: true, isArray: true },
+          {
+            name: "password",
+            type: "varchar",
+          },
+          {
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
+          },
+          {
+            name: "updated_at",
+            type: "timestamp",
+            default: "now()",
+          },
+          {
+            name: "tokens",
+            type: "varchar",
+            isNullable: true,
+            isArray: true,
+          },
         ],
       })
     );
