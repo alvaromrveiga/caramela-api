@@ -29,7 +29,7 @@ export class Pet {
   gender: string;
 
   @Column()
-  weight: number;
+  weight_kg: number;
 
   @Column()
   birthday: Date;

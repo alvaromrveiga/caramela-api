@@ -25,7 +25,7 @@ export class CreatePets1626130288780 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: "weight",
+            name: "weight_kg",
             type: "decimal",
             isNullable: true,
           },
