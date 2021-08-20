@@ -1,4 +1,5 @@
-import { Connection, createConnection } from "typeorm";
+import { Connection } from "typeorm";
+import createConnection from '../../src/utils/connection'
 import { UsersRepository } from "../../src/repositories/UsersRepository";
 
 let connection: Connection;
@@ -10,7 +11,7 @@ export const resetDatabase = async () => {
 
 export const connect = async () => {
   if (!connection) {
-    connection = await createConnection();
+    connection = await createConnection();    
     await connection.runMigrations();
   }
 
