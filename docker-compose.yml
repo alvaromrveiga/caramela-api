@@ -4,7 +4,6 @@ services:
   database-caramela:
     image: postgres
     container_name: database-caramela
-    restart: always
     ports:
       - 5432:5432
     environment: 
