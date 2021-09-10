@@ -1,8 +1,9 @@
-import { User } from "../models/User";
-import { ErrorWithStatus } from "./ErrorWithStatus";
 import jwt from "jsonwebtoken";
 
-export const generateJwt = (user: User) => {
+import { User } from "../models/User";
+import { ErrorWithStatus } from "./ErrorWithStatus";
+
+export const generateJwt = (user: User): void => {
   if (!process.env.JWT_SECRET) {
     throw new ErrorWithStatus(500, "No JWT_SECRET defined on .env");
   }
@@ -13,8 +14,10 @@ export const generateJwt = (user: User) => {
 
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 
+  const userReference = user;
+
   if (!user.tokens) {
-    user.tokens = [];
+    userReference.tokens = [];
   }
-  user.tokens = user.tokens.concat(token);
+  userReference.tokens = user.tokens.concat(token);
 };

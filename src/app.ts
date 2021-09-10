@@ -1,9 +1,10 @@
 import "reflect-metadata";
 import express from "express";
+
 import "express-async-errors";
-import createConnection from "./utils/connection";
-import { router } from "./routes";
 import { errorHandler } from "./middleware/errorHandler";
+import { router } from "./routes";
+import createConnection from "./utils/connection";
 
 createConnection();
 
