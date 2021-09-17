@@ -4,7 +4,7 @@ import express from "express";
 import "express-async-errors";
 import { errorHandler } from "./middleware/errorHandler";
 import { router } from "./routes";
-import createConnection from "./utils/connection";
+import createConnection from "./shared/infra/typeorm/connection";
 
 createConnection();
 
