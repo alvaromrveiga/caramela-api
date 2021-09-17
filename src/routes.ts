@@ -1,8 +1,8 @@
 import { Router } from "express";
 
 import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
-import { PetController } from "./useCases/Pet/PetController";
-import { UserController } from "./useCases/User/UserController";
+import { PetController } from "./modules/pets/useCases/PetController";
+import { UserController } from "./modules/users/useCases/UserController";
 
 const router = Router();
 const userController = new UserController();

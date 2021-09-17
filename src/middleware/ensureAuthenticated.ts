@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UsersRepository } from "../repositories/UsersRepository";
+
+import { UsersRepository } from "../modules/users/infra/typeorm/repositories/UsersRepository";
 import { ErrorWithStatus } from "../utils/ErrorWithStatus";
 
 export const ensureAuthenticated = async (
@@ -41,7 +42,6 @@ export const ensureAuthenticated = async (
     return;
   } catch (error) {
     res.status(401).json({ error: "Please Authenticate" });
-    return;
   }
 };
 

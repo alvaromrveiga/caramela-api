@@ -1,7 +1,7 @@
-import { User } from "../../models/User";
-import { UsersRepository } from "../../repositories/UsersRepository";
-import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
-import { hashPasswordAsync } from "../../utils/bcrypt";
+import { hashPasswordAsync } from "../../../utils/bcrypt";
+import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
+import { User } from "../infra/typeorm/entities/User";
+import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
 
 interface IAccessVariableKey {
   [key: string]: string | undefined;

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { User } from "../models/User";
+import { User } from "../modules/users/infra/typeorm/entities/User";
 import { ErrorWithStatus } from "./ErrorWithStatus";
 
 export const generateJwt = (user: User): void => {

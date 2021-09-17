@@ -1,5 +1,21 @@
-import { UsersRepository } from "../../src/repositories/UsersRepository";
-import { CreateUserUseCase } from "../../src/useCases/User/CreateUserUseCase";
+import { UsersRepository } from "../../src/modules/users/infra/typeorm/repositories/UsersRepository";
+import { CreateUserUseCase } from "../../src/modules/users/useCases/CreateUserUseCase";
+
+const getRawUsers = () => {
+  const rawUserOne = {
+    name: "userOne",
+    email: "userOne@test.com",
+    password: "userOne-pa$sw0rd",
+  };
+
+  const rawUserTwo = {
+    name: "userTwo",
+    email: "userTwo@test.com",
+    password: "userTwo-password",
+  };
+
+  return { rawUserOne, rawUserTwo };
+};
 
 const getUsers = async () => {
   const { rawUserOne, rawUserTwo } = getRawUsers();
@@ -19,22 +35,6 @@ const getUsers = async () => {
   }
 
   return { userOne, userTwo };
-};
-
-const getRawUsers = () => {
-  const rawUserOne = {
-    name: "userOne",
-    email: "userOne@test.com",
-    password: "userOne-pa$sw0rd",
-  };
-
-  const rawUserTwo = {
-    name: "userTwo",
-    email: "userTwo@test.com",
-    password: "userTwo-password",
-  };
-
-  return { rawUserOne, rawUserTwo };
 };
 
 export { getUsers, getRawUsers };

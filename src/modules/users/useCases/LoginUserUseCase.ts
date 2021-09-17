@@ -1,7 +1,7 @@
-import { User } from "../../models/User";
-import { UsersRepository } from "../../repositories/UsersRepository";
-import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
-import { generateJwt } from "../../utils/generateJwt";
+import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
+import { generateJwt } from "../../../utils/generateJwt";
+import { User } from "../infra/typeorm/entities/User";
+import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
 
 export class LoginUserUseCase {
   constructor(private email: string, private password: string) {}

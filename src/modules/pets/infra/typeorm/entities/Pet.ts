@@ -8,7 +8,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { User } from "./User";
+
+import { User } from "../../../../users/infra/typeorm/entities/User";
 
 @Entity("pets")
 export class Pet {

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import { CreateUserUseCase } from "./CreateUserUseCase";
 import { DeleteUserUseCase } from "./DeleteUserUseCase";
 import { LoginUserUseCase } from "./LoginUserUseCase";

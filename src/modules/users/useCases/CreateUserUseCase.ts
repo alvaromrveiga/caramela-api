@@ -1,8 +1,9 @@
-import { UsersRepository } from "../../repositories/UsersRepository";
-import { hashPasswordAsync } from "../../utils/bcrypt";
-import { generateJwt } from "../../utils/generateJwt";
 import validator from "validator";
-import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
+
+import { hashPasswordAsync } from "../../../utils/bcrypt";
+import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
+import { generateJwt } from "../../../utils/generateJwt";
+import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
 
 export interface IUserCreateCredentials {
   name: string;

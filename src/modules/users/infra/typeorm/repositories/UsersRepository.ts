@@ -1,7 +1,8 @@
 import { EntityRepository, getCustomRepository, Repository } from "typeorm";
-import { User } from "../models/User";
-import { comparePasswordAsync } from "../utils/bcrypt";
-import { ErrorWithStatus } from "../utils/ErrorWithStatus";
+
+import { comparePasswordAsync } from "../../../../../utils/bcrypt";
+import { ErrorWithStatus } from "../../../../../utils/ErrorWithStatus";
+import { User } from "../entities/User";
 
 @EntityRepository(User)
 export class UsersRepository extends Repository<User> {
@@ -30,6 +31,6 @@ export class UsersRepository extends Repository<User> {
       throw new ErrorWithStatus(400, "Invalid password");
     }
 
-    return await comparePasswordAsync(password, hashPassword);
+    return comparePasswordAsync(password, hashPassword);
   };
 }

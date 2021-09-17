@@ -1,7 +1,8 @@
 import request from "supertest";
 import { Connection } from "typeorm";
+
 import { app } from "../src/app";
-import { User } from "../src/models/User";
+import { User } from "../src/modules/users/infra/typeorm/entities/User";
 import { connect, resetDatabase } from "./fixtures/database";
 import { getUsers } from "./fixtures/users";
 
@@ -43,12 +44,12 @@ describe("Pets", () => {
         })
         .expect(201);
 
-        expect(response.body).toMatchObject({
-          name: "Miau",
-          gender: "Feminino",
-          weight_kg: "2.0",
-          birthday: "2020-07-14",
-        })
+      expect(response.body).toMatchObject({
+        name: "Miau",
+        gender: "Feminino",
+        weight_kg: "2.0",
+        birthday: "2020-07-14",
+      });
     });
   });
 });

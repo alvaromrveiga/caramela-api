@@ -1,5 +1,5 @@
-import { PetsRepository } from "../../repositories/PetsRepository";
-import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
+import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
+import { PetsRepository } from "../infra/typeorm/repositories/PetsRepository";
 
 export interface IPetCreateCredentials {
   user_id: string;
@@ -11,7 +11,9 @@ export interface IPetCreateCredentials {
 
 export class CreatePetUseCase {
   constructor(userId: string, private body: IPetCreateCredentials) {
-    body.user_id = userId;
+    const bodyReference = body;
+    bodyReference.user_id = userId;
+    // body.user_id = userId;
   }
 
   execute = async () => {

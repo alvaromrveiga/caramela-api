@@ -1,6 +1,5 @@
-import { UsersRepository } from "../../repositories/UsersRepository";
-import { comparePasswordAsync } from "../../utils/bcrypt";
-import { ErrorWithStatus } from "../../utils/ErrorWithStatus";
+import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
+import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
 
 export class DeleteUserUseCase {
   constructor(private id: string, private password: string) {}

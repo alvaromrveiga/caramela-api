@@ -1,13 +1,14 @@
+import jwt from "jsonwebtoken";
 import request from "supertest";
 import { Connection } from "typeorm";
+
 import { app } from "../src/app";
-import { UsersRepository } from "../src/repositories/UsersRepository";
+import { User } from "../src/modules/users/infra/typeorm/entities/User";
+import { UsersRepository } from "../src/modules/users/infra/typeorm/repositories/UsersRepository";
+import { IUserCreateCredentials } from "../src/modules/users/useCases/CreateUserUseCase";
+import { connect, resetDatabase } from "./fixtures/database";
 import { getUsers, getRawUsers } from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";
-import { User } from "../src/models/User";
-import jwt from "jsonwebtoken";
-import { connect, resetDatabase } from "./fixtures/database";
-import { IUserCreateCredentials } from "../src/useCases/User/CreateUserUseCase";
 
 let connection: Connection;
 let userOne: User;
@@ -174,7 +175,7 @@ describe("Users", () => {
         .post("/login")
         .send({
           email: userOne.email,
-          password: "wrong" + rawUserOne.password,
+          password: `wrong${rawUserOne.password}`,
         })
         .expect(400);
     });
@@ -182,7 +183,7 @@ describe("Users", () => {
       await request(app)
         .post("/login")
         .send({
-          email: "wrong" + userOne.email,
+          email: `wrong${userOne.email}`,
           password: rawUserOne.password,
         })
         .expect(400);
@@ -311,26 +312,26 @@ describe("Users", () => {
         .put("/users/profile")
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send({
-          name: userOne.name + "Updated",
-          email: userOne.email + "Updated",
-          password: rawUserOne.password + "Updated",
+          name: `${userOne.name}Updated`,
+          email: `${userOne.email}Updated`,
+          password: `${rawUserOne.password}Updated`,
           currentPassword: rawUserOne.password,
         })
         .expect(200);
 
       const user = await UsersRepository.instance.findOne(userOne.id);
       expect(user).toMatchObject({
-        name: userOne.name + "Updated",
-        email: userOne.email + "Updated",
+        name: `${userOne.name}Updated`,
+        email: `${userOne.email}Updated`,
       });
 
-      expect(user?.password).not.toEqual(rawUserOne.password + "Updated");
+      expect(user?.password).not.toEqual(`${rawUserOne.password}Updated`);
 
       await request(app)
         .post("/login")
         .send({
-          email: userOne.email + "Updated",
-          password: rawUserOne.password + "Updated",
+          email: `${userOne.email}Updated`,
+          password: `${rawUserOne.password}Updated`,
         })
         .expect(200);
     });
@@ -340,8 +341,8 @@ describe("Users", () => {
         .put("/users/profile")
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send({
-          name: userOne.name + "Updated",
-          email: userOne.email + "Updated",
+          name: `${userOne.name}Updated`,
+          email: `${userOne.email}Updated`,
         })
         .expect(200);
     });
@@ -352,9 +353,9 @@ describe("Users", () => {
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send({
           id: "10841f14-4768-416d-b1ef-9d60ee87fed8",
-          name: userOne.name + "Updated",
-          email: userOne.email + "Updated",
-          password: rawUserOne.password + "Updated",
+          name: `${userOne.name}Updated`,
+          email: `${userOne.email}Updated`,
+          password: `${rawUserOne.password}Updated`,
           currentPassword: rawUserOne.password,
         })
         .expect(400);
@@ -365,9 +366,9 @@ describe("Users", () => {
         .put("/users/profile")
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send({
-          name: userOne.name + "Updated",
-          email: userOne.email + "Updated",
-          password: rawUserOne.password + "Updated",
+          name: `${userOne.name}Updated`,
+          email: `${userOne.email}Updated`,
+          password: `${rawUserOne.password}Updated`,
         })
         .expect(400);
     });
@@ -377,10 +378,10 @@ describe("Users", () => {
         .put("/users/profile")
         .set("Authorization", `Bearer ${userOne.tokens[0]}`)
         .send({
-          name: userOne.name + "Updated",
-          email: userOne.email + "Updated",
-          password: rawUserOne.password + "Updated",
-          currentPassword: rawUserOne.password + "Wrong",
+          name: `${userOne.name}Updated`,
+          email: `${userOne.email}Updated`,
+          password: `${rawUserOne.password}Updated`,
+          currentPassword: `${rawUserOne.password}Wrong`,
         })
         .expect(400);
     });
@@ -389,8 +390,8 @@ describe("Users", () => {
       await request(app)
         .put("/users/profile")
         .send({
-          name: userOne.name + "Updated",
-          email: userOne.email + "Updated",
+          name: `${userOne.name}Updated`,
+          email: `${userOne.email}Updated`,
         })
         .expect(401);
     });
