@@ -11,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_MULTIPLE_DATABASES=caramela, caramela_test
     volumes:
-      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - ./src/shared/infra/docker/pg-init-scripts:/docker-entrypoint-initdb.d
       - pgdata:/data/postgres
 
   app:
