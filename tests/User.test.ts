@@ -2,10 +2,10 @@ import jwt from "jsonwebtoken";
 import request from "supertest";
 import { Connection } from "typeorm";
 
-import { app } from "../src/app";
 import { User } from "../src/modules/users/infra/typeorm/entities/User";
 import { UsersRepository } from "../src/modules/users/infra/typeorm/repositories/UsersRepository";
 import { IUserCreateCredentials } from "../src/modules/users/useCases/CreateUserUseCase";
+import { app } from "../src/shared/infra/http/app";
 import { connect, resetDatabase } from "./fixtures/database";
 import { getUsers, getRawUsers } from "./fixtures/users";
 import UUID_RegExp from "./fixtures/UUID_Regex";

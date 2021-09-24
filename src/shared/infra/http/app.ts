@@ -2,9 +2,9 @@ import "reflect-metadata";
 import express from "express";
 
 import "express-async-errors";
+import createConnection from "../typeorm/connection";
 import { errorHandler } from "./middleware/errorHandler";
 import { router } from "./routes";
-import createConnection from "./shared/infra/typeorm/connection";
 
 createConnection();
 

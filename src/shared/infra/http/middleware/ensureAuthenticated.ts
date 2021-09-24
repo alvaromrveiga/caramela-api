@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { UsersRepository } from "../modules/users/infra/typeorm/repositories/UsersRepository";
-import { ErrorWithStatus } from "../utils/ErrorWithStatus";
+import { UsersRepository } from "../../../../modules/users/infra/typeorm/repositories/UsersRepository";
+import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 
 export const ensureAuthenticated = async (
   req: Request,

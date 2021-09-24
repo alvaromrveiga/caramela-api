@@ -1,8 +1,8 @@
 import request from "supertest";
 import { Connection } from "typeorm";
 
-import { app } from "../src/app";
 import { User } from "../src/modules/users/infra/typeorm/entities/User";
+import { app } from "../src/shared/infra/http/app";
 import { connect, resetDatabase } from "./fixtures/database";
 import { getUsers } from "./fixtures/users";
 
