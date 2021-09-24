@@ -1,9 +1,9 @@
 import { injectable, inject } from "tsyringe";
 
-import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
-import { ICreatePetDTO } from "../dtos/ICreatePetDTO";
-import { Pet } from "../infra/typeorm/entities/Pet";
-import { IPetsRepository } from "../repositories/IPetsRepository";
+import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { ICreatePetDTO } from "../../dtos/ICreatePetDTO";
+import { Pet } from "../../infra/typeorm/entities/Pet";
+import { IPetsRepository } from "../../repositories/IPetsRepository";
 
 @injectable()
 export class CreatePetUseCase {

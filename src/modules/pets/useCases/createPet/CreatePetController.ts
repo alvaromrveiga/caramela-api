@@ -3,7 +3,7 @@ import { container } from "tsyringe";
 
 import { CreatePetUseCase } from "./CreatePetUseCase";
 
-export class PetController {
+export class CreatePetController {
   async handle(req: Request, res: Response): Promise<Response> {
     const user_id = res.locals.user.id;
     const { name, gender, weight_kg, birthday } = req.body;
