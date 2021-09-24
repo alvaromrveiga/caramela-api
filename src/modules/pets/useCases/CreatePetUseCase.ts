@@ -1,22 +1,23 @@
+import { injectable, inject } from "tsyringe";
+
 import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
 import { ICreatePetDTO } from "../dtos/ICreatePetDTO";
 import { Pet } from "../infra/typeorm/entities/Pet";
-import { PetsRepository } from "../infra/typeorm/repositories/PetsRepository";
+import { IPetsRepository } from "../repositories/IPetsRepository";
 
+@injectable()
 export class CreatePetUseCase {
-  constructor(userId: string, private body: ICreatePetDTO) {
-    const bodyReference = body;
-    bodyReference.user_id = userId;
-  }
+  constructor(
+    @inject("PetsRepository")
+    private petsRepository: IPetsRepository
+  ) {}
 
-  execute = async (): Promise<Pet> => {
-    if (!this.body.name) {
+  execute = async (data: ICreatePetDTO): Promise<Pet> => {
+    if (!data.name) {
       throw new ErrorWithStatus(400, "Invalid pet name");
     }
 
-    const pet = PetsRepository.instance.create(this.body);
-
-    await PetsRepository.instance.save(pet);
+    const pet = this.petsRepository.createAndSave(data);
 
     return pet;
   };
