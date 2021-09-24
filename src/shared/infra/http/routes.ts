@@ -17,6 +17,6 @@ router.get("/users/:id", ensureAuthenticated, userController.show);
 router.put("/users/profile", ensureAuthenticated, userController.update);
 router.delete("/users/profile", ensureAuthenticated, userController.deleteUser);
 
-router.post("/users/pets", ensureAuthenticated, petController.create);
+router.post("/users/pets", ensureAuthenticated, petController.handle);
 
 export { router };
