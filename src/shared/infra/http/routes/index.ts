@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { CreateUserController } from "../../../../modules/users/useCases/createUser/CreateUserController";
 import { UserController } from "../../../../modules/users/useCases/UserController";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 import { petsRoutes } from "./pets.routes";
@@ -7,7 +8,7 @@ import { petsRoutes } from "./pets.routes";
 const router = Router();
 const userController = new UserController();
 
-router.post("/signup", userController.create);
+router.post("/signup", new CreateUserController().handle);
 router.post("/login", userController.logIn);
 router.post("/users/logout", ensureAuthenticated, userController.logOut);
 router.post("/users/logout-all", ensureAuthenticated, userController.logOutAll);
