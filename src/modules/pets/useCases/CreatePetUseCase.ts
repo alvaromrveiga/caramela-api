@@ -1,16 +1,9 @@
 import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
+import { ICreatePetDTO } from "../dtos/ICreatePetDTO";
 import { PetsRepository } from "../infra/typeorm/repositories/PetsRepository";
 
-export interface IPetCreateCredentials {
-  user_id: string;
-  name: string;
-  gender?: string;
-  weight_kg?: number;
-  birthday?: Date;
-}
-
 export class CreatePetUseCase {
-  constructor(userId: string, private body: IPetCreateCredentials) {
+  constructor(userId: string, private body: ICreatePetDTO) {
     const bodyReference = body;
     bodyReference.user_id = userId;
     // body.user_id = userId;
