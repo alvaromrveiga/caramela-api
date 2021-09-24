@@ -1,12 +1,11 @@
 import { Router } from "express";
 
-import { PetController } from "../../../modules/pets/useCases/PetController";
-import { UserController } from "../../../modules/users/useCases/UserController";
-import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
+import { UserController } from "../../../../modules/users/useCases/UserController";
+import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
+import { petsRoutes } from "./pets.routes";
 
 const router = Router();
 const userController = new UserController();
-const petController = new PetController();
 
 router.post("/signup", userController.create);
 router.post("/login", userController.logIn);
@@ -17,6 +16,6 @@ router.get("/users/:id", ensureAuthenticated, userController.show);
 router.put("/users/profile", ensureAuthenticated, userController.update);
 router.delete("/users/profile", ensureAuthenticated, userController.deleteUser);
 
-router.post("/users/pets", ensureAuthenticated, petController.handle);
+router.use(petsRoutes);
 
 export { router };
