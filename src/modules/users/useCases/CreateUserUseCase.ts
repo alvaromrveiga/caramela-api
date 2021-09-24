@@ -3,16 +3,11 @@ import validator from "validator";
 import { hashPasswordAsync } from "../../../utils/bcrypt";
 import { ErrorWithStatus } from "../../../utils/ErrorWithStatus";
 import { generateJwt } from "../../../utils/generateJwt";
+import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
 import { UsersRepository } from "../infra/typeorm/repositories/UsersRepository";
 
-export interface IUserCreateCredentials {
-  name: string;
-  email: string;
-  password: string;
-}
-
 export class CreateUserUseCase {
-  constructor(private body: IUserCreateCredentials) {}
+  constructor(private body: ICreateUserDTO) {}
 
   execute = async () => {
     await this.validateCredentials();
