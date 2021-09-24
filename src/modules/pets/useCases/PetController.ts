@@ -1,14 +1,23 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
 
 import { CreatePetUseCase } from "./CreatePetUseCase";
 
 export class PetController {
-  create = async (req: Request, res: Response) => {
-    const pet = await new CreatePetUseCase(
-      res.locals.user.id,
-      req.body
-    ).execute();
+  async handle(req: Request, res: Response): Promise<Response> {
+    const user_id = res.locals.user.id;
+    const { name, gender, weight_kg, birthday } = req.body;
 
-    res.status(201).json(pet);
-  };
+    const createPetUseCase = container.resolve(CreatePetUseCase);
+
+    const pet = await createPetUseCase.execute({
+      user_id,
+      name,
+      gender,
+      weight_kg,
+      birthday,
+    });
+
+    return res.status(201).json(pet);
+  }
 }
