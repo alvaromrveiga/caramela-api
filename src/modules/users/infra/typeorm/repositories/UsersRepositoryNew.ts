@@ -15,7 +15,7 @@ export class UsersRepositoryNew implements IUsersRepository {
   async createAndSave(data: ICreateUserDTO): Promise<void> {
     const user = this.repository.create(data);
 
-    this.repository.save(user);
+    await this.repository.save(user);
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
@@ -27,6 +27,6 @@ export class UsersRepositoryNew implements IUsersRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.repository.delete(id);
+    await this.repository.delete(id);
   }
 }
