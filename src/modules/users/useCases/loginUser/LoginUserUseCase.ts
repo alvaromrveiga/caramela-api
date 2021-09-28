@@ -42,7 +42,7 @@ export class LoginUserUseCase {
   }
 
   private async verifyPassword(user: User, password: string): Promise<void> {
-    const result = comparePasswordAsync(password, user.password);
+    const result = await comparePasswordAsync(password, user.password);
 
     if (!result) {
       throw new ErrorWithStatus(400, "Invalid email or password!");
