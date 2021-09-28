@@ -27,4 +27,12 @@ export class InMemoryUsersRepository implements IUsersRepository {
       return user.id === id;
     });
   }
+
+  async delete(id: string): Promise<void> {
+    const userId = this.users.findIndex((user) => {
+      return user.id === id;
+    });
+
+    this.users.splice(userId, 1);
+  }
 }
