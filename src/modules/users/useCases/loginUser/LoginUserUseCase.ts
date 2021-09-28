@@ -7,10 +7,8 @@ import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 interface IResponse {
-  user: {
-    name: string;
-    email: string;
-  };
+  name: string;
+  email: string;
   tokens: string[];
 }
 
@@ -35,10 +33,8 @@ export class LoginUserUseCase {
     await this.usersRepository.createAndSave(user);
 
     const tokenResponse: IResponse = {
-      user: {
-        name: user.name,
-        email: user.email,
-      },
+      name: user.name,
+      email: user.email,
       tokens: user.tokens,
     };
 
