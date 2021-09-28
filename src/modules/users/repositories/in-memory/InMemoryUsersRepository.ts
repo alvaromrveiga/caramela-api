@@ -3,7 +3,9 @@ import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../IUsersRepository";
 
 export class InMemoryUsersRepository implements IUsersRepository {
-  constructor(private users: User[]) {
+  private users: User[];
+
+  constructor() {
     this.users = [];
   }
 
