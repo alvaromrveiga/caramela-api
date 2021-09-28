@@ -13,7 +13,15 @@ export class InMemoryUsersRepository implements IUsersRepository {
     const user = new User();
     Object.assign(user, data);
 
-    this.users.push(user);
+    const userAlreadyExistsIndex = this.users.findIndex((user) => {
+      return user.email === data.email;
+    });
+
+    if (userAlreadyExistsIndex >= 0) {
+      this.users[userAlreadyExistsIndex] = user;
+    } else {
+      this.users.push(user);
+    }
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
