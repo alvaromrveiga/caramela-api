@@ -37,7 +37,7 @@ describe("Logout User controller", () => {
     await request(app).post("/users/logout").send().expect(401);
   });
 
-  it("Should not logout user if unauthenticated", async () => {
+  it("Should logout user", async () => {
     await request(app)
       .post("/users/logout")
       .set({ Authorization: `Bearer ${tokens[0]}` })
