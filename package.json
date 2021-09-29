@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "test": "NODE_ENV=test jest --watch --watchAll=false --detectOpenHandles --runInBand",
+    "test": "NODE_ENV=test jest --watch --detectOpenHandles --runInBand",
     "test:all": "NODE_ENV=test jest --watchAll --detectOpenHandles --runInBand"
   },
   "devDependencies": {
