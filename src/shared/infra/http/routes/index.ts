@@ -5,6 +5,7 @@ import { DeleteUserController } from "../../../../modules/users/useCases/deleteU
 import { LoginUserController } from "../../../../modules/users/useCases/loginUser/LoginUserController";
 import { LogoutAllUserController } from "../../../../modules/users/useCases/logoutAllUser/LogoutAllUserController";
 import { LogoutUserController } from "../../../../modules/users/useCases/logoutUser/LogoutUserController";
+import { ShowPublicUserController } from "../../../../modules/users/useCases/showPublicUser/ShowPublicUserController";
 import { UserController } from "../../../../modules/users/useCases/UserController";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 import { petsRoutes } from "./pets.routes";
@@ -26,8 +27,15 @@ router.post(
   ensureAuthenticated,
   new LogoutAllUserController().handle
 );
+
 router.get("/users/profile", ensureAuthenticated, userController.showSelf);
-router.get("/users/:id", ensureAuthenticated, userController.show);
+
+router.get(
+  "/users/:id",
+  ensureAuthenticated,
+  new ShowPublicUserController().handle
+);
+
 router.put("/users/profile", ensureAuthenticated, userController.update);
 
 router.delete(
