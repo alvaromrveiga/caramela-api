@@ -7,7 +7,7 @@ import createConnection from "../../../../shared/infra/typeorm/connection";
 let connection: Connection;
 let tokens: string;
 
-describe("Create User controller", () => {
+describe("Delete User controller", () => {
   beforeAll(async () => {
     if (!connection) {
       connection = await createConnection();
