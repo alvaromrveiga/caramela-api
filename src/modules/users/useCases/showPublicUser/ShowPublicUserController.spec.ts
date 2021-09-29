@@ -61,4 +61,10 @@ describe("Show Public User controller", () => {
     expect(response.body).not.toHaveProperty("updated_at");
     expect(response.body).not.toHaveProperty("id");
   });
+
+  it("Should not show public user information if unauthenticated", async () => {
+    expect(user).toBeDefined();
+
+    await request(app).get(`/users/${user?.id}`).send().expect(401);
+  });
 });
