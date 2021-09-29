@@ -60,6 +60,7 @@ describe("Show Public User controller", () => {
     expect(response.body).not.toHaveProperty("email");
     expect(response.body).not.toHaveProperty("updated_at");
     expect(response.body).not.toHaveProperty("id");
+    expect(response.body).not.toHaveProperty("tokens");
   });
 
   it("Should not show public user information if unauthenticated", async () => {

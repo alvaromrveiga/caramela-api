@@ -35,6 +35,7 @@ describe("Show Public User use case", () => {
       expect(response).not.toHaveProperty("email");
       expect(response).not.toHaveProperty("updated_at");
       expect(response).not.toHaveProperty("id");
+      expect(response).not.toHaveProperty("tokens");
     }
   });
 
