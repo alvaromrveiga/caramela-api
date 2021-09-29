@@ -6,7 +6,7 @@ import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
 
-describe("Create User controller", () => {
+describe("Login User controller", () => {
   beforeAll(async () => {
     if (!connection) {
       connection = await createConnection();
