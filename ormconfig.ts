@@ -5,8 +5,8 @@ module.exports = {
   username: "postgres",
   password: "docker",
   database: "caramela",
-  migrations: ["./src/migrations/**.ts"],
-  entities: ["./src/models/**.ts"],
+  migrations: ["./src/shared/infra/typeorm/migrations/**.ts"],
+  entities: ["./src/modules/**/entities/**.ts"],
   cli: {
     migrationsDir: "./src/migrations",
   },
