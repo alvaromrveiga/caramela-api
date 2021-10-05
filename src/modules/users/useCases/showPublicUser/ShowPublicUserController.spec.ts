@@ -4,7 +4,7 @@ import { Connection } from "typeorm";
 import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 import { User } from "../../infra/typeorm/entities/User";
-import { UsersRepositoryNew } from "../../infra/typeorm/repositories/UsersRepositoryNew";
+import { UsersRepository } from "../../infra/typeorm/repositories/UsersRepository";
 
 let connection: Connection;
 let tokens: string[];
@@ -36,7 +36,7 @@ describe("Show Public User controller", () => {
 
     tokens = response.body.tokens;
 
-    const usersRepository = new UsersRepositoryNew();
+    const usersRepository = new UsersRepository();
     user = await usersRepository.findByEmail("tester2@mail.com");
   });
 

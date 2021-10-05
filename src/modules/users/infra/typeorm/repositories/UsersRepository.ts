@@ -1,36 +1,32 @@
-import { EntityRepository, getCustomRepository, Repository } from "typeorm";
+import { EntityRepository, getRepository, Repository } from "typeorm";
 
-import { comparePasswordAsync } from "../../../../../utils/bcrypt";
-import { ErrorWithStatus } from "../../../../../utils/ErrorWithStatus";
+import { ICreateUserDTO } from "../../../dtos/ICreateUserDTO";
+import { IUsersRepository } from "../../../repositories/IUsersRepository";
 import { User } from "../entities/User";
 
 @EntityRepository(User)
-export class UsersRepository extends Repository<User> {
-  static get instance(): UsersRepository {
-    return getCustomRepository(this);
+export class UsersRepository implements IUsersRepository {
+  private repository: Repository<User>;
+
+  constructor() {
+    this.repository = getRepository(User);
   }
 
-  getUserCredentials = (user: User) => {
-    return {
-      created_at: user.created_at,
-      email: user.email,
-      name: user.name,
-      tokens: user.tokens,
-    };
-  };
+  async createAndSave(data: ICreateUserDTO): Promise<void> {
+    const user = this.repository.create(data);
 
-  getPublicUserCredentials = (user: User) => {
-    return {
-      created_at: user.created_at,
-      name: user.name,
-    };
-  };
+    await this.repository.save(user);
+  }
 
-  verifyPassword = async (password: string, hashPassword: string) => {
-    if (!password) {
-      throw new ErrorWithStatus(400, "Invalid password");
-    }
+  async findByEmail(email: string): Promise<User | undefined> {
+    return this.repository.findOne({ email });
+  }
 
-    return comparePasswordAsync(password, hashPassword);
-  };
+  async findById(id: string): Promise<User | undefined> {
+    return this.repository.findOne(id);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repository.delete(id);
+  }
 }

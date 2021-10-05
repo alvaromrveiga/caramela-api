@@ -22,7 +22,9 @@ export const ensureAuthenticated = async (
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
-    const user = await UsersRepository.instance.findOne({ id: decoded.id });
+
+    const usersRepository = new UsersRepository();
+    const user = await usersRepository.findById(decoded.id);
 
     if (!user) {
       res.status(401).json({ error: "Please Authenticate" });
