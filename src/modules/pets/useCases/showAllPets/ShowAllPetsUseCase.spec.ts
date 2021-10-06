@@ -1,7 +1,7 @@
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
-import { ShowAllPetsUseCase } from "./ShowAllPetUseCase";
+import { ShowAllPetsUseCase } from "./ShowAllPetsUseCase";
 
 let inMemoryPetsRepository: InMemoryPetsRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
