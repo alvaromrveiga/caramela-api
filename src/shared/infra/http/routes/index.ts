@@ -5,7 +5,7 @@ import { usersRoutes } from "./users.routes";
 
 const router = Router();
 
-router.use(usersRoutes);
 router.use(petsRoutes);
+router.use(usersRoutes);
 
 export { router };
