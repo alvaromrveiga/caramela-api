@@ -32,4 +32,10 @@ export class InMemoryPetsRepository implements IPetsRepository {
       return pet.user_id === userId && pet.name === petName;
     });
   }
+
+  async findAllByUserID(userId: string): Promise<Pet[] | undefined> {
+    return this.pets.filter((pet) => {
+      return pet.user_id === userId;
+    });
+  }
 }

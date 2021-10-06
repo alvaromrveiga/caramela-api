@@ -8,4 +8,6 @@ export interface IPetsRepository {
     userId: string,
     petName: string
   ): Promise<Pet | undefined>;
+
+  findAllByUserID(userId: string): Promise<Pet[] | undefined>;
 }

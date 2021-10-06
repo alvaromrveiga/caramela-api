@@ -30,4 +30,8 @@ export class PetsRepository implements IPetsRepository {
       ],
     });
   }
+
+  async findAllByUserID(userId: string): Promise<Pet[] | undefined> {
+    return this.repository.find({ user_id: userId });
+  }
 }
