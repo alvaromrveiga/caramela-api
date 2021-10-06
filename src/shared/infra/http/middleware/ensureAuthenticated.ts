@@ -41,7 +41,6 @@ export const ensureAuthenticated = async (
     // http://expressjs.com/en/api.html#res.locals
 
     next();
-    return;
   } catch (error) {
     res.status(401).json({ error: "Please Authenticate" });
   }
