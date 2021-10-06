@@ -30,6 +30,9 @@ export class Pet {
   gender: string;
 
   @Column()
+  species: string;
+
+  @Column()
   weight_kg: number;
 
   @Column()

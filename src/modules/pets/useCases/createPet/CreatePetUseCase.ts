@@ -16,6 +16,10 @@ export class CreatePetUseCase {
       throw new ErrorWithStatus(400, "Invalid pet name");
     }
 
+    if (!data.species) {
+      throw new ErrorWithStatus(400, "Please choose your pet species!");
+    }
+
     await this.petsRepository.createAndSave(data);
   };
 }
