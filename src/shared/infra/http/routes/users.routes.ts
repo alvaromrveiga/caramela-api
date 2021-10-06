@@ -15,18 +15,40 @@ const usersRoutes = Router();
 usersRoutes.post("/signup", new CreateUserController().handle);
 usersRoutes.post("/login", new LoginUserController().handle);
 
-usersRoutes.use(ensureAuthenticated);
+usersRoutes.post(
+  "/users/logout",
+  ensureAuthenticated,
+  new LogoutUserController().handle
+);
 
-usersRoutes.post("/users/logout", new LogoutUserController().handle);
+usersRoutes.post(
+  "/users/logout-all",
+  ensureAuthenticated,
+  new LogoutAllUserController().handle
+);
 
-usersRoutes.post("/users/logout-all", new LogoutAllUserController().handle);
+usersRoutes.get(
+  "/users/profile",
+  ensureAuthenticated,
+  new ShowPrivateUserController().handle
+);
 
-usersRoutes.get("/users/profile", new ShowPrivateUserController().handle);
+usersRoutes.get(
+  "/users/:id",
+  ensureAuthenticated,
+  new ShowPublicUserController().handle
+);
 
-usersRoutes.get("/users/:id", new ShowPublicUserController().handle);
+usersRoutes.put(
+  "/users/profile",
+  ensureAuthenticated,
+  new UpdateUserController().handle
+);
 
-usersRoutes.put("/users/profile", new UpdateUserController().handle);
-
-usersRoutes.delete("/users/profile", new DeleteUserController().handle);
+usersRoutes.delete(
+  "/users/profile",
+  ensureAuthenticated,
+  new DeleteUserController().handle
+);
 
 export { usersRoutes };
