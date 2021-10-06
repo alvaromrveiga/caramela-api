@@ -8,6 +8,6 @@ module.exports = {
   migrations: ["./src/shared/infra/typeorm/migrations/**.ts"],
   entities: ["./src/modules/**/entities/**.ts"],
   cli: {
-    migrationsDir: "./src/migrations",
+    migrationsDir: "./src/shared/infra/typeorm/migrations",
   },
 };
