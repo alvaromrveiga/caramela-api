@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { validateUser } from "../../../../utils/validateUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { ICreatePetDTO } from "../../dtos/ICreatePetDTO";
 import { IPetsRepository } from "../../repositories/IPetsRepository";
@@ -22,19 +23,11 @@ export class CreatePetUseCase {
   }
 
   private async validateCredentials(data: ICreatePetDTO): Promise<void> {
-    await this.validateUser(data.user_id);
+    await validateUser(data.user_id, this.usersRepository);
 
     await this.validatePetName(data);
 
     this.validateSpecies(data.species);
-  }
-
-  private async validateUser(userId: string): Promise<void> {
-    const user = await this.usersRepository.findById(userId);
-
-    if (!user) {
-      throw new ErrorWithStatus(401, "Please authenticate");
-    }
   }
 
   private async validatePetName(data: ICreatePetDTO): Promise<void> {
