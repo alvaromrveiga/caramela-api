@@ -20,12 +20,36 @@ describe("Show Pet use case", () => {
     );
 
     await inMemoryUsersRepository.createAndSave({
+      email: "firstTester@mail.com",
+      name: "FirstTester",
+      password: "testerPassword",
+    });
+
+    let user = await inMemoryUsersRepository.findByEmail(
+      "firstTester@mail.com"
+    );
+
+    expect(user).toBeDefined();
+    if (user) {
+      userId = user.id;
+    }
+
+    await inMemoryPetsRepository.createAndSave({
+      name: "FirstPetster",
+      species: "Bird",
+      birthday: new Date("2021-02-20"),
+      gender: "Male",
+      weight_kg: 0.1,
+      user_id: userId,
+    });
+
+    await inMemoryUsersRepository.createAndSave({
       email: "tester@mail.com",
       name: "Tester",
       password: "testerPassword",
     });
 
-    const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
+    user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
 
     expect(user).toBeDefined();
     if (user) {
@@ -67,9 +91,9 @@ describe("Show Pet use case", () => {
     ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
   });
 
-  it("Should not show pet if name is invalid", async () => {
-    await expect(showPetUseCase.execute(userId, "Invalid Pet")).rejects.toEqual(
-      new ErrorWithStatus(404, "Pet not found!")
-    );
+  it("Should not show another user's pet", async () => {
+    await expect(
+      showPetUseCase.execute(userId, "FirstPetster")
+    ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
   });
 });
