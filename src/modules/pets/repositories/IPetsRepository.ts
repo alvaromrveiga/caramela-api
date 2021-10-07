@@ -10,4 +10,6 @@ export interface IPetsRepository {
   ): Promise<Pet | undefined>;
 
   findAllByUserID(userId: string): Promise<Pet[] | undefined>;
+
+  delete(userId: string, petName: string): Promise<void>;
 }

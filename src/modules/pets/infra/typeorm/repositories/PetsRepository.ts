@@ -34,4 +34,13 @@ export class PetsRepository implements IPetsRepository {
   async findAllByUserID(userId: string): Promise<Pet[] | undefined> {
     return this.repository.find({ user_id: userId });
   }
+
+  async delete(userId: string, petName: string): Promise<void> {
+    await this.repository
+      .createQueryBuilder()
+      .delete()
+      .where("user_id = :userId", { userId })
+      .andWhere("name = :petName", { petName })
+      .execute();
+  }
 }
