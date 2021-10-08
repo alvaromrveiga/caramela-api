@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { CreatePetController } from "../../../../modules/pets/useCases/createPet/CreatePetController";
+import { DeletePetController } from "../../../../modules/pets/useCases/deletePet/DeletePetController";
 import { ShowAllPetsController } from "../../../../modules/pets/useCases/showAllPets/ShowAllPetsController";
 import { ShowPetController } from "../../../../modules/pets/useCases/showPet/ShowPetController";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
@@ -23,6 +24,12 @@ petsRoutes.get(
   "/users/pets/:pet",
   ensureAuthenticated,
   new ShowPetController().handle
+);
+
+petsRoutes.delete(
+  "/users/pets/:pet",
+  ensureAuthenticated,
+  new DeletePetController().handle
 );
 
 export { petsRoutes };
