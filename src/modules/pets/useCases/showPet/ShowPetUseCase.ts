@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { getValidatedPet } from "../../../../utils/getValidatedPet";
 import { validateUser } from "../../../../utils/validateUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { Pet } from "../../infra/typeorm/entities/Pet";
@@ -19,11 +19,7 @@ export class ShowPetUseCase {
   async execute(userId: string, petName: string): Promise<Pet | undefined> {
     await validateUser(userId, this.usersRepository);
 
-    const pet = await this.petsRepository.findByUserIDAndName(userId, petName);
-
-    if (!pet) {
-      throw new ErrorWithStatus(404, "Pet not found!");
-    }
+    const pet = await getValidatedPet(userId, petName, this.petsRepository);
 
     return pet;
   }

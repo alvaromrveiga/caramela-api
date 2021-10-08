@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { getValidatedPet } from "../../../../utils/getValidatedPet";
 import { validateUser } from "../../../../utils/validateUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { IPetsRepository } from "../../repositories/IPetsRepository";
@@ -18,11 +18,7 @@ export class DeletePetUseCase {
   async execute(userId: string, petName: string): Promise<void> {
     await validateUser(userId, this.usersRepository);
 
-    const pet = await this.petsRepository.findByUserIDAndName(userId, petName);
-
-    if (!pet) {
-      throw new ErrorWithStatus(404, "Pet not found!");
-    }
+    await getValidatedPet(userId, petName, this.petsRepository);
 
     await this.petsRepository.delete(userId, petName);
   }
