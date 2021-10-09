@@ -9,10 +9,6 @@ import { IAllowedUpdatesDTO } from "../../dtos/IAllowedUpdatesDTO";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
-interface IAccessVariableKey {
-  [key: string]: string | undefined;
-}
-
 @injectable()
 export class UpdateUserUseCase {
   private allowedUpdates = ["name", "email", "password", "currentPassword"];
@@ -30,14 +26,9 @@ export class UpdateUserUseCase {
     const hashedPasswordUpdates = (await this.checkPassword(
       user.password,
       updates
-    )) as IAllowedUpdatesDTO & IAccessVariableKey;
+    )) as IAllowedUpdatesDTO;
 
-    const newUser = user as IAccessVariableKey & User;
-
-    updateKeys.forEach((update) => {
-      newUser[update] = hashedPasswordUpdates[update];
-    });
-    newUser.currentPassword = undefined;
+    const newUser = this.getUpdatedUser(user, hashedPasswordUpdates);
 
     await this.usersRepository.createAndSave(newUser);
   }
@@ -75,6 +66,17 @@ export class UpdateUserUseCase {
 
     const hashNewPassword = await hashPasswordAsync(updates.password);
 
+    this.deleteUpdatesCurrentPassword(updates);
+
     return { ...updates, password: hashNewPassword };
+  }
+
+  private getUpdatedUser(user: User, updates: IAllowedUpdatesDTO): User {
+    return { ...user, ...updates };
+  }
+
+  private deleteUpdatesCurrentPassword(updates: IAllowedUpdatesDTO): void {
+    const updatesWithoutCurrentPassword = updates;
+    delete updatesWithoutCurrentPassword.currentPassword;
   }
 }
