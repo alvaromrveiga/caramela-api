@@ -76,7 +76,7 @@ export class UpdateUserUseCase {
   }
 
   private deleteUpdatesCurrentPassword(updates: IAllowedUpdatesDTO): void {
-    const updatesWithoutCurrentPassword = updates;
-    delete updatesWithoutCurrentPassword.currentPassword;
+    const updatesReference = updates;
+    delete updatesReference.currentPassword;
   }
 }
