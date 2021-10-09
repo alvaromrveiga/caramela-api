@@ -9,7 +9,7 @@ let deletePetUseCase: DeletePetUseCase;
 
 let userId: string;
 
-describe("Show Pet use case", () => {
+describe("Delete Pet use case", () => {
   beforeEach(async () => {
     inMemoryPetsRepository = new InMemoryPetsRepository();
     inMemoryUsersRepository = new InMemoryUsersRepository();
