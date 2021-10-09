@@ -44,6 +44,7 @@ describe("Delete User use case", () => {
 
       expect(user?.password).not.toEqual("updatedPassword");
       expect(user?.password).not.toEqual("testerPa$$w0rd");
+      expect(user).not.toHaveProperty("currentPassword");
 
       expect(user?.id).toEqual(userId);
     }
