@@ -4,6 +4,7 @@ import { CreatePetController } from "../../../../modules/pets/useCases/createPet
 import { DeletePetController } from "../../../../modules/pets/useCases/deletePet/DeletePetController";
 import { ShowAllPetsController } from "../../../../modules/pets/useCases/showAllPets/ShowAllPetsController";
 import { ShowPetController } from "../../../../modules/pets/useCases/showPet/ShowPetController";
+import { UpdatePetController } from "../../../../modules/pets/useCases/updatePet/UpdatePetController";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 
 const petsRoutes = Router();
@@ -30,6 +31,12 @@ petsRoutes.delete(
   "/users/pets/:pet",
   ensureAuthenticated,
   new DeletePetController().handle
+);
+
+petsRoutes.put(
+  "/users/pets/:pet",
+  ensureAuthenticated,
+  new UpdatePetController().handle
 );
 
 export { petsRoutes };
