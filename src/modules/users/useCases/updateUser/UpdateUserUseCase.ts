@@ -23,10 +23,10 @@ export class UpdateUserUseCase {
 
     this.checkValidUpdates(updateKeys);
 
-    const hashedPasswordUpdates = (await this.checkPassword(
+    const hashedPasswordUpdates = await this.checkPassword(
       user.password,
       updates
-    )) as IAllowedUpdatesDTO;
+    );
 
     const newUser = this.getUpdatedUser(user, hashedPasswordUpdates);
 
