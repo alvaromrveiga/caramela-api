@@ -95,15 +95,13 @@ describe("Update Pet use case", () => {
     );
     const petId = pet?.id;
 
-    await updatePetUseCase.execute(userId, "Petster", {
+    pet = await updatePetUseCase.execute(userId, "Petster", {
       name: "TicTic",
       weight_kg: 0.15,
       species: "Syrian Hamster",
       birthday: new Date("2020-01-22"),
       gender: "Male",
     });
-
-    pet = await inMemoryPetsRepository.findByUserIDAndName(userId, "TicTic");
 
     expect(pet?.id).toEqual(petId);
     expect(pet?.gender).toEqual("Male");
