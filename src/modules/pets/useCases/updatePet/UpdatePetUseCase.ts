@@ -31,7 +31,7 @@ export class UpdatePetUseCase {
     userId: string,
     petName: string,
     updates: IAllowedPetUpdatesDTO
-  ): Promise<void> {
+  ): Promise<Pet> {
     await validateUser(userId, this.usersRepository);
 
     this.checkValidUpdates(updates);
@@ -41,6 +41,8 @@ export class UpdatePetUseCase {
     const newPet = this.getUpdatedPet(pet, updates);
 
     await this.petsRepository.createAndSave(newPet);
+
+    return newPet;
   }
 
   private checkValidUpdates(updates: IAllowedPetUpdatesDTO): void {
