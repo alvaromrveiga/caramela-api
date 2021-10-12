@@ -38,6 +38,9 @@ export class Pet {
   @Column()
   birthday: Date;
 
+  @Column()
+  avatar: string;
+
   @CreateDateColumn()
   created_at: Date;
 
