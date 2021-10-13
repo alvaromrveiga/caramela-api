@@ -65,4 +65,17 @@ describe("Update User Avatar use case", () => {
       updateUserAvatarUseCase.execute("invalidUser", "avatarFile.png")
     ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
   });
+
+  it("Should not update user's avatar if empty avatar", async () => {
+    const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
+    expect(user).toBeDefined();
+
+    if (user) {
+      await expect(
+        updateUserAvatarUseCase.execute(user.id, undefined)
+      ).rejects.toEqual(
+        new ErrorWithStatus(400, "Please upload an avatar file")
+      );
+    }
+  });
 });
