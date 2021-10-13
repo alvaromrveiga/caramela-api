@@ -1,4 +1,5 @@
 import { Router } from "express";
+import multer from "multer";
 
 import { CreateUserController } from "../../../../modules/users/useCases/createUser/CreateUserController";
 import { DeleteUserController } from "../../../../modules/users/useCases/deleteUser/DeleteUserController";
@@ -8,9 +9,13 @@ import { LogoutUserController } from "../../../../modules/users/useCases/logoutU
 import { ShowPrivateUserController } from "../../../../modules/users/useCases/showPrivateUser/ShowPrivateUserController";
 import { ShowPublicUserController } from "../../../../modules/users/useCases/showPublicUser/ShowPublicUserController";
 import { UpdateUserController } from "../../../../modules/users/useCases/updateUser/UpdateUserController";
+import { UpdateUserAvatarController } from "../../../../modules/users/useCases/updateUserAvatar/UpdateUserAvatarController";
+import uploadConfig from "../../../../utils/upload";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 
 const usersRoutes = Router();
+
+const uploadAvatar = multer(uploadConfig);
 
 usersRoutes.post("/signup", new CreateUserController().handle);
 usersRoutes.post("/login", new LoginUserController().handle);
@@ -43,6 +48,13 @@ usersRoutes.put(
   "/users/profile",
   ensureAuthenticated,
   new UpdateUserController().handle
+);
+
+usersRoutes.patch(
+  "/users/profile/avatar",
+  ensureAuthenticated,
+  uploadAvatar.single("avatar"),
+  new UpdateUserAvatarController().handle
 );
 
 usersRoutes.delete(
