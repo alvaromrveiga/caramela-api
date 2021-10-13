@@ -7,7 +7,7 @@ let inMemoryUsersRepository: InMemoryUsersRepository;
 let updateUserUseCase: UpdateUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 
-describe("Delete User use case", () => {
+describe("Update User use case", () => {
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     updateUserUseCase = new UpdateUserUseCase(inMemoryUsersRepository);
