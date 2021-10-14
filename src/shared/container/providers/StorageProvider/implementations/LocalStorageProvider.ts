@@ -27,8 +27,6 @@ export class LocalStorageProvider implements IStorageProvider {
     const path = join(upload.tmpFolder, folder);
 
     if (!fs.existsSync(join(upload.tmpFolder, folder))) {
-      console.log("Created");
-
       fs.mkdirSync(path, { recursive: true });
     }
   }
