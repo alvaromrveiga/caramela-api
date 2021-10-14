@@ -4,6 +4,7 @@ import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 interface IResponse {
+  avatar: string;
   email: string;
   name: string;
   created_at: Date;
@@ -20,6 +21,7 @@ export class ShowPrivateUserUseCase {
 
   async execute(user: User): Promise<IResponse> {
     return {
+      avatar: user.avatar,
       email: user.email,
       name: user.name,
       created_at: user.created_at,

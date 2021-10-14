@@ -4,6 +4,7 @@ import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 interface IResponse {
+  avatar: string;
   name: string;
   created_at: Date;
 }
@@ -23,6 +24,7 @@ export class ShowPublicUserUseCase {
     }
 
     return {
+      avatar: user.avatar,
       name: user.name,
       created_at: user.created_at,
     };

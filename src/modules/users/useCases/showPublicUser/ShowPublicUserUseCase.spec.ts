@@ -29,6 +29,7 @@ describe("Show Public User use case", () => {
       const response = await showPublicUserUseCase.execute(user.id);
 
       expect(response).toHaveProperty("created_at");
+      expect(response).toHaveProperty("avatar");
       expect(response.name).toEqual("Tester");
 
       expect(response).not.toHaveProperty("password");
