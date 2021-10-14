@@ -6,7 +6,7 @@ export async function getValidatedPet(
   userId: string,
   petName: string,
   petsRepository: IPetsRepository
-): Promise<Pet | undefined> {
+): Promise<Pet> {
   const pet = await petsRepository.findByUserIDAndName(userId, petName);
 
   if (!pet) {
