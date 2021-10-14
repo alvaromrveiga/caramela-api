@@ -1,8 +1,11 @@
+import { join } from "path";
 import request from "supertest";
 import { Connection } from "typeorm";
 
+import { LocalStorageProvider } from "../../../../shared/container/providers/StorageProvider/implementations/LocalStorageProvider";
 import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
+import upload from "../../../../utils/upload";
 
 let connection: Connection;
 let tokens: string[];
@@ -41,6 +44,19 @@ describe("Update User Avatar controller", () => {
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .attach("avatar", buffer, "file.png")
       .expect(200);
+
+    // Remove file saved on tmp folder on project root
+    if (process.env.STORAGE === "local") {
+      const response = await request(app)
+        .get("/users/profile")
+        .set({ Authorization: `Bearer ${tokens[0]}` })
+        .send();
+
+      const { avatar } = response.body;
+
+      const localStorageProvider = new LocalStorageProvider();
+      localStorageProvider.delete(avatar, "usersAvatars");
+    }
   });
 
   it("Should not update user's avatar if no avatar file", async () => {
