@@ -1,11 +1,9 @@
-import { join } from "path";
 import request from "supertest";
 import { Connection } from "typeorm";
 
 import { LocalStorageProvider } from "../../../../shared/container/providers/StorageProvider/implementations/LocalStorageProvider";
 import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
-import upload from "../../../../utils/upload";
 
 let connection: Connection;
 let tokens: string[];
