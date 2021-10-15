@@ -20,7 +20,9 @@ export class LocalStorageProvider implements IStorageProvider {
   async delete(file: string, folder: string): Promise<void> {
     const fileName = resolve(`${upload.tmpFolder}/${folder}`, file);
 
-    await fs.promises.unlink(fileName);
+    if (fs.existsSync(fileName)) {
+      await fs.promises.unlink(fileName);
+    }
   }
 
   private createFolderIfNotExists(folder: string) {
