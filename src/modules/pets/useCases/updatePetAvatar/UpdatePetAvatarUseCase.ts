@@ -2,7 +2,6 @@ import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
-import { getValidatedPet } from "../../../../utils/getValidatedPet";
 import { validateUser } from "../../../../utils/validateUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { Pet } from "../../infra/typeorm/entities/Pet";
@@ -32,7 +31,7 @@ export class UpdatePetAvatarUseCase {
 
     await validateUser(userId, this.usersRepository);
 
-    const pet = await getValidatedPet(userId, petName, this.petsRepository);
+    const pet = await this.getValidatedPet(userId, petName, avatarFile);
 
     if (pet.avatar) {
       await this.storageProvider.delete(pet.avatar, "petsAvatars");
@@ -43,6 +42,22 @@ export class UpdatePetAvatarUseCase {
     pet.avatar = avatarFile;
 
     await this.petsRepository.createAndSave(pet);
+
+    return pet;
+  }
+
+  private async getValidatedPet(
+    userId: string,
+    petName: string,
+    avatarFile: string
+  ): Promise<Pet> {
+    const pet = await this.petsRepository.findByUserIDAndName(userId, petName);
+
+    if (!pet) {
+      await this.storageProvider.delete(avatarFile, "");
+
+      throw new ErrorWithStatus(404, "Pet not found!");
+    }
 
     return pet;
   }
