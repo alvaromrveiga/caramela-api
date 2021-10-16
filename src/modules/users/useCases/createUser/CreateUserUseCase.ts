@@ -20,6 +20,7 @@ export class CreateUserUseCase {
 
     await this.usersRepository.createAndSave({
       ...data,
+      email: data.email.toLowerCase(),
       password: passwordHash,
     });
   }
