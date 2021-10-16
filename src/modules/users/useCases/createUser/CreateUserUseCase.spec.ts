@@ -16,11 +16,11 @@ describe("Create User use case", () => {
   it("Should create user", async () => {
     await createUserUseCase.execute({
       name: "Tester",
-      email: "tester@mail.com",
+      email: "TeStER@mail.com",
       password: "testerPa$$w0rd",
     });
 
-    const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
+    const user = await inMemoryUsersRepository.findByEmail("TESTER@mail.com");
 
     expect(user).not.toBeUndefined();
 
