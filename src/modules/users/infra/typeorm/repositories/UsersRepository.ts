@@ -19,7 +19,7 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
-    return this.repository.findOne({ email });
+    return this.repository.findOne({ email: email.toLowerCase() });
   }
 
   async findById(id: string): Promise<User | undefined> {

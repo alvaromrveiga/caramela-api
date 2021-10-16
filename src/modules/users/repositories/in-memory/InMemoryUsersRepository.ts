@@ -26,7 +26,7 @@ export class InMemoryUsersRepository implements IUsersRepository {
 
   async findByEmail(email: string): Promise<User | undefined> {
     return this.users.find((user) => {
-      return user.email === email;
+      return user.email === email.toLowerCase();
     });
   }
 
