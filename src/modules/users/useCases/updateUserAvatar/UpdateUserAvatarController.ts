@@ -10,8 +10,8 @@ export class UpdateUserAvatarController {
 
     const updateUserAvatarUseCase = container.resolve(UpdateUserAvatarUseCase);
 
-    await updateUserAvatarUseCase.execute(userId, avatarFile);
+    const avatar = await updateUserAvatarUseCase.execute(userId, avatarFile);
 
-    return res.json();
+    return res.json(avatar);
   }
 }

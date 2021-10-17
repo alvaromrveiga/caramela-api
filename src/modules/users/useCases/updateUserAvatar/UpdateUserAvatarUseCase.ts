@@ -15,7 +15,10 @@ export class UpdateUserAvatarUseCase {
     private storageProvider: IStorageProvider
   ) {}
 
-  async execute(userId: string, avatarFile: string | undefined): Promise<void> {
+  async execute(
+    userId: string,
+    avatarFile: string | undefined
+  ): Promise<string> {
     if (!avatarFile) {
       throw new ErrorWithStatus(400, "Please upload an avatar file");
     }
@@ -31,6 +34,8 @@ export class UpdateUserAvatarUseCase {
     user.avatar = avatarFile;
 
     await this.usersRepository.createAndSave(user);
+
+    return avatarFile;
   }
 
   private async getUser(userId: string): Promise<User> {
