@@ -40,6 +40,7 @@ describe("Show Private User controller", () => {
       .send()
       .expect(200);
 
+    expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("updated_at");
     expect(response.body).toHaveProperty("created_at");
     expect(response.body).toHaveProperty("tokens");
@@ -47,7 +48,6 @@ describe("Show Private User controller", () => {
     expect(response.body.email).toEqual("tester@mail.com");
 
     expect(response.body).not.toHaveProperty("password");
-    expect(response.body).not.toHaveProperty("id");
   });
 
   it("Should not show private user information if unauthenticated", async () => {
