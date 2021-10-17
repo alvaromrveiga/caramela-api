@@ -34,7 +34,7 @@ describe("Update User controller", () => {
   });
 
   it("Should update user", async () => {
-    await request(app)
+    const response = await request(app)
       .put("/users/profile")
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .send({
@@ -43,7 +43,13 @@ describe("Update User controller", () => {
         password: "updatedPassword",
         currentPassword: "testerPa$$w0rd",
       })
-      .expect(204);
+      .expect(200);
+
+    expect(response.body.name).toEqual("UpdatedTester");
+    expect(response.body.email).toEqual("updatedtester@mail.com");
+
+    expect(response.body).not.toHaveProperty("currentPassword");
+    expect(response.body).not.toHaveProperty("password");
   });
 
   it("Should not update user with invalid update field", async () => {

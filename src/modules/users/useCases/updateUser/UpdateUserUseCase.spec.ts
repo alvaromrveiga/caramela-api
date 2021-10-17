@@ -28,51 +28,47 @@ describe("Update User use case", () => {
     if (user) {
       const userId = user.id;
 
-      await updateUserUseCase.execute(user, {
+      const response = await updateUserUseCase.execute(user, {
         name: "UpdatedTester",
         email: "updatedTester@mail.com",
         password: "updatedPassword",
         currentPassword: "testerPa$$w0rd",
       });
 
-      user = await inMemoryUsersRepository.findByEmail(
-        "updatedTester@mail.com"
-      );
+      user = await inMemoryUsersRepository.findByEmail("updatedester@mail.com");
 
-      expect(user?.name).toEqual("UpdatedTester");
-      expect(user?.email).toEqual("updatedTester@mail.com");
+      expect(response.name).toEqual("UpdatedTester");
+      expect(response.email).toEqual("updatedtester@mail.com");
 
       expect(user?.password).not.toEqual("updatedPassword");
       expect(user?.password).not.toEqual("testerPa$$w0rd");
-      expect(user).not.toHaveProperty("currentPassword");
 
-      expect(user?.id).toEqual(userId);
+      expect(response).not.toHaveProperty("currentPassword");
+      expect(response).not.toHaveProperty("password");
+
+      expect(response.id).toEqual(userId);
     }
   });
 
   it("Should update user without password", async () => {
-    let user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
+    const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
 
     expect(user).toBeDefined();
 
     if (user) {
       const userId = user.id;
 
-      await updateUserUseCase.execute(user, {
+      const response = await updateUserUseCase.execute(user, {
         name: "UpdatedTester",
         email: "updatedTester@mail.com",
       });
 
-      user = await inMemoryUsersRepository.findByEmail(
-        "updatedTester@mail.com"
-      );
+      expect(response.name).toEqual("UpdatedTester");
+      expect(response.email).toEqual("updatedtester@mail.com");
 
-      expect(user?.name).toEqual("UpdatedTester");
-      expect(user?.email).toEqual("updatedTester@mail.com");
+      expect(response).not.toHaveProperty("password");
 
-      expect(user?.password).not.toEqual("testerPa$$w0rd");
-
-      expect(user?.id).toEqual(userId);
+      expect(response.id).toEqual(userId);
     }
   });
 
