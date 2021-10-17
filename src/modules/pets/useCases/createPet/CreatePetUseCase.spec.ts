@@ -36,7 +36,7 @@ describe("Create Pet use case", () => {
   });
 
   it("Should create pet", async () => {
-    await createPetUseCase.execute({
+    const pet = await createPetUseCase.execute({
       name: "Petster",
       user_id: userId,
       species: "Cat",
@@ -44,11 +44,6 @@ describe("Create Pet use case", () => {
       gender: "Female",
       weight_kg: 4.5,
     });
-
-    const pet = await inMemoryPetsRepository.findByUserIDAndName(
-      userId,
-      "Petster"
-    );
 
     expect(pet).toBeDefined();
 

@@ -9,7 +9,7 @@ export class InMemoryPetsRepository implements IPetsRepository {
     this.pets = [];
   }
 
-  async createAndSave(data: ICreatePetDTO): Promise<void> {
+  async createAndSave(data: ICreatePetDTO): Promise<Pet> {
     const pet = new Pet();
     Object.assign(pet, data);
 
@@ -22,6 +22,8 @@ export class InMemoryPetsRepository implements IPetsRepository {
     } else {
       this.pets.push(pet);
     }
+
+    return pet;
   }
 
   async findByUserIDAndName(

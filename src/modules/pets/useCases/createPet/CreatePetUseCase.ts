@@ -4,6 +4,7 @@ import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { validateUser } from "../../../../utils/validateUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { ICreatePetDTO } from "../../dtos/ICreatePetDTO";
+import { Pet } from "../../infra/typeorm/entities/Pet";
 import { IPetsRepository } from "../../repositories/IPetsRepository";
 
 @injectable()
@@ -16,10 +17,12 @@ export class CreatePetUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(data: ICreatePetDTO): Promise<void> {
+  async execute(data: ICreatePetDTO): Promise<Pet> {
     await this.validateCredentials(data);
 
-    await this.petsRepository.createAndSave(data);
+    const pet = await this.petsRepository.createAndSave(data);
+
+    return pet;
   }
 
   private async validateCredentials(data: ICreatePetDTO): Promise<void> {

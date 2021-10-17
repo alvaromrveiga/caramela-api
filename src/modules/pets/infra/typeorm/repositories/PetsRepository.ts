@@ -11,10 +11,12 @@ export class PetsRepository implements IPetsRepository {
     this.repository = getRepository(Pet);
   }
 
-  async createAndSave(data: ICreatePetDTO): Promise<void> {
+  async createAndSave(data: ICreatePetDTO): Promise<Pet> {
     const pet = this.repository.create(data);
 
     await this.repository.save(pet);
+
+    return pet;
   }
 
   async findByUserIDAndName(

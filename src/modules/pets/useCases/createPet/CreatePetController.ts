@@ -10,7 +10,7 @@ export class CreatePetController {
 
     const createPetUseCase = container.resolve(CreatePetUseCase);
 
-    await createPetUseCase.execute({
+    const pet = await createPetUseCase.execute({
       user_id,
       name,
       species,
@@ -19,6 +19,6 @@ export class CreatePetController {
       birthday,
     });
 
-    return res.status(201).json();
+    return res.status(201).json(pet);
   }
 }
