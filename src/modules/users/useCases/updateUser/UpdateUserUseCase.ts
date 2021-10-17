@@ -86,6 +86,10 @@ export class UpdateUserUseCase {
   }
 
   private getUpdatedUser(user: User, updates: IAllowedUpdatesDTO): User {
+    if (updates.email) {
+      return { ...user, ...updates, email: updates.email.toLowerCase() };
+    }
+
     return { ...user, ...updates };
   }
 
