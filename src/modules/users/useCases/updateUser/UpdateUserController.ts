@@ -11,8 +11,8 @@ export class UpdateUserController {
 
     const updateUserUseCase = container.resolve(UpdateUserUseCase);
 
-    await updateUserUseCase.execute(user, updates);
+    const updatedUser = await updateUserUseCase.execute(user, updates);
 
-    return res.status(204).json();
+    return res.status(200).json(updatedUser);
   }
 }

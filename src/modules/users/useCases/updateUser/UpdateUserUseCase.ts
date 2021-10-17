@@ -6,6 +6,7 @@ import {
 } from "../../../../utils/bcrypt";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { IAllowedUpdatesDTO } from "../../dtos/IAllowedUpdatesDTO";
+import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
@@ -18,7 +19,10 @@ export class UpdateUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(user: User, updates: IAllowedUpdatesDTO): Promise<void> {
+  async execute(
+    user: User,
+    updates: IAllowedUpdatesDTO
+  ): Promise<IPrivateUserCredentialsDTO> {
     const updateKeys = Object.keys(updates);
 
     this.checkValidUpdates(updateKeys);
@@ -31,6 +35,16 @@ export class UpdateUserUseCase {
     const newUser = this.getUpdatedUser(user, hashedPasswordUpdates);
 
     await this.usersRepository.createAndSave(newUser);
+
+    return {
+      id: newUser.id,
+      avatar: newUser.avatar,
+      email: newUser.email,
+      name: newUser.name,
+      created_at: newUser.created_at,
+      updated_at: newUser.updated_at,
+      tokens: newUser.tokens,
+    };
   }
 
   private checkValidUpdates = (updateKeys: string[]) => {
