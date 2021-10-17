@@ -1,16 +1,8 @@
 import { inject, injectable } from "tsyringe";
 
+import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-
-interface IResponse {
-  avatar: string;
-  email: string;
-  name: string;
-  created_at: Date;
-  updated_at: Date;
-  tokens: string[];
-}
 
 @injectable()
 export class ShowPrivateUserUseCase {
@@ -19,8 +11,9 @@ export class ShowPrivateUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(user: User): Promise<IResponse> {
+  async execute(user: User): Promise<IPrivateUserCredentialsDTO> {
     return {
+      id: user.id,
       avatar: user.avatar,
       email: user.email,
       name: user.name,
