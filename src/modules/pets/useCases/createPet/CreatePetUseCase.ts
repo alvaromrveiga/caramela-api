@@ -28,23 +28,14 @@ export class CreatePetUseCase {
   private async validateCredentials(data: ICreatePetDTO): Promise<void> {
     await validateUser(data.user_id, this.usersRepository);
 
-    await this.validatePetName(data);
+    await this.validatePetName(data.name);
 
     this.validateSpecies(data.species);
   }
 
-  private async validatePetName(data: ICreatePetDTO): Promise<void> {
-    if (!data.name) {
+  private async validatePetName(name: string): Promise<void> {
+    if (!name) {
       throw new ErrorWithStatus(400, "Invalid pet name");
-    }
-
-    const petAlreadyExists = await this.petsRepository.findByUserIDAndName(
-      data.user_id,
-      data.name
-    );
-
-    if (petAlreadyExists) {
-      throw new ErrorWithStatus(400, "You already have a pet with that name!");
     }
   }
 
