@@ -71,27 +71,31 @@ describe("Create Pet use case", () => {
     ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
   });
 
-  it("Should not create pet with name already in use for the same user", async () => {
-    await createPetUseCase.execute({
-      name: "Petster",
-      user_id: userId,
-      species: "Cat",
-      birthday: new Date(),
-      gender: "Female",
-      weight_kg: 4.5,
-    });
-
+  it("Should not create pet with invalid name", async () => {
     await expect(
       createPetUseCase.execute({
-        name: "Petster",
+        name: "",
         user_id: userId,
         species: "Dog",
         birthday: new Date(),
         gender: "Male",
         weight_kg: 11.3,
       })
+    ).rejects.toEqual(new ErrorWithStatus(400, "Invalid pet name"));
+  });
+
+  it("Should not create pet with invalid species", async () => {
+    await expect(
+      createPetUseCase.execute({
+        name: "Petster",
+        user_id: userId,
+        species: "",
+        birthday: new Date(),
+        gender: "Male",
+        weight_kg: 11.3,
+      })
     ).rejects.toEqual(
-      new ErrorWithStatus(400, "You already have a pet with that name!")
+      new ErrorWithStatus(400, "Please choose your pet species!")
     );
   });
 });
