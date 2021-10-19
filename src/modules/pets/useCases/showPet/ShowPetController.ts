@@ -6,11 +6,11 @@ import { ShowPetUseCase } from "./ShowPetUseCase";
 export class ShowPetController {
   async handle(req: Request, res: Response): Promise<Response> {
     const userId = res.locals.user.id;
-    const petName = req.params.pet;
+    const petId = req.params.id;
 
     const showPetUseCase = container.resolve(ShowPetUseCase);
 
-    const pet = await showPetUseCase.execute(userId, petName);
+    const pet = await showPetUseCase.execute(userId, petId);
 
     return res.json(pet);
   }

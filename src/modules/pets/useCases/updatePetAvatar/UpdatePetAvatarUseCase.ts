@@ -22,7 +22,7 @@ export class UpdatePetAvatarUseCase {
 
   async execute(
     userId: string,
-    petName: string,
+    petId: string,
     avatarFile: string | undefined
   ): Promise<Pet> {
     if (!avatarFile) {
@@ -31,7 +31,7 @@ export class UpdatePetAvatarUseCase {
 
     await validateUser(userId, this.usersRepository);
 
-    const pet = await this.getValidatedPet(userId, petName, avatarFile);
+    const pet = await this.getValidatedPet(userId, petId, avatarFile);
 
     if (pet.avatar) {
       await this.storageProvider.delete(pet.avatar, "petsAvatars");
@@ -48,10 +48,10 @@ export class UpdatePetAvatarUseCase {
 
   private async getValidatedPet(
     userId: string,
-    petName: string,
+    petId: string,
     avatarFile: string
   ): Promise<Pet> {
-    const pet = await this.petsRepository.findByUserIDAndName(userId, petName);
+    const pet = await this.petsRepository.findByUserAndPetId(userId, petId);
 
     if (!pet) {
       await this.storageProvider.delete(avatarFile, "");

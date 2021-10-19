@@ -24,25 +24,25 @@ petsRoutes.get(
 );
 
 petsRoutes.get(
-  "/users/pets/:pet",
+  "/users/pets/:id",
   ensureAuthenticated,
   new ShowPetController().handle
 );
 
 petsRoutes.delete(
-  "/users/pets/:pet",
+  "/users/pets/:id",
   ensureAuthenticated,
   new DeletePetController().handle
 );
 
 petsRoutes.put(
-  "/users/pets/:pet",
+  "/users/pets/:id",
   ensureAuthenticated,
   new UpdatePetController().handle
 );
 
 petsRoutes.patch(
-  "/users/pets/:pet/avatar",
+  "/users/pets/:id/avatar",
   ensureAuthenticated,
   upload.single("avatar"),
   new UpdatePetAvatarController().handle

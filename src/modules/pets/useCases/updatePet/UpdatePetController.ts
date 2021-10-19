@@ -6,12 +6,12 @@ import { UpdatePetUseCase } from "./UpdatePetUseCase";
 export class UpdatePetController {
   async handle(req: Request, res: Response): Promise<Response> {
     const userId = res.locals.user.id;
-    const petName = req.params.pet;
+    const petId = req.params.id;
     const updates = req.body;
 
     const updateUserUseCase = container.resolve(UpdatePetUseCase);
 
-    const pet = await updateUserUseCase.execute(userId, petName, updates);
+    const pet = await updateUserUseCase.execute(userId, petId, updates);
 
     return res.status(200).json(pet);
   }

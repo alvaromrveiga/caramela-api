@@ -19,15 +19,15 @@ export class PetsRepository implements IPetsRepository {
     return pet;
   }
 
-  async findByUserIDAndName(
+  async findByUserAndPetId(
     userId: string,
-    petName: string
+    petId: string
   ): Promise<Pet | undefined> {
     return this.repository.findOne({
       where: [
         {
           user_id: userId,
-          name: petName,
+          id: petId,
         },
       ],
     });

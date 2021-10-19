@@ -16,10 +16,10 @@ export class ShowPetUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(userId: string, petName: string): Promise<Pet | undefined> {
+  async execute(userId: string, petId: string): Promise<Pet | undefined> {
     await validateUser(userId, this.usersRepository);
 
-    const pet = await getValidatedPet(userId, petName, this.petsRepository);
+    const pet = await getValidatedPet(userId, petId, this.petsRepository);
 
     return pet;
   }

@@ -29,14 +29,14 @@ export class UpdatePetUseCase {
 
   async execute(
     userId: string,
-    petName: string,
+    petId: string,
     updates: IAllowedPetUpdatesDTO
   ): Promise<Pet> {
     await validateUser(userId, this.usersRepository);
 
     this.checkValidUpdates(updates);
 
-    const pet = await getValidatedPet(userId, petName, this.petsRepository);
+    const pet = await getValidatedPet(userId, petId, this.petsRepository);
 
     const newPet = this.getUpdatedPet(pet, updates);
 

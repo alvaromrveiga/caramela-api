@@ -15,11 +15,11 @@ export class DeletePetUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(userId: string, petName: string): Promise<void> {
+  async execute(userId: string, petId: string): Promise<void> {
     await validateUser(userId, this.usersRepository);
 
-    await getValidatedPet(userId, petName, this.petsRepository);
+    await getValidatedPet(userId, petId, this.petsRepository);
 
-    await this.petsRepository.delete(userId, petName);
+    await this.petsRepository.delete(userId, petId);
   }
 }

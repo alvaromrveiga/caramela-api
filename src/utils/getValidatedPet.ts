@@ -4,10 +4,10 @@ import { ErrorWithStatus } from "./ErrorWithStatus";
 
 export async function getValidatedPet(
   userId: string,
-  petName: string,
+  petId: string,
   petsRepository: IPetsRepository
 ): Promise<Pet> {
-  const pet = await petsRepository.findByUserIDAndName(userId, petName);
+  const pet = await petsRepository.findByUserAndPetId(userId, petId);
 
   if (!pet) {
     throw new ErrorWithStatus(404, "Pet not found!");

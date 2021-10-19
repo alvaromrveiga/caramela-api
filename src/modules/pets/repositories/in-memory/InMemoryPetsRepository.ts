@@ -26,12 +26,12 @@ export class InMemoryPetsRepository implements IPetsRepository {
     return pet;
   }
 
-  async findByUserIDAndName(
+  async findByUserAndPetId(
     userId: string,
-    petName: string
+    petId: string
   ): Promise<Pet | undefined> {
     return this.pets.find((pet) => {
-      return pet.user_id === userId && pet.name === petName;
+      return pet.user_id === userId && pet.id === petId;
     });
   }
 
