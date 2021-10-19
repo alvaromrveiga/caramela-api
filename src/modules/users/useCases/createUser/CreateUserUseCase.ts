@@ -4,6 +4,7 @@ import validator from "validator";
 import { hashPasswordAsync } from "../../../../utils/bcrypt";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
+import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
@@ -13,16 +14,26 @@ export class CreateUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(data: ICreateUserDTO): Promise<void> {
+  async execute(data: ICreateUserDTO): Promise<IPrivateUserCredentialsDTO> {
     await this.validateCredentials(data);
 
     const passwordHash = await hashPasswordAsync(data.password);
 
-    await this.usersRepository.createAndSave({
+    const user = await this.usersRepository.createAndSave({
       ...data,
       email: data.email.toLowerCase(),
       password: passwordHash,
     });
+
+    return {
+      id: user.id,
+      avatar: user.avatar,
+      email: user.email,
+      name: user.name,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+      tokens: user.tokens,
+    };
   }
 
   private validateCredentials = async (data: ICreateUserDTO) => {
