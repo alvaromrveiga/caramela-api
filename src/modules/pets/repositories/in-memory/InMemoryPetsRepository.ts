@@ -41,9 +41,9 @@ export class InMemoryPetsRepository implements IPetsRepository {
     });
   }
 
-  async delete(userId: string, petName: string): Promise<void> {
+  async delete(userId: string, petId: string): Promise<void> {
     const petIndex = this.pets.findIndex((pet) => {
-      return pet.user_id === userId && pet.name === petName;
+      return pet.user_id === userId && pet.id === petId;
     });
 
     this.pets.splice(petIndex, 1);

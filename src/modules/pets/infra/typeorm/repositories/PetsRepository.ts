@@ -37,12 +37,12 @@ export class PetsRepository implements IPetsRepository {
     return this.repository.find({ user_id: userId });
   }
 
-  async delete(userId: string, petName: string): Promise<void> {
+  async delete(userId: string, petId: string): Promise<void> {
     await this.repository
       .createQueryBuilder()
       .delete()
       .where("user_id = :userId", { userId })
-      .andWhere("name = :petName", { petName })
+      .andWhere("id = :petId", { petId })
       .execute();
   }
 }

@@ -8,5 +8,5 @@ export interface IPetsRepository {
 
   findAllByUserID(userId: string): Promise<Pet[] | undefined>;
 
-  delete(userId: string, petName: string): Promise<void>;
+  delete(userId: string, petId: string): Promise<void>;
 }
