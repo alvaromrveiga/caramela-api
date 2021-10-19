@@ -29,6 +29,7 @@ describe("Show Private User use case", () => {
     if (user) {
       const response = await showPrivateUserUseCase.execute(user);
 
+      expect(response).toHaveProperty("id");
       expect(response).toHaveProperty("updated_at");
       expect(response).toHaveProperty("created_at");
       expect(response).toHaveProperty("tokens");
@@ -37,7 +38,6 @@ describe("Show Private User use case", () => {
       expect(response.email).toEqual("tester@mail.com");
 
       expect(response).not.toHaveProperty("password");
-      expect(response).not.toHaveProperty("id");
     }
   });
 });
