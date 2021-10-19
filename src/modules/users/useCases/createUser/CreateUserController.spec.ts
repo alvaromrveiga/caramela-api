@@ -1,5 +1,6 @@
 import request from "supertest";
 import { Connection } from "typeorm";
+import { validate } from "uuid";
 
 import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
@@ -20,7 +21,7 @@ describe("Create User controller", () => {
   });
 
   it("Should create user", async () => {
-    await request(app)
+    const response = await request(app)
       .post("/signup")
       .send({
         name: "Tester",
@@ -28,6 +29,13 @@ describe("Create User controller", () => {
         password: "testerPa$$w0rd",
       })
       .expect(201);
+
+    expect(validate(response.body.id)).toBe(true);
+    expect(response.body).toMatchObject({
+      name: "Tester",
+      email: "tester@mail.com",
+    });
+    expect(response.body).not.toHaveProperty("password");
   });
 
   it("Should not create user with invalid email", async () => {

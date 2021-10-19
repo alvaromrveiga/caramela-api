@@ -14,24 +14,24 @@ describe("Create User use case", () => {
   });
 
   it("Should create user", async () => {
-    await createUserUseCase.execute({
+    const response = await createUserUseCase.execute({
       name: "Tester",
       email: "TeStER@mail.com",
       password: "testerPa$$w0rd",
     });
 
+    expect(validate(response.id)).toBe(true);
+    expect(response).toMatchObject({
+      name: "Tester",
+      email: "tester@mail.com",
+    });
+    expect(response).not.toHaveProperty("password");
+
     const user = await inMemoryUsersRepository.findByEmail("TESTER@mail.com");
 
-    expect(user).not.toBeUndefined();
+    expect(user).toBeDefined();
 
     if (user) {
-      expect(validate(user.id)).toBe(true);
-
-      expect(user).toMatchObject({
-        name: "Tester",
-        email: "tester@mail.com",
-      });
-
       expect(user.password).not.toEqual("testerPa$$w0rd");
     }
   });
