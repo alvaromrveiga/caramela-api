@@ -9,7 +9,7 @@ export class InMemoryUsersRepository implements IUsersRepository {
     this.users = [];
   }
 
-  async createAndSave(data: ICreateUserDTO): Promise<void> {
+  async createAndSave(data: ICreateUserDTO): Promise<User> {
     const user = new User();
     Object.assign(user, { ...data, email: data.email.toLowerCase() });
 
@@ -22,6 +22,8 @@ export class InMemoryUsersRepository implements IUsersRepository {
     } else {
       this.users.push(user);
     }
+
+    return user;
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
