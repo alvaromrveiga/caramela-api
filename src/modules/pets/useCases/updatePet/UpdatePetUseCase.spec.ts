@@ -8,6 +8,9 @@ let inMemoryUsersRepository: InMemoryUsersRepository;
 let updatePetUseCase: UpdatePetUseCase;
 
 let userId: string;
+let otherUserPetId: string;
+let petOneId: string;
+let petTwoId: string;
 
 describe("Update Pet use case", () => {
   beforeEach(async () => {
@@ -34,7 +37,7 @@ describe("Update Pet use case", () => {
       userId = user.id;
     }
 
-    await inMemoryPetsRepository.createAndSave({
+    let pet = await inMemoryPetsRepository.createAndSave({
       name: "FirstPetster",
       species: "Bird",
       birthday: new Date("2021-02-20"),
@@ -42,6 +45,7 @@ describe("Update Pet use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
+    otherUserPetId = pet.id;
 
     await inMemoryUsersRepository.createAndSave({
       email: "tester@mail.com",
@@ -56,7 +60,7 @@ describe("Update Pet use case", () => {
       userId = user.id;
     }
 
-    await inMemoryPetsRepository.createAndSave({
+    pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster",
       species: "Hamster",
       birthday: new Date("2021-02-20"),
@@ -64,17 +68,19 @@ describe("Update Pet use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
+    petOneId = pet.id;
 
-    await inMemoryPetsRepository.createAndSave({
+    pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster2",
       species: "Dog",
       user_id: userId,
     });
+    petTwoId = pet.id;
   });
 
   it("Should not update pet if it does not exist", async () => {
     await expect(
-      updatePetUseCase.execute(userId, "inexistentPet", {
+      updatePetUseCase.execute(userId, "31962681-eec5-4e11-9618-6306fc3995d3", {
         name: "TicTic",
       })
     ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
@@ -82,20 +88,14 @@ describe("Update Pet use case", () => {
 
   it("Should not update other user's pet", async () => {
     await expect(
-      updatePetUseCase.execute(userId, "FirstPetster", {
+      updatePetUseCase.execute(userId, otherUserPetId, {
         name: "TicTic",
       })
     ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
   });
 
   it("Should update pet", async () => {
-    let pet = await inMemoryPetsRepository.findByUserIDAndName(
-      userId,
-      "Petster"
-    );
-    const petId = pet?.id;
-
-    pet = await updatePetUseCase.execute(userId, "Petster", {
+    const pet = await updatePetUseCase.execute(userId, petOneId, {
       name: "TicTic",
       weight_kg: 0.15,
       species: "Syrian Hamster",
@@ -103,11 +103,11 @@ describe("Update Pet use case", () => {
       gender: "Male",
     });
 
-    expect(pet?.id).toEqual(petId);
-    expect(pet?.gender).toEqual("Male");
-    expect(pet?.name).toEqual("TicTic");
-    expect(pet?.species).toEqual("Syrian Hamster");
-    expect(pet?.weight_kg).toEqual(0.15);
-    expect(pet?.birthday).toEqual(new Date("2020-01-22"));
+    expect(pet.id).toEqual(petOneId);
+    expect(pet.gender).toEqual("Male");
+    expect(pet.name).toEqual("TicTic");
+    expect(pet.species).toEqual("Syrian Hamster");
+    expect(pet.weight_kg).toEqual(0.15);
+    expect(pet.birthday).toEqual(new Date("2020-01-22"));
   });
 });

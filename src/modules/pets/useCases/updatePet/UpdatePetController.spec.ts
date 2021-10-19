@@ -7,6 +7,10 @@ import createConnection from "../../../../shared/infra/typeorm/connection";
 let connection: Connection;
 let tokens: string[];
 
+let otherUserPetId: string;
+let petOneId: string;
+let petTwoId: string;
+
 describe("Update Pet controller", () => {
   beforeAll(async () => {
     if (!connection) {
@@ -27,7 +31,7 @@ describe("Update Pet controller", () => {
 
     tokens = user.body.tokens;
 
-    await request(app)
+    let response = await request(app)
       .post("/users/pets")
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .send({
@@ -37,6 +41,7 @@ describe("Update Pet controller", () => {
         weight_kg: 12.0,
         birthday: "2018-12-18",
       });
+    otherUserPetId = response.body.id;
 
     await request(app).post("/signup").send({
       name: "Tester",
@@ -51,7 +56,7 @@ describe("Update Pet controller", () => {
 
     tokens = user.body.tokens;
 
-    await request(app)
+    response = await request(app)
       .post("/users/pets")
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .send({
@@ -61,8 +66,9 @@ describe("Update Pet controller", () => {
         weight_kg: 2.0,
         birthday: "2020-07-14",
       });
+    petOneId = response.body.id;
 
-    await request(app)
+    response = await request(app)
       .post("/users/pets")
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .send({
@@ -72,6 +78,7 @@ describe("Update Pet controller", () => {
         weight_kg: 0.1,
         birthday: "2021-02-20",
       });
+    petTwoId = response.body.id;
   });
 
   afterAll(async () => {
@@ -81,7 +88,7 @@ describe("Update Pet controller", () => {
 
   it("Should not update pet if unauthenticated", async () => {
     await request(app)
-      .put("/users/pets/Meow")
+      .put(`/users/pets/${petOneId}`)
       .send({
         name: "Miau",
         weight_kg: 2.5,
@@ -94,7 +101,7 @@ describe("Update Pet controller", () => {
 
   it("Should not update other user's pet", async () => {
     await request(app)
-      .put("/users/pets/Bark")
+      .put(`/users/pets/${otherUserPetId}`)
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .send({
         name: "Miau",
@@ -108,7 +115,7 @@ describe("Update Pet controller", () => {
 
   it("Should not update pet with invalid fields", async () => {
     await request(app)
-      .put("/users/pets/Bark")
+      .put(`/users/pets/${petOneId}`)
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .send({
         id: "bf467e4f-c0aa-4b62-9d98-cb66cb2f8d17",
@@ -123,7 +130,7 @@ describe("Update Pet controller", () => {
 
   it("Should update pet", async () => {
     const response = await request(app)
-      .put("/users/pets/Meow")
+      .put(`/users/pets/${petOneId}`)
       .set({ Authorization: `Bearer ${tokens[0]}` })
       .send({
         name: "Miau",

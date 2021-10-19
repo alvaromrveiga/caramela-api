@@ -12,6 +12,9 @@ let storageProviderMock: IStorageProvider;
 let updatePetAvatarUseCase: UpdatePetAvatarUseCase;
 
 let userId: string;
+let otherUserPetId: string;
+let petOneId: string;
+let petTwoId: string;
 
 describe("Update Pet Avatar use case", () => {
   beforeEach(async () => {
@@ -40,7 +43,7 @@ describe("Update Pet Avatar use case", () => {
       userId = user.id;
     }
 
-    await inMemoryPetsRepository.createAndSave({
+    let pet = await inMemoryPetsRepository.createAndSave({
       name: "FirstPetster",
       species: "Bird",
       birthday: new Date("2021-02-20"),
@@ -48,6 +51,7 @@ describe("Update Pet Avatar use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
+    otherUserPetId = pet.id;
 
     await inMemoryUsersRepository.createAndSave({
       email: "tester@mail.com",
@@ -62,7 +66,7 @@ describe("Update Pet Avatar use case", () => {
       userId = user.id;
     }
 
-    await inMemoryPetsRepository.createAndSave({
+    pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster",
       species: "Hamster",
       birthday: new Date("2021-02-20"),
@@ -70,18 +74,20 @@ describe("Update Pet Avatar use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
+    petOneId = pet.id;
 
-    await inMemoryPetsRepository.createAndSave({
+    pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster2",
       species: "Dog",
       user_id: userId,
     });
+    petTwoId = pet.id;
   });
 
   it("Should update pet avatar", async () => {
     let pet = await updatePetAvatarUseCase.execute(
       userId,
-      "Petster",
+      petOneId,
       "testFile.png"
     );
 
@@ -94,7 +100,7 @@ describe("Update Pet Avatar use case", () => {
 
     pet = await updatePetAvatarUseCase.execute(
       userId,
-      "Petster",
+      petOneId,
       "testFile2.png"
     );
 
@@ -113,7 +119,7 @@ describe("Update Pet Avatar use case", () => {
 
   it("Should not update pet's avatar if avatar is invalid", async () => {
     await expect(
-      updatePetAvatarUseCase.execute(userId, "Petster", "")
+      updatePetAvatarUseCase.execute(userId, petOneId, "")
     ).rejects.toEqual(new ErrorWithStatus(400, "Please upload an avatar file"));
   });
 
@@ -121,7 +127,7 @@ describe("Update Pet Avatar use case", () => {
     await expect(
       updatePetAvatarUseCase.execute(
         "07f28f28-33f8-4b42-9dc1-8bb996bda4d7",
-        "Petster",
+        petOneId,
         "testFile.png"
       )
     ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
@@ -129,7 +135,7 @@ describe("Update Pet Avatar use case", () => {
 
   it("Should not update other user's pet avatar", async () => {
     await expect(
-      updatePetAvatarUseCase.execute(userId, "FirstPetster", "testFile.png")
+      updatePetAvatarUseCase.execute(userId, otherUserPetId, "testFile.png")
     ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
   });
 });

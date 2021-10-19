@@ -8,6 +8,9 @@ let inMemoryUsersRepository: InMemoryUsersRepository;
 let showPetUseCase: ShowPetUseCase;
 
 let userId: string;
+let otherUserPetId: string;
+let petOneId: string;
+let petTwoId: string;
 
 describe("Show Pet use case", () => {
   beforeEach(async () => {
@@ -34,7 +37,7 @@ describe("Show Pet use case", () => {
       userId = user.id;
     }
 
-    await inMemoryPetsRepository.createAndSave({
+    let pet = await inMemoryPetsRepository.createAndSave({
       name: "FirstPetster",
       species: "Bird",
       birthday: new Date("2021-02-20"),
@@ -42,6 +45,7 @@ describe("Show Pet use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
+    otherUserPetId = pet.id;
 
     await inMemoryUsersRepository.createAndSave({
       email: "tester@mail.com",
@@ -56,7 +60,7 @@ describe("Show Pet use case", () => {
       userId = user.id;
     }
 
-    await inMemoryPetsRepository.createAndSave({
+    pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster",
       species: "Hamster",
       birthday: new Date("2021-02-20"),
@@ -64,19 +68,22 @@ describe("Show Pet use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
+    petOneId = pet.id;
 
-    await inMemoryPetsRepository.createAndSave({
+    pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster2",
       species: "Dog",
       user_id: userId,
     });
+    petTwoId = pet.id;
   });
 
   it("Should show pet", async () => {
-    const pet = await showPetUseCase.execute(userId, "Petster");
+    const pet = await showPetUseCase.execute(userId, petOneId);
     expect(pet).toBeDefined();
 
     if (pet) {
+      expect(pet.id).toEqual(petOneId);
       expect(pet.name).toEqual("Petster");
       expect(pet.species).toEqual("Hamster");
       expect(pet.user_id).toEqual(userId);
@@ -87,13 +94,13 @@ describe("Show Pet use case", () => {
 
   it("Should not show pet if user is invalid", async () => {
     await expect(
-      showPetUseCase.execute("ceb791b0-5bab-48e1-8a55-43c15a33e12d", "Petster")
+      showPetUseCase.execute("ceb791b0-5bab-48e1-8a55-43c15a33e12d", petOneId)
     ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
   });
 
   it("Should not show another user's pet", async () => {
     await expect(
-      showPetUseCase.execute(userId, "FirstPetster")
+      showPetUseCase.execute(userId, otherUserPetId)
     ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
   });
 });
