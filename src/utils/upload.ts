@@ -1,12 +1,12 @@
 import crypto from "crypto";
 import multer from "multer";
-import { resolve } from "path";
+import path from "path";
 
-const tmpFolder = resolve(__dirname, "..", "..", "tmp");
+import { ErrorWithStatus } from "./ErrorWithStatus";
 
-export default {
-  tmpFolder,
+const tmpFolder = path.resolve(__dirname, "..", "..", "tmp");
 
+const upload = multer({
   storage: multer.diskStorage({
     destination: tmpFolder,
     filename: (request, file, callback) => {
@@ -16,4 +16,30 @@ export default {
       return callback(null, fileName);
     },
   }),
-};
+
+  fileFilter: (request, file, callback) => {
+    const filetypes = /jpeg|jpg|png/;
+
+    const mimetype = filetypes.test(file.mimetype);
+    const extname = filetypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+
+    if (mimetype && extname) {
+      return callback(null, true);
+    }
+
+    return callback(
+      new ErrorWithStatus(
+        400,
+        `File upload only supports the following filetypes - ${filetypes}`
+      )
+    );
+  },
+
+  limits: {
+    fileSize: 2 * (1024 * 1024),
+  },
+});
+
+export { tmpFolder, upload };
