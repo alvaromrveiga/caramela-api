@@ -1,13 +1,16 @@
+import { User } from "../modules/users/infra/typeorm/entities/User";
 import { IUsersRepository } from "../modules/users/repositories/IUsersRepository";
 import { ErrorWithStatus } from "./ErrorWithStatus";
 
-export async function validateUser(
+export async function getValidatedUser(
   userId: string,
   userRepository: IUsersRepository
-): Promise<void> {
+): Promise<User> {
   const user = await userRepository.findById(userId);
 
   if (!user) {
     throw new ErrorWithStatus(401, "Please authenticate");
   }
+
+  return user;
 }
