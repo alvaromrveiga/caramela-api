@@ -36,7 +36,7 @@ export const ensureAuthenticated = async (
       return;
     }
 
-    res.locals.user = user;
+    res.locals.userId = user.id;
     res.locals.token = token;
     // http://expressjs.com/en/api.html#res.locals
 
