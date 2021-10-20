@@ -5,13 +5,13 @@ import { CreatePetUseCase } from "./CreatePetUseCase";
 
 export class CreatePetController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const user_id = res.locals.user.id;
+    const { userId } = res.locals;
     const { name, gender, species, weight_kg, birthday } = req.body;
 
     const createPetUseCase = container.resolve(CreatePetUseCase);
 
     const pet = await createPetUseCase.execute({
-      user_id,
+      user_id: userId,
       name,
       species,
       gender,

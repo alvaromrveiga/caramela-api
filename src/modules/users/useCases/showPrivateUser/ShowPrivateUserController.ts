@@ -5,11 +5,11 @@ import { ShowPrivateUserUseCase } from "./ShowPrivateUserUseCase";
 
 export class ShowPrivateUserController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { user } = res.locals;
+    const { userId } = res.locals;
 
     const showPrivateUserUseCase = container.resolve(ShowPrivateUserUseCase);
 
-    const response = await showPrivateUserUseCase.execute(user);
+    const response = await showPrivateUserUseCase.execute(userId);
 
     return res.json(response);
   }

@@ -5,11 +5,11 @@ import { LogoutUserUseCase } from "./LogoutUserUseCase";
 
 export class LogoutUserController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { user, token } = res.locals;
+    const { userId, token } = res.locals;
 
     const logoutUserUseCase = container.resolve(LogoutUserUseCase);
 
-    await logoutUserUseCase.execute(user, token);
+    await logoutUserUseCase.execute(userId, token);
 
     return res.json();
   }

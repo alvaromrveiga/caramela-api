@@ -5,7 +5,7 @@ import { UpdatePetAvatarUseCase } from "./UpdatePetAvatarUseCase";
 
 export class UpdatePetAvatarController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const userId = res.locals.user.id;
+    const { userId } = res.locals;
     const petId = req.params.id;
     const avatarFile = req.file?.filename;
 

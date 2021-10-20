@@ -5,7 +5,7 @@ import { UpdatePetUseCase } from "./UpdatePetUseCase";
 
 export class UpdatePetController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const userId = res.locals.user.id;
+    const { userId } = res.locals;
     const petId = req.params.id;
     const updates = req.body;
 
