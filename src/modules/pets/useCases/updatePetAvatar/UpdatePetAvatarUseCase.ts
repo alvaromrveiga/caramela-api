@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
-import { validateUser } from "../../../../utils/validateUser";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { Pet } from "../../infra/typeorm/entities/Pet";
 import { IPetsRepository } from "../../repositories/IPetsRepository";
@@ -29,7 +29,7 @@ export class UpdatePetAvatarUseCase {
       throw new ErrorWithStatus(400, "Please upload an avatar file");
     }
 
-    await validateUser(userId, this.usersRepository);
+    await getValidatedUser(userId, this.usersRepository);
 
     const pet = await this.getValidatedPet(userId, petId, avatarFile);
 

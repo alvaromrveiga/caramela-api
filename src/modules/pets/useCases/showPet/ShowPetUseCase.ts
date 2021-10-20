@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { getValidatedPet } from "../../../../utils/getValidatedPet";
-import { validateUser } from "../../../../utils/validateUser";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { Pet } from "../../infra/typeorm/entities/Pet";
 import { IPetsRepository } from "../../repositories/IPetsRepository";
@@ -17,7 +17,7 @@ export class ShowPetUseCase {
   ) {}
 
   async execute(userId: string, petId: string): Promise<Pet | undefined> {
-    await validateUser(userId, this.usersRepository);
+    await getValidatedUser(userId, this.usersRepository);
 
     const pet = await getValidatedPet(userId, petId, this.petsRepository);
 

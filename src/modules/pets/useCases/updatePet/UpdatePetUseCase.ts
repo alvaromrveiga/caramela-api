@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { getValidatedPet } from "../../../../utils/getValidatedPet";
-import { validateUser } from "../../../../utils/validateUser";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IAllowedUpdatesDTO } from "../../../users/dtos/IAllowedUpdatesDTO";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { IAllowedPetUpdatesDTO } from "../../dtos/IAllowedPetUpdatesDTO";
@@ -32,7 +32,7 @@ export class UpdatePetUseCase {
     petId: string,
     updates: IAllowedPetUpdatesDTO
   ): Promise<Pet> {
-    await validateUser(userId, this.usersRepository);
+    await getValidatedUser(userId, this.usersRepository);
 
     this.checkValidUpdates(updates);
 

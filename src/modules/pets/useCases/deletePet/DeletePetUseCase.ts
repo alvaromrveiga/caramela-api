@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { getValidatedPet } from "../../../../utils/getValidatedPet";
-import { validateUser } from "../../../../utils/validateUser";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { IPetsRepository } from "../../repositories/IPetsRepository";
 
@@ -16,7 +16,7 @@ export class DeletePetUseCase {
   ) {}
 
   async execute(userId: string, petId: string): Promise<void> {
-    await validateUser(userId, this.usersRepository);
+    await getValidatedUser(userId, this.usersRepository);
 
     await getValidatedPet(userId, petId, this.petsRepository);
 

@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
-import { User } from "../../infra/typeorm/entities/User";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
@@ -23,7 +23,7 @@ export class UpdateUserAvatarUseCase {
       throw new ErrorWithStatus(400, "Please upload an avatar file");
     }
 
-    const user = await this.getUser(userId);
+    const user = await getValidatedUser(userId, this.usersRepository);
 
     if (user.avatar) {
       this.storageProvider.delete(user.avatar, "usersAvatars");
@@ -36,15 +36,5 @@ export class UpdateUserAvatarUseCase {
     await this.usersRepository.createAndSave(user);
 
     return avatarFile;
-  }
-
-  private async getUser(userId: string): Promise<User> {
-    const user = await this.usersRepository.findById(userId);
-
-    if (!user) {
-      throw new ErrorWithStatus(401, "Please authenticate");
-    }
-
-    return user;
   }
 }

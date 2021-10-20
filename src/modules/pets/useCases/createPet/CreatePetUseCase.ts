@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
-import { validateUser } from "../../../../utils/validateUser";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { ICreatePetDTO } from "../../dtos/ICreatePetDTO";
 import { Pet } from "../../infra/typeorm/entities/Pet";
@@ -26,7 +26,7 @@ export class CreatePetUseCase {
   }
 
   private async validateCredentials(data: ICreatePetDTO): Promise<void> {
-    await validateUser(data.user_id, this.usersRepository);
+    await getValidatedUser(data.user_id, this.usersRepository);
 
     await this.validatePetName(data.name);
 
