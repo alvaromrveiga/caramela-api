@@ -1,7 +1,7 @@
 import fs from "fs";
 import { resolve, join } from "path";
 
-import { tmpFolder } from "../../../../../utils/upload";
+import { tmpFolder } from "../../../../infra/http/middleware/upload";
 import { IStorageProvider } from "../IStorageProvider";
 
 export class LocalStorageProvider implements IStorageProvider {

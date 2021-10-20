@@ -6,8 +6,8 @@ import { ShowAllPetsController } from "../../../../modules/pets/useCases/showAll
 import { ShowPetController } from "../../../../modules/pets/useCases/showPet/ShowPetController";
 import { UpdatePetController } from "../../../../modules/pets/useCases/updatePet/UpdatePetController";
 import { UpdatePetAvatarController } from "../../../../modules/pets/useCases/updatePetAvatar/UpdatePetAvatarController";
-import { upload } from "../../../../utils/upload";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
+import { upload } from "../middleware/upload";
 
 const petsRoutes = Router();
 

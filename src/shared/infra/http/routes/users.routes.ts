@@ -9,8 +9,8 @@ import { ShowPrivateUserController } from "../../../../modules/users/useCases/sh
 import { ShowPublicUserController } from "../../../../modules/users/useCases/showPublicUser/ShowPublicUserController";
 import { UpdateUserController } from "../../../../modules/users/useCases/updateUser/UpdateUserController";
 import { UpdateUserAvatarController } from "../../../../modules/users/useCases/updateUserAvatar/UpdateUserAvatarController";
-import { upload } from "../../../../utils/upload";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
+import { upload } from "../middleware/upload";
 
 const usersRoutes = Router();
 

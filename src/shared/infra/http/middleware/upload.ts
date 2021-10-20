@@ -2,7 +2,7 @@ import crypto from "crypto";
 import multer from "multer";
 import path from "path";
 
-import { ErrorWithStatus } from "./ErrorWithStatus";
+import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 
 const tmpFolder = path.resolve(__dirname, "..", "..", "tmp");
 
