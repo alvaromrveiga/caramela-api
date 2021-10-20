@@ -28,7 +28,7 @@ describe("Update User use case", () => {
     if (user) {
       const userId = user.id;
 
-      const response = await updateUserUseCase.execute(user, {
+      const response = await updateUserUseCase.execute(userId, {
         name: "UpdatedTester",
         email: "updatedTester@mail.com",
         password: "updatedPassword",
@@ -58,7 +58,7 @@ describe("Update User use case", () => {
     if (user) {
       const userId = user.id;
 
-      const response = await updateUserUseCase.execute(user, {
+      const response = await updateUserUseCase.execute(userId, {
         name: "UpdatedTester",
         email: "updatedTester@mail.com",
       });
@@ -79,7 +79,7 @@ describe("Update User use case", () => {
 
     if (user) {
       await expect(
-        updateUserUseCase.execute(user, {
+        updateUserUseCase.execute(user.id, {
           name: "UpdatedTester",
           password: "newPassword",
         })
@@ -96,7 +96,7 @@ describe("Update User use case", () => {
 
     if (user) {
       await expect(
-        updateUserUseCase.execute(user, {
+        updateUserUseCase.execute(user.id, {
           name: "UpdatedTester",
           password: "newPassword",
           currentPassword: "wrongCurrentPassword",

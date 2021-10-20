@@ -5,6 +5,7 @@ import {
   hashPasswordAsync,
 } from "../../../../utils/bcrypt";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IAllowedUpdatesDTO } from "../../dtos/IAllowedUpdatesDTO";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { User } from "../../infra/typeorm/entities/User";
@@ -20,12 +21,14 @@ export class UpdateUserUseCase {
   ) {}
 
   async execute(
-    user: User,
+    userId: string,
     updates: IAllowedUpdatesDTO
   ): Promise<IPrivateUserCredentialsDTO> {
     const updateKeys = Object.keys(updates);
 
     this.checkValidUpdates(updateKeys);
+
+    const user = await getValidatedUser(userId, this.usersRepository);
 
     const hashedPasswordUpdates = await this.checkPassword(
       user.password,

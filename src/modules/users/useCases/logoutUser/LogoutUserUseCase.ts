@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { User } from "../../infra/typeorm/entities/User";
+import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
@@ -10,7 +10,9 @@ export class LogoutUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(user: User, loginToken: string): Promise<void> {
+  async execute(userId: string, loginToken: string): Promise<void> {
+    const user = await getValidatedUser(userId, this.usersRepository);
+
     const filteredTokens = user.tokens.filter((token) => {
       return loginToken !== token;
     });

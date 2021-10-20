@@ -37,7 +37,7 @@ describe("Logout User use case", () => {
     expect(user).not.toBeUndefined();
 
     if (user) {
-      await logoutUserUseCase.execute(user, tokens[0]);
+      await logoutUserUseCase.execute(user.id, tokens[0]);
     }
 
     user = await inMemoryUsersRepository.findByEmail("tester@mail.com");

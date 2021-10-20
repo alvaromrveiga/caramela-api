@@ -39,7 +39,7 @@ describe("Logout All User use case", () => {
     if (user) {
       expect(user.tokens.length).toEqual(3);
 
-      await logoutAllUserUseCase.execute(user);
+      await logoutAllUserUseCase.execute(user.id);
     }
 
     user = await inMemoryUsersRepository.findByEmail("tester@mail.com");

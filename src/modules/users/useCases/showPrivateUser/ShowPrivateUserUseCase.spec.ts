@@ -27,7 +27,7 @@ describe("Show Private User use case", () => {
     expect(user).toBeDefined();
 
     if (user) {
-      const response = await showPrivateUserUseCase.execute(user);
+      const response = await showPrivateUserUseCase.execute(user.id);
 
       expect(response).toHaveProperty("id");
       expect(response).toHaveProperty("updated_at");
