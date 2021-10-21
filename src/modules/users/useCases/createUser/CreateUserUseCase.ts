@@ -1,11 +1,14 @@
 import { inject, injectable } from "tsyringe";
 import validator from "validator";
 
+import { minimumPasswordLength } from "../../../../config/password";
 import { hashPasswordAsync } from "../../../../utils/bcrypt";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { EmailInUseError } from "./errors/EmailInUseError";
+import { InvalidEmailError } from "./errors/InvalidEmailError";
+import { InvalidPasswordCreationError } from "./errors/InvalidPasswordCreationError";
 
 @injectable()
 export class CreateUserUseCase {
@@ -43,32 +46,22 @@ export class CreateUserUseCase {
 
   private validateEmail = async (email: string) => {
     if (!email) {
-      throw new ErrorWithStatus(400, "Invalid email");
+      throw new InvalidEmailError();
     }
 
     if (validator.isEmail(email)) {
       if (await this.usersRepository.findByEmail(email)) {
-        throw new ErrorWithStatus(400, "Email already in use!");
+        throw new EmailInUseError();
       }
       return true;
     }
 
-    throw new ErrorWithStatus(400, "Invalid email");
+    throw new InvalidEmailError();
   };
 
   private validatePassword = async (password: string) => {
-    if (!password) {
-      throw new ErrorWithStatus(400, "Invalid password");
+    if (!password || password.length < minimumPasswordLength) {
+      throw new InvalidPasswordCreationError();
     }
-
-    const minLength = 8;
-
-    if (password.length < minLength) {
-      throw new ErrorWithStatus(
-        400,
-        `Password shorter than ${minLength} characters`
-      );
-    }
-    return true;
   };
 }

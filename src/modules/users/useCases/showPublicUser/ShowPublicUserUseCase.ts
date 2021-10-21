@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { UserNotFoundError } from "./errors/UserNotFoundError";
 
 interface IResponse {
   avatar: string;
@@ -20,7 +20,7 @@ export class ShowPublicUserUseCase {
     const user = await this.usersRepository.findById(id);
 
     if (!user) {
-      throw new ErrorWithStatus(404, "User not found");
+      throw new UserNotFoundError();
     }
 
     return {

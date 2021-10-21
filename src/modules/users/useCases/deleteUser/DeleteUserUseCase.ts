@@ -1,7 +1,8 @@
 import { inject, injectable } from "tsyringe";
 
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
+import { InvalidPasswordError } from "../../../../shared/errors/InvalidPasswordError";
 import { comparePasswordAsync } from "../../../../utils/bcrypt";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
@@ -21,13 +22,13 @@ export class DeleteUserUseCase {
     const user = await this.usersRepository.findById(id);
 
     if (!user) {
-      throw new ErrorWithStatus(401, "Please authenticate");
+      throw new AuthenticationError();
     }
 
     const result = await comparePasswordAsync(password, user.password);
 
     if (!result) {
-      throw new ErrorWithStatus(400, "Invalid password");
+      throw new InvalidPasswordError();
     }
   }
 }

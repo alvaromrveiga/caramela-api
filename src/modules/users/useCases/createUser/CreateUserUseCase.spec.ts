@@ -1,8 +1,11 @@
 import { validate } from "uuid";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { minimumPasswordLength } from "../../../../config/password";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "./CreateUserUseCase";
+import { EmailInUseError } from "./errors/EmailInUseError";
+import { InvalidEmailError } from "./errors/InvalidEmailError";
+import { InvalidPasswordCreationError } from "./errors/InvalidPasswordCreationError";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let createUserUseCase: CreateUserUseCase;
@@ -43,7 +46,7 @@ describe("Create User use case", () => {
         email: "notValidMail",
         password: "testerPa$$w0rd",
       })
-    ).rejects.toEqual(new ErrorWithStatus(400, "Invalid email"));
+    ).rejects.toEqual(new InvalidEmailError());
   });
 
   it("Should not create user if email already in use", async () => {
@@ -59,7 +62,7 @@ describe("Create User use case", () => {
         email: "tester@mail.com",
         password: "testerPa$$w0rd",
       })
-    ).rejects.toEqual(new ErrorWithStatus(400, "Email already in use!"));
+    ).rejects.toEqual(new EmailInUseError());
   });
 
   it("Should not create user with invalid password", async () => {
@@ -69,18 +72,16 @@ describe("Create User use case", () => {
         email: "tester@mail.com",
         password: "",
       })
-    ).rejects.toEqual(new ErrorWithStatus(400, "Invalid password"));
+    ).rejects.toEqual(new InvalidPasswordCreationError());
   });
 
-  it("Should not create user with password less than 8 characters", async () => {
+  it(`Should not create user with password less than ${minimumPasswordLength} characters`, async () => {
     await expect(
       createUserUseCase.execute({
         name: "Tester",
         email: "tester@mail.com",
         password: "1234567",
       })
-    ).rejects.toEqual(
-      new ErrorWithStatus(400, "Password shorter than 8 characters")
-    );
+    ).rejects.toEqual(new InvalidPasswordCreationError());
   });
 });

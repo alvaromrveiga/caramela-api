@@ -1,3 +1,4 @@
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { User } from "../../infra/typeorm/entities/User";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
@@ -43,5 +44,14 @@ describe("Logout User use case", () => {
     user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
 
     expect(user?.tokens.length).toEqual(0);
+  });
+
+  it("Should not logout if user is invalid", async () => {
+    await expect(
+      logoutUserUseCase.execute(
+        "dd17a4f1-e819-4972-ae6b-abb660fc5e66",
+        tokens[0]
+      )
+    ).rejects.toEqual(new AuthenticationError());
   });
 });

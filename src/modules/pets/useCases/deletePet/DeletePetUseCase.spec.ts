@@ -1,3 +1,4 @@
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
@@ -68,7 +69,7 @@ describe("Delete Pet use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
-    petTwoId = pet.id;
+    petOneId = pet.id;
 
     pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster2",
@@ -106,6 +107,6 @@ describe("Delete Pet use case", () => {
   it("Should not delete pet if user is invalid", async () => {
     await expect(
       deletePetUseCase.execute("ceb791b0-5bab-48e1-8a55-43c15a33e12d", petTwoId)
-    ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
+    ).rejects.toEqual(new AuthenticationError());
   });
 });

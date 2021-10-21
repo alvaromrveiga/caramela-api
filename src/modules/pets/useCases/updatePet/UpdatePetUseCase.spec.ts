@@ -10,7 +10,6 @@ let updatePetUseCase: UpdatePetUseCase;
 let userId: string;
 let otherUserPetId: string;
 let petOneId: string;
-let petTwoId: string;
 
 describe("Update Pet use case", () => {
   beforeEach(async () => {
@@ -75,7 +74,6 @@ describe("Update Pet use case", () => {
       species: "Dog",
       user_id: userId,
     });
-    petTwoId = pet.id;
   });
 
   it("Should not update pet if it does not exist", async () => {

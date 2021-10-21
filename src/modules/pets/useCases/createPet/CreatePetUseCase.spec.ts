@@ -1,5 +1,6 @@
 import { validate } from "uuid";
 
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
@@ -68,7 +69,7 @@ describe("Create Pet use case", () => {
         gender: "Female",
         weight_kg: 4.5,
       })
-    ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
+    ).rejects.toEqual(new AuthenticationError());
   });
 
   it("Should not create pet with invalid name", async () => {

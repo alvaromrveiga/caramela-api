@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 
 import { comparePasswordAsync } from "../../../../utils/bcrypt";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { generateJwt } from "../../../../utils/generateJwt";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { LoginError } from "./errors/LoginError";
 
 interface IResponse {
   name: string;
@@ -23,7 +23,7 @@ export class LoginUserUseCase {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new ErrorWithStatus(400, "Invalid email or password!");
+      throw new LoginError();
     }
 
     await this.verifyPassword(user, password);
@@ -45,7 +45,7 @@ export class LoginUserUseCase {
     const result = await comparePasswordAsync(password, user.password);
 
     if (!result) {
-      throw new ErrorWithStatus(400, "Invalid email or password!");
+      throw new LoginError();
     }
   }
 }

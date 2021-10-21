@@ -1,8 +1,8 @@
 import { minimumPasswordLength } from "../../../../config/password";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
+import { InvalidCurrentPasswordError } from "./errors/InvalidCurrentPasswordError";
 import { UpdateUserUseCase } from "./UpdateUserUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -85,9 +85,7 @@ describe("Update User use case", () => {
           name: "UpdatedTester",
           password: "newPassword",
         })
-      ).rejects.toEqual(
-        new ErrorWithStatus(400, "Please enter your current password")
-      );
+      ).rejects.toEqual(new InvalidCurrentPasswordError());
     }
   });
 
@@ -103,7 +101,7 @@ describe("Update User use case", () => {
           password: "newPassword",
           currentPassword: "wrongCurrentPassword",
         })
-      ).rejects.toEqual(new ErrorWithStatus(400, "Invalid current password"));
+      ).rejects.toEqual(new InvalidCurrentPasswordError());
     }
   });
 

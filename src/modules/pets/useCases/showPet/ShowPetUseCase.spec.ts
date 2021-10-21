@@ -1,3 +1,4 @@
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
@@ -94,8 +95,8 @@ describe("Show Pet use case", () => {
 
   it("Should not show pet if user is invalid", async () => {
     await expect(
-      showPetUseCase.execute("ceb791b0-5bab-48e1-8a55-43c15a33e12d", petOneId)
-    ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
+      showPetUseCase.execute("ceb791b0-5bab-48e1-8a55-43c15a33e12d", petTwoId)
+    ).rejects.toEqual(new AuthenticationError());
   });
 
   it("Should not show another user's pet", async () => {

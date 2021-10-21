@@ -5,13 +5,14 @@ import {
   comparePasswordAsync,
   hashPasswordAsync,
 } from "../../../../utils/bcrypt";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IAllowedUpdatesDTO } from "../../dtos/IAllowedUpdatesDTO";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
+import { InvalidCurrentPasswordError } from "./errors/InvalidCurrentPasswordError";
+import { InvalidUpdateError } from "./errors/InvalidUpdateError";
 
 @injectable()
 export class UpdateUserUseCase {
@@ -58,7 +59,7 @@ export class UpdateUserUseCase {
     });
 
     if (!isValidUpdate) {
-      throw new ErrorWithStatus(400, "Invalid update!");
+      throw new InvalidUpdateError();
     }
   };
 
@@ -71,7 +72,7 @@ export class UpdateUserUseCase {
     }
 
     if (!updates.currentPassword) {
-      throw new ErrorWithStatus(400, "Please enter your current password");
+      throw new InvalidCurrentPasswordError();
     }
 
     const isValidPassword = await comparePasswordAsync(
@@ -80,7 +81,7 @@ export class UpdateUserUseCase {
     );
 
     if (!isValidPassword) {
-      throw new ErrorWithStatus(400, "Invalid current password");
+      throw new InvalidCurrentPasswordError();
     }
 
     if (updates.password.length < minimumPasswordLength) {

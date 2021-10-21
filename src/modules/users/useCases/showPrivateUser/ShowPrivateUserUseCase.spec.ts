@@ -1,3 +1,4 @@
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { ShowPrivateUserUseCase } from "./ShowPrivateUserUseCase";
@@ -39,5 +40,11 @@ describe("Show Private User use case", () => {
 
       expect(response).not.toHaveProperty("password");
     }
+  });
+
+  it("Should not show private information if user is invalid", async () => {
+    await expect(
+      showPrivateUserUseCase.execute("dd17a4f1-e819-4972-ae6b-abb660fc5e66")
+    ).rejects.toEqual(new AuthenticationError());
   });
 });

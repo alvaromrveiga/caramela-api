@@ -1,6 +1,6 @@
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
+import { UserNotFoundError } from "./errors/UserNotFoundError";
 import { ShowPublicUserUseCase } from "./ShowPublicUserUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -42,7 +42,7 @@ describe("Show Public User use case", () => {
 
   it("Should not show public user information for invalid user", async () => {
     await expect(showPublicUserUseCase.execute("invalidID")).rejects.toEqual(
-      new ErrorWithStatus(404, "User not found")
+      new UserNotFoundError()
     );
   });
 });

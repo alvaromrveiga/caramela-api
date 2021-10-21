@@ -1,6 +1,7 @@
 import { mock } from "jest-mock-extended";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
@@ -130,7 +131,7 @@ describe("Update Pet Avatar use case", () => {
         petOneId,
         "testFile.png"
       )
-    ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
+    ).rejects.toEqual(new AuthenticationError());
   });
 
   it("Should not update other user's pet avatar", async () => {

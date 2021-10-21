@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { NoAvatarFileError } from "./errors/NoAvatarFileError";
 
 @injectable()
 export class UpdateUserAvatarUseCase {
@@ -20,7 +20,7 @@ export class UpdateUserAvatarUseCase {
     avatarFile: string | undefined
   ): Promise<string> {
     if (!avatarFile) {
-      throw new ErrorWithStatus(400, "Please upload an avatar file");
+      throw new NoAvatarFileError();
     }
 
     const user = await getValidatedUser(userId, this.usersRepository);

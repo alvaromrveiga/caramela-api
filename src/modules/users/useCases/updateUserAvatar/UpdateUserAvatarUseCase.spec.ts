@@ -1,8 +1,9 @@
 import { mock } from "jest-mock-extended";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { NoAvatarFileError } from "./errors/NoAvatarFileError";
 import { UpdateUserAvatarUseCase } from "./UpdateUserAvatarUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -63,7 +64,7 @@ describe("Update User Avatar use case", () => {
   it("Should not update invalid user's avatar", async () => {
     await expect(
       updateUserAvatarUseCase.execute("invalidUser", "avatarFile.png")
-    ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
+    ).rejects.toEqual(new AuthenticationError());
   });
 
   it("Should not update user's avatar if empty avatar", async () => {
@@ -73,9 +74,7 @@ describe("Update User Avatar use case", () => {
     if (user) {
       await expect(
         updateUserAvatarUseCase.execute(user.id, undefined)
-      ).rejects.toEqual(
-        new ErrorWithStatus(400, "Please upload an avatar file")
-      );
+      ).rejects.toEqual(new NoAvatarFileError());
     }
   });
 });

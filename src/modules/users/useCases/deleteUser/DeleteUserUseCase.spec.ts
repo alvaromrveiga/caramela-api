@@ -1,4 +1,5 @@
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
+import { InvalidPasswordError } from "../../../../shared/errors/InvalidPasswordError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { DeleteUserUseCase } from "./DeleteUserUseCase";
@@ -36,7 +37,7 @@ describe("Delete User use case", () => {
   it("Should not delete if user does not exist", async () => {
     await expect(
       deleteUserUseCase.execute("invalid_ID", "password")
-    ).rejects.toEqual(new ErrorWithStatus(401, "Please authenticate"));
+    ).rejects.toEqual(new AuthenticationError());
   });
 
   it("Should not delete user if password is wrong", async () => {
@@ -46,7 +47,7 @@ describe("Delete User use case", () => {
     if (user) {
       await expect(
         deleteUserUseCase.execute(user.id, "wrongPassword")
-      ).rejects.toEqual(new ErrorWithStatus(400, "Invalid password"));
+      ).rejects.toEqual(new InvalidPasswordError());
     }
   });
 });
