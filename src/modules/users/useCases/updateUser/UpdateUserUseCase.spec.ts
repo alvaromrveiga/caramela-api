@@ -1,6 +1,8 @@
+import { minimumPasswordLength } from "../../../../config/password";
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
+import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
 import { UpdateUserUseCase } from "./UpdateUserUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -102,6 +104,22 @@ describe("Update User use case", () => {
           currentPassword: "wrongCurrentPassword",
         })
       ).rejects.toEqual(new ErrorWithStatus(400, "Invalid current password"));
+    }
+  });
+
+  it(`Should not update if new password is less than ${minimumPasswordLength} characters`, async () => {
+    const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
+
+    expect(user).toBeDefined();
+    if (user) {
+      await expect(
+        updateUserUseCase.execute(user.id, {
+          name: "UpdatedTester",
+          email: "updatedTester@mail.com",
+          password: "1234567",
+          currentPassword: "testerPa$$w0rd",
+        })
+      ).rejects.toEqual(new InvalidPasswordCreationError());
     }
   });
 });
