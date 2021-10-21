@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
+import { minimumPasswordLength } from "../../../../config/password";
 import {
   comparePasswordAsync,
   hashPasswordAsync,
@@ -10,6 +11,7 @@ import { IAllowedUpdatesDTO } from "../../dtos/IAllowedUpdatesDTO";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
 
 @injectable()
 export class UpdateUserUseCase {
@@ -79,6 +81,10 @@ export class UpdateUserUseCase {
 
     if (!isValidPassword) {
       throw new ErrorWithStatus(400, "Invalid current password");
+    }
+
+    if (updates.password.length < minimumPasswordLength) {
+      throw new InvalidPasswordCreationError();
     }
 
     const hashNewPassword = await hashPasswordAsync(updates.password);
