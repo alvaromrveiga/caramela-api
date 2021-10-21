@@ -4,7 +4,7 @@ import path from "path";
 
 import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 
-const tmpFolder = path.resolve(__dirname, "..", "..", "tmp");
+const tmpFolder = path.resolve(__dirname, "..", "..", "..", "..", "..", "tmp");
 
 const upload = multer({
   storage: multer.diskStorage({
