@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { MulterError } from "multer";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { AppError } from "../../../errors/AppError";
 
 export function errorHandler(
@@ -10,10 +9,6 @@ export function errorHandler(
   response: Response,
   next: NextFunction
 ): Response {
-  if (error instanceof ErrorWithStatus) {
-    return response.status(error.status).json({ error: error.message });
-  }
-
   if (error instanceof AppError) {
     return response.status(error.statusCode).json({ error: error.message });
   }
