@@ -2,7 +2,8 @@ import { mock } from "jest-mock-extended";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { NoAvatarFileError } from "../../../../shared/errors/NoAvatarFileError";
+import { PetNotFoundError } from "../../../../shared/errors/PetNotFoundError";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
 import { UpdatePetAvatarUseCase } from "./UpdatePetAvatarUseCase";
@@ -15,7 +16,7 @@ let updatePetAvatarUseCase: UpdatePetAvatarUseCase;
 let userId: string;
 let otherUserPetId: string;
 let petOneId: string;
-let petTwoId: string;
+// let petTwoId: string;
 
 describe("Update Pet Avatar use case", () => {
   beforeEach(async () => {
@@ -82,7 +83,7 @@ describe("Update Pet Avatar use case", () => {
       species: "Dog",
       user_id: userId,
     });
-    petTwoId = pet.id;
+    // petTwoId = pet.id;
   });
 
   it("Should update pet avatar", async () => {
@@ -121,7 +122,7 @@ describe("Update Pet Avatar use case", () => {
   it("Should not update pet's avatar if avatar is invalid", async () => {
     await expect(
       updatePetAvatarUseCase.execute(userId, petOneId, "")
-    ).rejects.toEqual(new ErrorWithStatus(400, "Please upload an avatar file"));
+    ).rejects.toEqual(new NoAvatarFileError());
   });
 
   it("Should not update pet's avatar if user is invalid", async () => {
@@ -137,6 +138,6 @@ describe("Update Pet Avatar use case", () => {
   it("Should not update other user's pet avatar", async () => {
     await expect(
       updatePetAvatarUseCase.execute(userId, otherUserPetId, "testFile.png")
-    ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
+    ).rejects.toEqual(new PetNotFoundError());
   });
 });

@@ -1,5 +1,5 @@
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { PetNotFoundError } from "../../../../shared/errors/PetNotFoundError";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
 import { DeletePetUseCase } from "./DeletePetUseCase";
@@ -10,7 +10,7 @@ let deletePetUseCase: DeletePetUseCase;
 
 let userId: string;
 let otherUserPetId: string;
-let petOneId: string;
+// let petOneId: string;
 let petTwoId: string;
 
 describe("Delete Pet use case", () => {
@@ -69,7 +69,7 @@ describe("Delete Pet use case", () => {
       weight_kg: 0.1,
       user_id: userId,
     });
-    petOneId = pet.id;
+    // petOneId = pet.id;
 
     pet = await inMemoryPetsRepository.createAndSave({
       name: "Petster2",
@@ -101,7 +101,7 @@ describe("Delete Pet use case", () => {
   it("Should not delete pet from another user", async () => {
     await expect(
       deletePetUseCase.execute(userId, otherUserPetId)
-    ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
+    ).rejects.toEqual(new PetNotFoundError());
   });
 
   it("Should not delete pet if user is invalid", async () => {

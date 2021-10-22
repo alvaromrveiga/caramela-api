@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { minimumPasswordLength } from "../../../../config/password";
+import { InvalidUpdateError } from "../../../../shared/errors/InvalidUpdateError";
 import {
   comparePasswordAsync,
   hashPasswordAsync,
@@ -12,7 +13,6 @@ import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
 import { InvalidCurrentPasswordError } from "./errors/InvalidCurrentPasswordError";
-import { InvalidUpdateError } from "./errors/InvalidUpdateError";
 
 @injectable()
 export class UpdateUserUseCase {

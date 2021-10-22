@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { UsersRepository } from "../../../../modules/users/infra/typeorm/repositories/UsersRepository";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { NoJwtSecretError } from "./errors/NoJwtSecretError";
 
 export const ensureAuthenticated = async (
   req: Request,
@@ -18,7 +18,7 @@ export const ensureAuthenticated = async (
     }
 
     if (!process.env.JWT_SECRET) {
-      throw new ErrorWithStatus(500, "No JWT_SECRET defined on .env");
+      throw new NoJwtSecretError();
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };

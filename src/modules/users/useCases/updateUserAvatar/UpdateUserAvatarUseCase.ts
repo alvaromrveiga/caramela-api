@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
+import { NoAvatarFileError } from "../../../../shared/errors/NoAvatarFileError";
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { NoAvatarFileError } from "./errors/NoAvatarFileError";
 
 @injectable()
 export class UpdateUserAvatarUseCase {

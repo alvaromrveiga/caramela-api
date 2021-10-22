@@ -1,11 +1,12 @@
 import { inject, injectable } from "tsyringe";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { ICreatePetDTO } from "../../dtos/ICreatePetDTO";
 import { Pet } from "../../infra/typeorm/entities/Pet";
 import { IPetsRepository } from "../../repositories/IPetsRepository";
+import { InvalidPetNameError } from "./errors/InvalidPetNameError";
+import { InvalidPetSpeciesError } from "./errors/InvalidPetSpeciesError";
 
 @injectable()
 export class CreatePetUseCase {
@@ -35,13 +36,13 @@ export class CreatePetUseCase {
 
   private async validatePetName(name: string): Promise<void> {
     if (!name) {
-      throw new ErrorWithStatus(400, "Invalid pet name");
+      throw new InvalidPetNameError();
     }
   }
 
   private validateSpecies(species: string): void {
     if (!species) {
-      throw new ErrorWithStatus(400, "Please choose your pet species!");
+      throw new InvalidPetSpeciesError();
     }
   }
 }

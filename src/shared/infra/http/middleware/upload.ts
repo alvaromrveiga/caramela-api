@@ -2,7 +2,7 @@ import crypto from "crypto";
 import multer from "multer";
 import path from "path";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { FileTypeError } from "./errors/FileTypeError";
 
 const tmpFolder = path.resolve(__dirname, "..", "..", "..", "..", "..", "tmp");
 
@@ -29,12 +29,7 @@ const upload = multer({
       return callback(null, true);
     }
 
-    return callback(
-      new ErrorWithStatus(
-        400,
-        `File upload only supports the following filetypes - ${filetypes}`
-      )
-    );
+    return callback(new FileTypeError(filetypes));
   },
 
   limits: {

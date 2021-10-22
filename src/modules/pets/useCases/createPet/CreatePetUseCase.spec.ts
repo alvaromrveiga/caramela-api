@@ -1,10 +1,11 @@
 import { validate } from "uuid";
 
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
 import { CreatePetUseCase } from "./CreatePetUseCase";
+import { InvalidPetNameError } from "./errors/InvalidPetNameError";
+import { InvalidPetSpeciesError } from "./errors/InvalidPetSpeciesError";
 
 let inMemoryPetsRepository: InMemoryPetsRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -82,7 +83,7 @@ describe("Create Pet use case", () => {
         gender: "Male",
         weight_kg: 11.3,
       })
-    ).rejects.toEqual(new ErrorWithStatus(400, "Invalid pet name"));
+    ).rejects.toEqual(new InvalidPetNameError());
   });
 
   it("Should not create pet with invalid species", async () => {
@@ -95,8 +96,6 @@ describe("Create Pet use case", () => {
         gender: "Male",
         weight_kg: 11.3,
       })
-    ).rejects.toEqual(
-      new ErrorWithStatus(400, "Please choose your pet species!")
-    );
+    ).rejects.toEqual(new InvalidPetSpeciesError());
   });
 });

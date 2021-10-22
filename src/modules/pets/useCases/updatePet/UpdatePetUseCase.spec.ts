@@ -1,4 +1,4 @@
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { PetNotFoundError } from "../../../../shared/errors/PetNotFoundError";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
 import { UpdatePetUseCase } from "./UpdatePetUseCase";
@@ -10,6 +10,7 @@ let updatePetUseCase: UpdatePetUseCase;
 let userId: string;
 let otherUserPetId: string;
 let petOneId: string;
+// let petTwoId: string;
 
 describe("Update Pet use case", () => {
   beforeEach(async () => {
@@ -74,6 +75,7 @@ describe("Update Pet use case", () => {
       species: "Dog",
       user_id: userId,
     });
+    // petTwoId = pet.id;
   });
 
   it("Should not update pet if it does not exist", async () => {
@@ -81,7 +83,7 @@ describe("Update Pet use case", () => {
       updatePetUseCase.execute(userId, "31962681-eec5-4e11-9618-6306fc3995d3", {
         name: "TicTic",
       })
-    ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
+    ).rejects.toEqual(new PetNotFoundError());
   });
 
   it("Should not update other user's pet", async () => {
@@ -89,7 +91,7 @@ describe("Update Pet use case", () => {
       updatePetUseCase.execute(userId, otherUserPetId, {
         name: "TicTic",
       })
-    ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
+    ).rejects.toEqual(new PetNotFoundError());
   });
 
   it("Should update pet", async () => {

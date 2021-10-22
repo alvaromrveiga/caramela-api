@@ -1,5 +1,5 @@
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { PetNotFoundError } from "../../../../shared/errors/PetNotFoundError";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryPetsRepository } from "../../repositories/in-memory/InMemoryPetsRepository";
 import { ShowPetUseCase } from "./ShowPetUseCase";
@@ -102,6 +102,6 @@ describe("Show Pet use case", () => {
   it("Should not show another user's pet", async () => {
     await expect(
       showPetUseCase.execute(userId, otherUserPetId)
-    ).rejects.toEqual(new ErrorWithStatus(404, "Pet not found!"));
+    ).rejects.toEqual(new PetNotFoundError());
   });
 });

@@ -2,8 +2,8 @@ import { mock } from "jest-mock-extended";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
+import { NoAvatarFileError } from "../../../../shared/errors/NoAvatarFileError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
-import { NoAvatarFileError } from "./errors/NoAvatarFileError";
 import { UpdateUserAvatarUseCase } from "./UpdateUserAvatarUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;

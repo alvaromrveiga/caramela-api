@@ -1,7 +1,8 @@
 import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { NoAvatarFileError } from "../../../../shared/errors/NoAvatarFileError";
+import { PetNotFoundError } from "../../../../shared/errors/PetNotFoundError";
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { Pet } from "../../infra/typeorm/entities/Pet";
@@ -26,7 +27,7 @@ export class UpdatePetAvatarUseCase {
     avatarFile: string | undefined
   ): Promise<Pet> {
     if (!avatarFile) {
-      throw new ErrorWithStatus(400, "Please upload an avatar file");
+      throw new NoAvatarFileError();
     }
 
     await getValidatedUser(userId, this.usersRepository);
@@ -56,7 +57,7 @@ export class UpdatePetAvatarUseCase {
     if (!pet) {
       await this.storageProvider.delete(avatarFile, "");
 
-      throw new ErrorWithStatus(404, "Pet not found!");
+      throw new PetNotFoundError();
     }
 
     return pet;

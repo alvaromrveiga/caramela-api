@@ -1,6 +1,6 @@
 import { Pet } from "../modules/pets/infra/typeorm/entities/Pet";
 import { IPetsRepository } from "../modules/pets/repositories/IPetsRepository";
-import { ErrorWithStatus } from "./ErrorWithStatus";
+import { PetNotFoundError } from "../shared/errors/PetNotFoundError";
 
 export async function getValidatedPet(
   userId: string,
@@ -10,7 +10,7 @@ export async function getValidatedPet(
   const pet = await petsRepository.findByUserAndPetId(userId, petId);
 
   if (!pet) {
-    throw new ErrorWithStatus(404, "Pet not found!");
+    throw new PetNotFoundError();
   }
 
   return pet;

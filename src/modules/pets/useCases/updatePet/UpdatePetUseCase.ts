@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
-import { ErrorWithStatus } from "../../../../utils/ErrorWithStatus";
+import { InvalidUpdateError } from "../../../../shared/errors/InvalidUpdateError";
+import { PetNotFoundError } from "../../../../shared/errors/PetNotFoundError";
 import { getValidatedPet } from "../../../../utils/getValidatedPet";
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IAllowedUpdatesDTO } from "../../../users/dtos/IAllowedUpdatesDTO";
@@ -53,7 +54,7 @@ export class UpdatePetUseCase {
     });
 
     if (!isValidUpdate) {
-      throw new ErrorWithStatus(400, "Invalid update!");
+      throw new InvalidUpdateError();
     }
   }
 
@@ -62,7 +63,7 @@ export class UpdatePetUseCase {
     updates: IAllowedUpdatesDTO
   ): Pet {
     if (!pet) {
-      throw new ErrorWithStatus(404, "Pet not found!");
+      throw new PetNotFoundError();
     }
 
     return { ...pet, ...updates };
