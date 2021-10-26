@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+import { tokenSecret } from "../../../../config/auth";
 import { UsersRepository } from "../../../../modules/users/infra/typeorm/repositories/UsersRepository";
-import { NoJwtSecretError } from "./errors/NoJwtSecretError";
 
 export const ensureAuthenticated = async (
   req: Request,
@@ -17,14 +17,10 @@ export const ensureAuthenticated = async (
       return;
     }
 
-    if (!process.env.JWT_SECRET) {
-      throw new NoJwtSecretError();
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
+    const { sub: userId } = jwt.verify(token, tokenSecret) as { sub: string };
 
     const usersRepository = new UsersRepository();
-    const user = await usersRepository.findById(decoded.id);
+    const user = await usersRepository.findById(userId);
 
     if (!user) {
       res.status(401).json({ error: "Please Authenticate" });
