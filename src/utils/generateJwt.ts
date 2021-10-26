@@ -1,14 +1,13 @@
 import jwt from "jsonwebtoken";
 
+import { tokenExpiresIn, tokenSecret } from "../config/auth";
 import { User } from "../modules/users/infra/typeorm/entities/User";
-import { NoJwtSecretError } from "../shared/infra/http/middleware/errors/NoJwtSecretError";
 
 export const generateJwt = (user: User): void => {
-  if (!process.env.JWT_SECRET) {
-    throw new NoJwtSecretError();
-  }
-
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+  const token = jwt.sign({}, tokenSecret, {
+    subject: user.id,
+    expiresIn: tokenExpiresIn,
+  });
 
   const userReference = user;
 
