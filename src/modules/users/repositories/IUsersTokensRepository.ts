@@ -13,5 +13,5 @@ export interface IUsersTokensRepository {
 
   deleteById(tokenId: string): Promise<void>;
 
-  deleteAll(): Promise<void>;
+  deleteAllByUserId(userId: string): Promise<void>;
 }
