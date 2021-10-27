@@ -23,6 +23,9 @@ export class UserTokens {
   user_id: string;
 
   @Column()
+  machine_info: string;
+
+  @Column()
   expiration_date: Date;
 
   @CreateDateColumn()
