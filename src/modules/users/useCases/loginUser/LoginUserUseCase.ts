@@ -1,22 +1,34 @@
+import dayjs from "dayjs";
+import jwt from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
+import {
+  refreshTokenExpiresInDays,
+  refreshTokenSecret,
+  tokenExpiresIn,
+  tokenSecret,
+} from "../../../../config/auth";
 import { comparePasswordAsync } from "../../../../utils/bcrypt";
-import { generateJwt } from "../../../../utils/generateJwt";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 import { LoginError } from "./errors/LoginError";
 
 interface IResponse {
   name: string;
   email: string;
-  tokens: string[];
+  token: string;
+  refresh_token: string;
 }
 
 @injectable()
 export class LoginUserUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+
+    @inject("UsersTokensRepository")
+    private usersTokensRepository: IUsersTokensRepository
   ) {}
 
   async execute(email: string, password: string): Promise<IResponse> {
@@ -28,14 +40,13 @@ export class LoginUserUseCase {
 
     await this.verifyPassword(user, password);
 
-    generateJwt(user);
-
-    await this.usersRepository.createAndSave(user);
+    const { token, refresh_token } = await this.generateTokens(user);
 
     const tokenResponse: IResponse = {
       name: user.name,
       email: user.email,
-      tokens: user.tokens,
+      token,
+      refresh_token,
     };
 
     return tokenResponse;
@@ -47,5 +58,32 @@ export class LoginUserUseCase {
     if (!result) {
       throw new LoginError();
     }
+  }
+
+  private async generateTokens(user: User): Promise<{
+    token: string;
+    refresh_token: string;
+  }> {
+    const token = jwt.sign({}, tokenSecret, {
+      subject: user.id,
+      expiresIn: tokenExpiresIn,
+    });
+
+    const refresh_token = jwt.sign({ email: user.email }, refreshTokenSecret, {
+      subject: user.id,
+      expiresIn: `${refreshTokenExpiresInDays}d`,
+    });
+
+    const refreshTokenExpirationDate = dayjs()
+      .add(refreshTokenExpiresInDays, "day")
+      .toDate();
+
+    await this.usersTokensRepository.createAndSave({
+      user_id: user.id,
+      refresh_token,
+      expiration_date: refreshTokenExpirationDate,
+    });
+
+    return { token, refresh_token };
   }
 }
