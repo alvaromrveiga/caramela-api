@@ -2,20 +2,21 @@ import { inject, injectable } from "tsyringe";
 
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 
 @injectable()
 export class LogoutAllUserUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+
+    @inject("UsersTokensRepository")
+    private usersTokensRepository: IUsersTokensRepository
   ) {}
 
   async execute(userId: string): Promise<void> {
-    const user = await getValidatedUser(userId, this.usersRepository);
+    await getValidatedUser(userId, this.usersRepository);
 
-    await this.usersRepository.createAndSave({
-      ...user,
-      tokens: [],
-    });
+    await this.usersTokensRepository.deleteAllByUserId(userId);
   }
 }
