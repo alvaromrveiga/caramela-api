@@ -7,9 +7,9 @@ export interface IUsersTokensRepository {
   findByUserAndRefreshToken(
     userId: string,
     refreshToken: string
-  ): Promise<UserTokens>;
+  ): Promise<UserTokens | undefined>;
 
-  findByRefreshToken(refreshToken: string): Promise<UserTokens>;
+  findByRefreshToken(refreshToken: string): Promise<UserTokens | undefined>;
 
   deleteById(tokenId: string): void;
 
