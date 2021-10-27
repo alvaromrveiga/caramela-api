@@ -30,9 +30,6 @@ export class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column("varchar", { array: true })
-  tokens: string[];
-
   constructor() {
     if (!this.id) {
       this.id = uuidv4();
