@@ -12,12 +12,12 @@ if (!process.env.REFRESH_TOKEN_SECRET) {
 const tokenExpiresIn = "15m";
 const tokenSecret = process.env.JWT_SECRET;
 
-const refreshTokenExpiresIn = "30d";
+const refreshTokenExpiresInDays = 30;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
 export {
   tokenExpiresIn,
   tokenSecret,
-  refreshTokenExpiresIn,
+  refreshTokenExpiresInDays,
   refreshTokenSecret,
 };
