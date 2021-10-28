@@ -49,7 +49,6 @@ export class UpdateUserUseCase {
       name: newUser.name,
       created_at: newUser.created_at,
       updated_at: newUser.updated_at,
-      tokens: newUser.tokens,
     };
   }
 
