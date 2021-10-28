@@ -79,14 +79,13 @@ export class LoginUserUseCase {
       expiresIn: tokenExpiresIn,
     });
 
-    const userTokens =
-      await this.usersTokensRepository.findByUserAndMachineInfo(
-        user.id,
-        machineInfo
-      );
+    const userToken = await this.usersTokensRepository.findByUserAndMachineInfo(
+      user.id,
+      machineInfo
+    );
 
-    if (userTokens) {
-      return { token, refresh_token: userTokens.refresh_token };
+    if (userToken) {
+      await this.usersTokensRepository.deleteById(userToken.id);
     }
 
     const refresh_token = await this.createRefreshToken(user, machineInfo);
