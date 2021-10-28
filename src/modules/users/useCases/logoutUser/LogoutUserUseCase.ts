@@ -2,24 +2,29 @@ import { inject, injectable } from "tsyringe";
 
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 
 @injectable()
 export class LogoutUserUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+
+    @inject("UsersTokensRepository")
+    private usersTokensRepository: IUsersTokensRepository
   ) {}
 
-  async execute(userId: string, loginToken: string): Promise<void> {
-    const user = await getValidatedUser(userId, this.usersRepository);
+  async execute(userId: string, machineInfo: string): Promise<void> {
+    await getValidatedUser(userId, this.usersRepository);
 
-    const filteredTokens = user.tokens.filter((token) => {
-      return loginToken !== token;
-    });
+    const refreshToken =
+      await this.usersTokensRepository.findByUserAndMachineInfo(
+        userId,
+        machineInfo
+      );
 
-    await this.usersRepository.createAndSave({
-      ...user,
-      tokens: filteredTokens,
-    });
+    if (refreshToken) {
+      await this.usersTokensRepository.deleteById(refreshToken.id);
+    }
   }
 }

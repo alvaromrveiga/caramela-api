@@ -31,7 +31,11 @@ export class LoginUserUseCase {
     private usersTokensRepository: IUsersTokensRepository
   ) {}
 
-  async execute(email: string, password: string): Promise<IResponse> {
+  async execute(
+    email: string,
+    password: string,
+    machineInfo: string
+  ): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
@@ -40,7 +44,10 @@ export class LoginUserUseCase {
 
     await this.verifyPassword(user, password);
 
-    const { token, refresh_token } = await this.generateTokens(user);
+    const { token, refresh_token } = await this.generateTokens(
+      user,
+      machineInfo
+    );
 
     const tokenResponse: IResponse = {
       name: user.name,
@@ -60,7 +67,10 @@ export class LoginUserUseCase {
     }
   }
 
-  private async generateTokens(user: User): Promise<{
+  private async generateTokens(
+    user: User,
+    machineInfo: string
+  ): Promise<{
     token: string;
     refresh_token: string;
   }> {
@@ -69,6 +79,25 @@ export class LoginUserUseCase {
       expiresIn: tokenExpiresIn,
     });
 
+    const userTokens =
+      await this.usersTokensRepository.findByUserAndMachineInfo(
+        user.id,
+        machineInfo
+      );
+
+    if (userTokens) {
+      return { token, refresh_token: userTokens.refresh_token };
+    }
+
+    const refresh_token = await this.createRefreshToken(user, machineInfo);
+
+    return { token, refresh_token };
+  }
+
+  private async createRefreshToken(
+    user: User,
+    machineInfo: string
+  ): Promise<string> {
     const refresh_token = jwt.sign({ email: user.email }, refreshTokenSecret, {
       subject: user.id,
       expiresIn: `${refreshTokenExpiresInDays}d`,
@@ -82,8 +111,9 @@ export class LoginUserUseCase {
       user_id: user.id,
       refresh_token,
       expiration_date: refreshTokenExpirationDate,
+      machine_info: machineInfo,
     });
 
-    return { token, refresh_token };
+    return refresh_token;
   }
 }
