@@ -7,6 +7,7 @@ import { LogoutAllUserController } from "../../../../modules/users/useCases/logo
 import { LogoutUserController } from "../../../../modules/users/useCases/logoutUser/LogoutUserController";
 import { ShowPrivateUserController } from "../../../../modules/users/useCases/showPrivateUser/ShowPrivateUserController";
 import { ShowPublicUserController } from "../../../../modules/users/useCases/showPublicUser/ShowPublicUserController";
+import { ShowTokensController } from "../../../../modules/users/useCases/showTokens/ShowTokensController";
 import { UpdateUserController } from "../../../../modules/users/useCases/updateUser/UpdateUserController";
 import { UpdateUserAvatarController } from "../../../../modules/users/useCases/updateUserAvatar/UpdateUserAvatarController";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
@@ -33,6 +34,12 @@ usersRoutes.get(
   "/users/profile",
   ensureAuthenticated,
   new ShowPrivateUserController().handle
+);
+
+usersRoutes.get(
+  "/users/sessions",
+  ensureAuthenticated,
+  new ShowTokensController().handle
 );
 
 usersRoutes.get(
