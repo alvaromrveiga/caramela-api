@@ -9,6 +9,11 @@ export interface IUsersTokensRepository {
     refreshToken: string
   ): Promise<UserTokens | undefined>;
 
+  findByUserAndMachineInfo(
+    userId: string,
+    machineInfo: string
+  ): Promise<UserTokens | undefined>;
+
   findByRefreshToken(refreshToken: string): Promise<UserTokens | undefined>;
 
   deleteById(tokenId: string): Promise<void>;

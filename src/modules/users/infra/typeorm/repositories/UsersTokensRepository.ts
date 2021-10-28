@@ -33,6 +33,20 @@ export class UsersTokensRepository implements IUsersTokensRepository {
     });
   }
 
+  async findByUserAndMachineInfo(
+    userId: string,
+    machineInfo: string
+  ): Promise<UserTokens | undefined> {
+    return this.repository.findOne({
+      where: [
+        {
+          user_id: userId,
+          machine_info: machineInfo,
+        },
+      ],
+    });
+  }
+
   async findByRefreshToken(
     refreshToken: string
   ): Promise<UserTokens | undefined> {
