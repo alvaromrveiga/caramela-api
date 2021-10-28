@@ -1,0 +1,77 @@
+import { verify } from "jsonwebtoken";
+
+import { tokenSecret } from "../../../../config/auth";
+import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
+import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
+import { LoginUserUseCase } from "../loginUser/LoginUserUseCase";
+import { InvalidRefreshTokenError } from "./errors/InvalidRefreshTokenError";
+import { RefreshTokenUseCase } from "./RefreshTokenUseCase";
+
+let inMemoryUsersRepository: InMemoryUsersRepository;
+let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository;
+let refreshTokenUseCase: RefreshTokenUseCase;
+let loginUserUseCase: LoginUserUseCase;
+let createUserUseCase: CreateUserUseCase;
+
+let refreshToken: string;
+
+describe("Refresh Token use case", () => {
+  beforeEach(async () => {
+    inMemoryUsersRepository = new InMemoryUsersRepository();
+    inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository();
+
+    refreshTokenUseCase = new RefreshTokenUseCase(
+      inMemoryUsersTokensRepository
+    );
+    loginUserUseCase = new LoginUserUseCase(
+      inMemoryUsersRepository,
+      inMemoryUsersTokensRepository
+    );
+    createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
+
+    await createUserUseCase.execute({
+      name: "Tester",
+      email: "tester@mail.com",
+      password: "testerPa$$w0rd",
+    });
+
+    ({ refresh_token: refreshToken } = await loginUserUseCase.execute(
+      "tester@mail.com",
+      "testerPa$$w0rd",
+      "Tester PC 127.0.0.1"
+    ));
+  });
+
+  it("Should refresh token", async () => {
+    const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
+
+    const token = await refreshTokenUseCase.execute(refreshToken);
+
+    const { sub: userId } = verify(token, tokenSecret) as { sub: string };
+
+    expect(user).toBeDefined();
+    if (user) {
+      expect(userId).toEqual(user.id);
+    }
+  });
+
+  it("Should not refresh token if refresh token secret is invalid", async () => {
+    await expect(
+      refreshTokenUseCase.execute(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikp" +
+          "vaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+      )
+    ).rejects.toThrowError();
+  });
+
+  it("Should not refresh token if token is invalid", async () => {
+    await expect(
+      refreshTokenUseCase.execute(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU0MzAxMDYsImV4cCI6MTYzNTQzMTAwNiwic3ViIjo" +
+          "iZDU4ZDMxMzMtZDhjYy00MzBmLTk4YWMtZmExYzg2ODdkNjIzIn0.RZJct58vcnYTljafqkIYtKP3bJD3hElTeBozgAfKzxU"
+      )
+    ).rejects.toEqual(new InvalidRefreshTokenError());
+  });
+});
+//
