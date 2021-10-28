@@ -53,6 +53,10 @@ export class UsersTokensRepository implements IUsersTokensRepository {
     return this.repository.findOne({ refresh_token: refreshToken });
   }
 
+  findByUserId(userId: string): Promise<UserTokens[]> {
+    return this.repository.find({ user_id: userId });
+  }
+
   async deleteById(tokenId: string): Promise<void> {
     await this.repository.delete({ id: tokenId });
   }
