@@ -1,23 +1,32 @@
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { User } from "../../infra/typeorm/entities/User";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { LoginUserUseCase } from "../loginUser/LoginUserUseCase";
 import { LogoutUserUseCase } from "./LogoutUserUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
+let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository;
 let logoutUserUseCase: LogoutUserUseCase;
 let loginUserUseCase: LoginUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 
 let user: User | undefined;
-let tokens: string[];
 
 describe("Logout User use case", () => {
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    logoutUserUseCase = new LogoutUserUseCase(inMemoryUsersRepository);
-    loginUserUseCase = new LoginUserUseCase(inMemoryUsersRepository);
+    inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository();
+
+    logoutUserUseCase = new LogoutUserUseCase(
+      inMemoryUsersRepository,
+      inMemoryUsersTokensRepository
+    );
+    loginUserUseCase = new LoginUserUseCase(
+      inMemoryUsersRepository,
+      inMemoryUsersTokensRepository
+    );
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
 
     await createUserUseCase.execute({
@@ -26,31 +35,44 @@ describe("Logout User use case", () => {
       password: "testerPa$$w0rd",
     });
 
-    ({ tokens } = await loginUserUseCase.execute(
+    await loginUserUseCase.execute(
       "tester@mail.com",
-      "testerPa$$w0rd"
-    ));
+      "testerPa$$w0rd",
+      "Tester PC 127.0.0.1"
+    );
+
+    await loginUserUseCase.execute(
+      "tester@mail.com",
+      "testerPa$$w0rd",
+      "Tester Phone 127.0.0.1"
+    );
 
     user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
   });
 
   it("Should logout user", async () => {
-    expect(user).not.toBeUndefined();
+    expect(user).toBeDefined();
 
     if (user) {
-      await logoutUserUseCase.execute(user.id, tokens[0]);
+      let userTokens = await inMemoryUsersTokensRepository.findByUserId(
+        user.id
+      );
+
+      expect(userTokens.length).toEqual(2);
+
+      await logoutUserUseCase.execute(user.id, "Tester Phone 127.0.0.1");
+
+      userTokens = await inMemoryUsersTokensRepository.findByUserId(user.id);
+
+      expect(userTokens.length).toEqual(1);
     }
-
-    user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
-
-    expect(user?.tokens.length).toEqual(0);
   });
 
   it("Should not logout if user is invalid", async () => {
     await expect(
       logoutUserUseCase.execute(
         "dd17a4f1-e819-4972-ae6b-abb660fc5e66",
-        tokens[0]
+        "Tester PC 127.0.0.1"
       )
     ).rejects.toEqual(new AuthenticationError());
   });

@@ -1,16 +1,26 @@
+import { verify } from "jsonwebtoken";
+
+import { refreshTokenSecret, tokenSecret } from "../../../../config/auth";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { LoginError } from "./errors/LoginError";
 import { LoginUserUseCase } from "./LoginUserUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
+let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository;
 let loginUserUseCase: LoginUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 
 describe("Delete User use case", () => {
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    loginUserUseCase = new LoginUserUseCase(inMemoryUsersRepository);
+    inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository();
+
+    loginUserUseCase = new LoginUserUseCase(
+      inMemoryUsersRepository,
+      inMemoryUsersTokensRepository
+    );
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
 
     await createUserUseCase.execute({
@@ -21,25 +31,63 @@ describe("Delete User use case", () => {
   });
 
   it("Should login user", async () => {
-    const user = await loginUserUseCase.execute(
+    const loginResponse = await loginUserUseCase.execute(
       "tester@mail.com",
-      "testerPa$$w0rd"
+      "testerPa$$w0rd",
+      "Tester PC 127.0.0.1"
     );
 
-    expect(user.name).toEqual("Tester");
-    expect(user.email).toEqual("tester@mail.com");
-    expect(user.tokens.length).toEqual(1);
+    expect(loginResponse.name).toEqual("Tester");
+    expect(loginResponse.email).toEqual("tester@mail.com");
+
+    const { sub: idFromToken } = verify(loginResponse.token, tokenSecret);
+    const { sub: idFromRefreshToken } = verify(
+      loginResponse.refresh_token,
+      refreshTokenSecret
+    );
+
+    const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
+
+    expect(user).toBeDefined();
+    if (user) {
+      expect(idFromToken).toEqual(user.id);
+      expect(idFromRefreshToken).toEqual(user.id);
+
+      let userTokens = await inMemoryUsersTokensRepository.findByUserId(
+        user.id
+      );
+
+      expect(userTokens.length).toEqual(1);
+
+      await loginUserUseCase.execute(
+        "tester@mail.com",
+        "testerPa$$w0rd",
+        "Tester Phone 127.0.0.1"
+      );
+
+      userTokens = await inMemoryUsersTokensRepository.findByUserId(user.id);
+
+      expect(userTokens.length).toEqual(2);
+    }
   });
 
   it("Should not login user if email is wrong", async () => {
     await expect(
-      loginUserUseCase.execute("wrongEmail", "testerPa$$w0rd")
+      loginUserUseCase.execute(
+        "wrongEmail",
+        "testerPa$$w0rd",
+        "Tester PC 127.0.0.1"
+      )
     ).rejects.toEqual(new LoginError());
   });
 
   it("Should not login user if password is wrong", async () => {
     await expect(
-      loginUserUseCase.execute("tester@mail.com", "wrongPassword")
+      loginUserUseCase.execute(
+        "tester@mail.com",
+        "wrongPassword",
+        "Tester PC 127.0.0.1"
+      )
     ).rejects.toEqual(new LoginError());
   });
 });
