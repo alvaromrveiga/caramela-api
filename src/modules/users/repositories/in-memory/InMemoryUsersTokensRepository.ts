@@ -13,6 +13,7 @@ export class InMemoryUsersTokensRepository implements IUsersTokensRepository {
     const userToken = new UserTokens();
     Object.assign(userToken, data);
 
+    this.usersTokens.push(userToken);
     return userToken;
   }
 
@@ -62,7 +63,7 @@ export class InMemoryUsersTokensRepository implements IUsersTokensRepository {
 
   async deleteAllByUserId(userId: string): Promise<void> {
     this.usersTokens = this.usersTokens.filter((userToken) => {
-      return userToken.id !== userId;
+      return userToken.user_id !== userId;
     });
   }
 }
