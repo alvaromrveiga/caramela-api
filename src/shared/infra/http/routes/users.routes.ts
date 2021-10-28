@@ -5,6 +5,7 @@ import { DeleteUserController } from "../../../../modules/users/useCases/deleteU
 import { LoginUserController } from "../../../../modules/users/useCases/loginUser/LoginUserController";
 import { LogoutAllUserController } from "../../../../modules/users/useCases/logoutAllUser/LogoutAllUserController";
 import { LogoutUserController } from "../../../../modules/users/useCases/logoutUser/LogoutUserController";
+import { RefreshTokenController } from "../../../../modules/users/useCases/refreshToken/RefreshTokenController";
 import { ShowPrivateUserController } from "../../../../modules/users/useCases/showPrivateUser/ShowPrivateUserController";
 import { ShowPublicUserController } from "../../../../modules/users/useCases/showPublicUser/ShowPublicUserController";
 import { ShowTokensController } from "../../../../modules/users/useCases/showTokens/ShowTokensController";
@@ -17,6 +18,7 @@ const usersRoutes = Router();
 
 usersRoutes.post("/signup", new CreateUserController().handle);
 usersRoutes.post("/login", new LoginUserController().handle);
+usersRoutes.post("/refresh-token", new RefreshTokenController().handle);
 
 usersRoutes.post(
   "/users/logout",
