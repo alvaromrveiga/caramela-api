@@ -5,7 +5,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 describe("Logout User controller", () => {
   beforeAll(async () => {
@@ -25,7 +25,7 @@ describe("Logout User controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = response.body.tokens;
+    token = response.body.token;
   });
 
   afterAll(async () => {
@@ -40,7 +40,7 @@ describe("Logout User controller", () => {
   it("Should logout user", async () => {
     await request(app)
       .post("/users/logout")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
   });

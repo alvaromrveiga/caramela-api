@@ -6,7 +6,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 describe("Update User Avatar controller", () => {
   beforeAll(async () => {
@@ -26,7 +26,7 @@ describe("Update User Avatar controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
   });
 
   afterAll(async () => {
@@ -39,7 +39,7 @@ describe("Update User Avatar controller", () => {
 
     await request(app)
       .patch("/users/profile/avatar")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", buffer, "file.png")
       .expect(200);
 
@@ -47,7 +47,7 @@ describe("Update User Avatar controller", () => {
     if (process.env.STORAGE === "local") {
       const response = await request(app)
         .get("/users/profile")
-        .set({ Authorization: `Bearer ${tokens[0]}` })
+        .set({ Authorization: `Bearer ${token}` })
         .send();
 
       const { avatar } = response.body;
@@ -60,7 +60,7 @@ describe("Update User Avatar controller", () => {
   it("Should not update user's avatar if no avatar file", async () => {
     await request(app)
       .patch("/users/profile/avatar")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", "")
       .expect(400);
   });

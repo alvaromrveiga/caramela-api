@@ -5,11 +5,11 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 let otherUserPetId: string;
 let petOneId: string;
-let petTwoId: string;
+// let petTwoId: string;
 
 describe("Delete Pet controller", () => {
   beforeAll(async () => {
@@ -29,11 +29,11 @@ describe("Delete Pet controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
 
     let response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",
         gender: "Male",
@@ -54,11 +54,11 @@ describe("Delete Pet controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
 
     response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
         gender: "Female",
@@ -70,7 +70,7 @@ describe("Delete Pet controller", () => {
 
     response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
         gender: "Female",
@@ -78,7 +78,7 @@ describe("Delete Pet controller", () => {
         weight_kg: 0.1,
         birthday: "2021-02-20",
       });
-    petTwoId = response.body.id;
+    // petTwoId = response.body.id;
   });
 
   afterAll(async () => {
@@ -93,7 +93,7 @@ describe("Delete Pet controller", () => {
   it("Should not delete another user's pet", async () => {
     await request(app)
       .delete(`/users/pets/${otherUserPetId}`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(404);
   });
@@ -101,13 +101,13 @@ describe("Delete Pet controller", () => {
   it("Should delete pet", async () => {
     await request(app)
       .delete(`/users/pets/${petOneId}`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
 
     const response = await request(app)
       .get("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send();
 
     expect(response.body.length).toEqual(1);

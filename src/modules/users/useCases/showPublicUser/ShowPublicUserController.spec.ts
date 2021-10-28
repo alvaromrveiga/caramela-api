@@ -7,7 +7,7 @@ import { User } from "../../infra/typeorm/entities/User";
 import { UsersRepository } from "../../infra/typeorm/repositories/UsersRepository";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 let user: User | undefined;
 
 describe("Show Public User controller", () => {
@@ -34,7 +34,7 @@ describe("Show Public User controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = response.body.tokens;
+    token = response.body.token;
 
     const usersRepository = new UsersRepository();
     user = await usersRepository.findByEmail("tester2@mail.com");
@@ -50,7 +50,7 @@ describe("Show Public User controller", () => {
 
     const response = await request(app)
       .get(`/users/${user?.id}`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
 
@@ -60,7 +60,6 @@ describe("Show Public User controller", () => {
     expect(response.body).not.toHaveProperty("email");
     expect(response.body).not.toHaveProperty("updated_at");
     expect(response.body).not.toHaveProperty("id");
-    expect(response.body).not.toHaveProperty("tokens");
   });
 
   it("Should not show public user information if unauthenticated", async () => {

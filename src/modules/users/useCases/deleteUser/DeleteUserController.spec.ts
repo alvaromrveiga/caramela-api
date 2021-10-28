@@ -5,7 +5,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string;
+let token: string;
 
 describe("Delete User controller", () => {
   beforeAll(async () => {
@@ -25,7 +25,7 @@ describe("Delete User controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
   });
 
   afterAll(async () => {
@@ -36,7 +36,7 @@ describe("Delete User controller", () => {
   it("Should not delete user if invalid password", async () => {
     await request(app)
       .delete("/users/profile")
-      .set("Authorization", `Bearer ${tokens[0]}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         password: "wrongPassword",
       })
@@ -46,7 +46,7 @@ describe("Delete User controller", () => {
   it("Should delete user", async () => {
     await request(app)
       .delete("/users/profile")
-      .set("Authorization", `Bearer ${tokens[0]}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
         password: "testerPa$$w0rd",
       })

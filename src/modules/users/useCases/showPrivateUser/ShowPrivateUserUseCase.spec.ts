@@ -33,7 +33,6 @@ describe("Show Private User use case", () => {
       expect(response).toHaveProperty("id");
       expect(response).toHaveProperty("updated_at");
       expect(response).toHaveProperty("created_at");
-      expect(response).toHaveProperty("tokens");
       expect(response).toHaveProperty("avatar");
       expect(response.name).toEqual("Tester");
       expect(response.email).toEqual("tester@mail.com");

@@ -5,7 +5,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 let otherUserPetId: string;
 let petOneId: string;
@@ -28,11 +28,11 @@ describe("Show Pet controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
 
     let response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",
         gender: "Male",
@@ -53,11 +53,11 @@ describe("Show Pet controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
 
     response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
         gender: "Female",
@@ -69,7 +69,7 @@ describe("Show Pet controller", () => {
 
     response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
         gender: "Female",
@@ -88,7 +88,7 @@ describe("Show Pet controller", () => {
   it("Should show pet", async () => {
     const response = await request(app)
       .get(`/users/pets/${petTwoId}`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
 
@@ -106,7 +106,7 @@ describe("Show Pet controller", () => {
   it("Should not show another user's pet", async () => {
     await request(app)
       .get(`/users/pets/${otherUserPetId}`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(404);
   });

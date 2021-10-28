@@ -5,7 +5,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 describe("Show All Pets controller", () => {
   beforeAll(async () => {
@@ -25,11 +25,11 @@ describe("Show All Pets controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
 
     await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
         gender: "Female",
@@ -40,7 +40,7 @@ describe("Show All Pets controller", () => {
 
     await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
         gender: "Female",
@@ -58,7 +58,7 @@ describe("Show All Pets controller", () => {
   it("Should show all user pets", async () => {
     await request(app)
       .get("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
   });

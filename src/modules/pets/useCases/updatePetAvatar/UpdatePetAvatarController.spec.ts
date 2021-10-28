@@ -6,7 +6,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 let otherUserPetId: string;
 let petOneId: string;
@@ -30,11 +30,11 @@ describe("Update Pet Avatar controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
 
     let response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",
         gender: "Male",
@@ -55,11 +55,11 @@ describe("Update Pet Avatar controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
 
     response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
         gender: "Female",
@@ -71,7 +71,7 @@ describe("Update Pet Avatar controller", () => {
 
     response = await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
         gender: "Female",
@@ -92,7 +92,7 @@ describe("Update Pet Avatar controller", () => {
 
     const response = await request(app)
       .patch(`/users/pets/${petTwoId}/avatar`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", buffer, "testFile.png")
       .expect(200);
 
@@ -109,7 +109,7 @@ describe("Update Pet Avatar controller", () => {
   it("Should not update pet avatar if file is invalid", async () => {
     await request(app)
       .patch(`/users/pets/${petTwoId}/avatar`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", "")
       .expect(400);
   });
@@ -128,7 +128,7 @@ describe("Update Pet Avatar controller", () => {
 
     await request(app)
       .patch(`/users/pets/${otherUserPetId}/avatar`)
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", buffer, "testFile.png")
       .expect(404);
   });

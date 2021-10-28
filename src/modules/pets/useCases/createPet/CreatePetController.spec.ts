@@ -5,7 +5,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 describe("Create Pet controller", () => {
   beforeAll(async () => {
@@ -25,7 +25,7 @@ describe("Create Pet controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
   });
 
   afterAll(async () => {
@@ -36,7 +36,7 @@ describe("Create Pet controller", () => {
   it("Should create pet", async () => {
     await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
         gender: "Female",
@@ -50,7 +50,7 @@ describe("Create Pet controller", () => {
   it("Should not create pet if user already has a pet with the same name", async () => {
     await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
         gender: "Male",
@@ -76,7 +76,7 @@ describe("Create Pet controller", () => {
   it("Should not create pet if name is invalid", async () => {
     await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         gender: "Female",
         species: "Cat",
@@ -89,7 +89,7 @@ describe("Create Pet controller", () => {
   it("Should not create pet if species is invalid", async () => {
     await request(app)
       .post("/users/pets")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow2",
         gender: "Female",

@@ -5,7 +5,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string;
+let token: string;
 
 describe("Update User controller", () => {
   beforeAll(async () => {
@@ -25,7 +25,7 @@ describe("Update User controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = user.body.tokens;
+    token = user.body.token;
   });
 
   afterAll(async () => {
@@ -36,7 +36,7 @@ describe("Update User controller", () => {
   it("Should update user", async () => {
     const response = await request(app)
       .put("/users/profile")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "UpdatedTester",
         email: "updatedTester@mail.com",
@@ -55,7 +55,7 @@ describe("Update User controller", () => {
   it("Should not update user with invalid update field", async () => {
     await request(app)
       .put("/users/profile")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         id: "c4b7c21a-4285-4c24-a781-417d9990a44d",
         name: "UpdatedTester",
@@ -66,7 +66,7 @@ describe("Update User controller", () => {
   it("Should not update user password if current password is empty", async () => {
     await request(app)
       .put("/users/profile")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "UpdatedTester",
         email: "updatedTester@mail.com",
@@ -78,7 +78,7 @@ describe("Update User controller", () => {
   it("Should not update user password if current password is invalid", async () => {
     await request(app)
       .put("/users/profile")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "UpdatedTester",
         email: "updatedTester@mail.com",

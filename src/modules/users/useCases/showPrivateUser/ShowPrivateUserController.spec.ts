@@ -5,7 +5,7 @@ import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 
 let connection: Connection;
-let tokens: string[];
+let token: string;
 
 describe("Show Private User controller", () => {
   beforeAll(async () => {
@@ -25,7 +25,7 @@ describe("Show Private User controller", () => {
       password: "testerPa$$w0rd",
     });
 
-    tokens = response.body.tokens;
+    token = response.body.token;
   });
 
   afterAll(async () => {
@@ -36,14 +36,13 @@ describe("Show Private User controller", () => {
   it("Should show private user information", async () => {
     const response = await request(app)
       .get("/users/profile")
-      .set({ Authorization: `Bearer ${tokens[0]}` })
+      .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
 
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("updated_at");
     expect(response.body).toHaveProperty("created_at");
-    expect(response.body).toHaveProperty("tokens");
     expect(response.body.name).toEqual("Tester");
     expect(response.body.email).toEqual("tester@mail.com");
 
