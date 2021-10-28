@@ -1,6 +1,10 @@
-import { verify } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 
-import { tokenSecret } from "../../../../config/auth";
+import {
+  refreshTokenExpiresInDays,
+  refreshTokenSecret,
+  tokenSecret,
+} from "../../../../config/auth";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
@@ -66,12 +70,14 @@ describe("Refresh Token use case", () => {
   });
 
   it("Should not refresh token if token is invalid", async () => {
-    await expect(
-      refreshTokenUseCase.execute(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU0MzAxMDYsImV4cCI6MTYzNTQzMTAwNiwic3ViIjo" +
-          "iZDU4ZDMxMzMtZDhjYy00MzBmLTk4YWMtZmExYzg2ODdkNjIzIn0.RZJct58vcnYTljafqkIYtKP3bJD3hElTeBozgAfKzxU"
-      )
-    ).rejects.toEqual(new InvalidRefreshTokenError());
+    const token = sign({}, refreshTokenSecret, {
+      subject: "378ebfb8-d6bd-49c8-a143-683198f5cbb2",
+      expiresIn: `${refreshTokenExpiresInDays}d`,
+    });
+
+    await expect(refreshTokenUseCase.execute(token)).rejects.toEqual(
+      new InvalidRefreshTokenError()
+    );
   });
 });
 //
