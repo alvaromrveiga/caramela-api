@@ -58,7 +58,7 @@ export class InMemoryUsersTokensRepository implements IUsersTokensRepository {
       return userToken.id === tokenId;
     });
 
-    this.usersTokens.splice(1, tokenIndex);
+    this.usersTokens.splice(tokenIndex, 1);
   }
 
   async deleteAllByUserId(userId: string): Promise<void> {
