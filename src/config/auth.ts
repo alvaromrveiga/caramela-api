@@ -9,7 +9,7 @@ if (!process.env.REFRESH_TOKEN_SECRET) {
   throw new NoRefreshTokenSecretError();
 }
 
-const tokenExpiresIn = "15m";
+const tokenExpiresIn = "30m";
 const tokenSecret = process.env.JWT_SECRET;
 
 const refreshTokenExpiresInDays = 30;
