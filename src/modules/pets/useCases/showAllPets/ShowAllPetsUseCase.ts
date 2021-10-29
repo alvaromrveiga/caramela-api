@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { getValidatedUser } from "../../../../utils/getValidatedUser";
+import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { Pet } from "../../infra/typeorm/entities/Pet";
 import { IPetsRepository } from "../../repositories/IPetsRepository";

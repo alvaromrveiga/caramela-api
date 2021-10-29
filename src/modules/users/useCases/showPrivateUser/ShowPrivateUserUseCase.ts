@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { getValidatedUser } from "../../../../utils/getValidatedUser";
+import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 

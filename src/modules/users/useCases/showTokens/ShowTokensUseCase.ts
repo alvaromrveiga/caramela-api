@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { getValidatedUser } from "../../../../utils/getValidatedUser";
+import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
 import { UserTokens } from "../../infra/typeorm/entities/UserTokens";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";

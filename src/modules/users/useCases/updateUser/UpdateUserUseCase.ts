@@ -4,7 +4,7 @@ import { inject, injectable } from "tsyringe";
 import { saltRounds } from "../../../../config/bcrypt";
 import { minimumPasswordLength } from "../../../../config/password";
 import { InvalidUpdateError } from "../../../../shared/errors/InvalidUpdateError";
-import { getValidatedUser } from "../../../../utils/getValidatedUser";
+import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
 import { IAllowedUpdatesDTO } from "../../dtos/IAllowedUpdatesDTO";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { User } from "../../infra/typeorm/entities/User";

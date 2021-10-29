@@ -2,8 +2,8 @@ import { inject, injectable } from "tsyringe";
 
 import { InvalidUpdateError } from "../../../../shared/errors/InvalidUpdateError";
 import { PetNotFoundError } from "../../../../shared/errors/PetNotFoundError";
-import { getValidatedPet } from "../../../../utils/getValidatedPet";
-import { getValidatedUser } from "../../../../utils/getValidatedUser";
+import { getValidatedPet } from "../../../../shared/utils/getValidatedPet";
+import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
 import { IAllowedUpdatesDTO } from "../../../users/dtos/IAllowedUpdatesDTO";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { IAllowedPetUpdatesDTO } from "../../dtos/IAllowedPetUpdatesDTO";

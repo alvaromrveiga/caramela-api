@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
 import { NoAvatarFileError } from "../../../../shared/errors/NoAvatarFileError";
-import { getValidatedUser } from "../../../../utils/getValidatedUser";
+import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
