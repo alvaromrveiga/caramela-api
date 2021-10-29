@@ -1,8 +1,8 @@
+import { compare } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
 import { InvalidPasswordError } from "../../../../shared/errors/InvalidPasswordError";
-import { comparePasswordAsync } from "../../../../utils/bcrypt";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
@@ -25,7 +25,7 @@ export class DeleteUserUseCase {
       throw new AuthenticationError();
     }
 
-    const result = await comparePasswordAsync(password, user.password);
+    const result = await compare(password, user.password);
 
     if (!result) {
       throw new InvalidPasswordError();

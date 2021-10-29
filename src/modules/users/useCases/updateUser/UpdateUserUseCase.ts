@@ -1,11 +1,9 @@
+import { compare, hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 
+import { saltRounds } from "../../../../config/bcrypt";
 import { minimumPasswordLength } from "../../../../config/password";
 import { InvalidUpdateError } from "../../../../shared/errors/InvalidUpdateError";
-import {
-  comparePasswordAsync,
-  hashPasswordAsync,
-} from "../../../../utils/bcrypt";
 import { getValidatedUser } from "../../../../utils/getValidatedUser";
 import { IAllowedUpdatesDTO } from "../../dtos/IAllowedUpdatesDTO";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
@@ -74,10 +72,7 @@ export class UpdateUserUseCase {
       throw new InvalidCurrentPasswordError();
     }
 
-    const isValidPassword = await comparePasswordAsync(
-      updates.currentPassword,
-      password
-    );
+    const isValidPassword = await compare(updates.currentPassword, password);
 
     if (!isValidPassword) {
       throw new InvalidCurrentPasswordError();
@@ -87,7 +82,7 @@ export class UpdateUserUseCase {
       throw new InvalidPasswordCreationError();
     }
 
-    const hashNewPassword = await hashPasswordAsync(updates.password);
+    const hashNewPassword = await hash(updates.password, saltRounds);
 
     this.deleteUpdatesCurrentPassword(updates);
 

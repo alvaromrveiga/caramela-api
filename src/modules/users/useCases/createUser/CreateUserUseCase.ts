@@ -1,8 +1,9 @@
+import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import validator from "validator";
 
+import { saltRounds } from "../../../../config/bcrypt";
 import { minimumPasswordLength } from "../../../../config/password";
-import { hashPasswordAsync } from "../../../../utils/bcrypt";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
 import { IPrivateUserCredentialsDTO } from "../../dtos/IPrivateUserCredentialsDTO";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
@@ -20,7 +21,7 @@ export class CreateUserUseCase {
   async execute(data: ICreateUserDTO): Promise<IPrivateUserCredentialsDTO> {
     await this.validateCredentials(data);
 
-    const passwordHash = await hashPasswordAsync(data.password);
+    const passwordHash = await hash(data.password, saltRounds);
 
     const user = await this.usersRepository.createAndSave({
       ...data,

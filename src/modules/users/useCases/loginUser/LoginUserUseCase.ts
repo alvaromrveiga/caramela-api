@@ -1,3 +1,4 @@
+import { compare } from "bcrypt";
 import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
@@ -8,7 +9,6 @@ import {
   tokenExpiresIn,
   tokenSecret,
 } from "../../../../config/auth";
-import { comparePasswordAsync } from "../../../../utils/bcrypt";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
@@ -60,7 +60,7 @@ export class LoginUserUseCase {
   }
 
   private async verifyPassword(user: User, password: string): Promise<void> {
-    const result = await comparePasswordAsync(password, user.password);
+    const result = await compare(password, user.password);
 
     if (!result) {
       throw new LoginError();
