@@ -1,6 +1,6 @@
-import { User } from "../modules/users/infra/typeorm/entities/User";
-import { IUsersRepository } from "../modules/users/repositories/IUsersRepository";
-import { AuthenticationError } from "../shared/errors/AuthenticationError";
+import { User } from "../../modules/users/infra/typeorm/entities/User";
+import { IUsersRepository } from "../../modules/users/repositories/IUsersRepository";
+import { AuthenticationError } from "../errors/AuthenticationError";
 
 export async function getValidatedUser(
   userId: string,
