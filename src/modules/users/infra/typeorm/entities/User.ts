@@ -10,29 +10,41 @@ import { v4 as uuidv4 } from "uuid";
 @Entity("users")
 export class User {
   @PrimaryColumn()
-  readonly id: string;
+  readonly id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @Column()
-  avatar: string;
+  avatar?: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 
-  constructor() {
-    if (!this.id) {
+  constructor(data: {
+    id?: string;
+    name: string;
+    email: string;
+    password: string;
+    avatar?: string;
+  }) {
+    if (!data) {
       this.id = uuidv4();
+    } else {
+      this.id = data.id || uuidv4();
+      this.name = data.name;
+      this.email = data.email;
+      this.password = data.password;
+      this.avatar = data.avatar;
     }
   }
 }
