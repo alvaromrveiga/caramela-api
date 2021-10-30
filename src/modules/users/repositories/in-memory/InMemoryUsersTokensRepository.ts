@@ -10,8 +10,7 @@ export class InMemoryUsersTokensRepository implements IUsersTokensRepository {
   }
 
   async createAndSave(data: ICreateUserTokenDTO): Promise<UserTokens> {
-    const userToken = new UserTokens();
-    Object.assign(userToken, data);
+    const userToken = new UserTokens(data);
 
     this.usersTokens.push(userToken);
     return userToken;

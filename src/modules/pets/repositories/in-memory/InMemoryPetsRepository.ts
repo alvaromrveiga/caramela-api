@@ -10,8 +10,7 @@ export class InMemoryPetsRepository implements IPetsRepository {
   }
 
   async createAndSave(data: ICreatePetDTO): Promise<Pet> {
-    const pet = new Pet();
-    Object.assign(pet, data);
+    const pet = new Pet(data);
 
     const petAlreadyExists = this.pets.findIndex((pet) => {
       return data.name === pet.name;
