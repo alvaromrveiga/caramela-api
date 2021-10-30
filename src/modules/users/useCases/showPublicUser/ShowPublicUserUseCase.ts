@@ -4,7 +4,7 @@ import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { UserNotFoundError } from "./errors/UserNotFoundError";
 
 interface IResponse {
-  avatar: string;
+  avatar?: string;
   name: string;
   created_at: Date;
 }
