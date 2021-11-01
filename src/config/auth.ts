@@ -15,9 +15,12 @@ const tokenSecret = process.env.JWT_SECRET;
 const refreshTokenExpiresInDays = 30;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
+const resetPasswordTokenExpiresInHours = 3;
+
 export {
   tokenExpiresIn,
   tokenSecret,
   refreshTokenExpiresInDays,
   refreshTokenSecret,
+  resetPasswordTokenExpiresInHours,
 };
