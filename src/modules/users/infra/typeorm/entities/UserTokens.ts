@@ -23,7 +23,7 @@ export class UserTokens {
   user_id!: string;
 
   @Column()
-  machine_info!: string;
+  machine_info?: string;
 
   @Column()
   expiration_date!: Date;
@@ -35,7 +35,7 @@ export class UserTokens {
     id?: string;
     refresh_token: string;
     user_id: string;
-    machine_info: string;
+    machine_info?: string;
     expiration_date: Date;
   }) {
     if (!data) {
