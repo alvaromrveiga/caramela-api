@@ -12,7 +12,7 @@ let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository;
 let loginUserUseCase: LoginUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 
-describe("Delete User use case", () => {
+describe("Login User use case", () => {
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository();
