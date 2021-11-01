@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { CreateUserController } from "../../../../modules/users/useCases/createUser/CreateUserController";
 import { DeleteUserController } from "../../../../modules/users/useCases/deleteUser/DeleteUserController";
+import { ForgotPasswordEmailController } from "../../../../modules/users/useCases/forgotPasswordEmail/ForgotPasswordEmailController";
 import { LoginUserController } from "../../../../modules/users/useCases/loginUser/LoginUserController";
 import { LogoutAllUserController } from "../../../../modules/users/useCases/logoutAllUser/LogoutAllUserController";
 import { LogoutUserController } from "../../../../modules/users/useCases/logoutUser/LogoutUserController";
@@ -19,6 +20,7 @@ const usersRoutes = Router();
 usersRoutes.post("/signup", new CreateUserController().handle);
 usersRoutes.post("/login", new LoginUserController().handle);
 usersRoutes.post("/refresh-token", new RefreshTokenController().handle);
+usersRoutes.post("/forgot", new ForgotPasswordEmailController().handle);
 
 usersRoutes.post(
   "/users/logout",
