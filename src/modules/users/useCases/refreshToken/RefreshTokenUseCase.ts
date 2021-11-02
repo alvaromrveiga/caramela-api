@@ -6,8 +6,8 @@ import {
   tokenExpiresIn,
   tokenSecret,
 } from "../../../../config/auth";
+import { InvalidRefreshTokenError } from "../../../../shared/errors/InvalidRefreshTokenError";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
-import { InvalidRefreshTokenError } from "./errors/InvalidRefreshTokenError";
 
 @injectable()
 export class RefreshTokenUseCase {

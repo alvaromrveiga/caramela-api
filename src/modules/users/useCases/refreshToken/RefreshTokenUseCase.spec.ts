@@ -5,11 +5,11 @@ import {
   refreshTokenSecret,
   tokenSecret,
 } from "../../../../config/auth";
+import { InvalidRefreshTokenError } from "../../../../shared/errors/InvalidRefreshTokenError";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { LoginUserUseCase } from "../loginUser/LoginUserUseCase";
-import { InvalidRefreshTokenError } from "./errors/InvalidRefreshTokenError";
 import { RefreshTokenUseCase } from "./RefreshTokenUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;

@@ -1,4 +1,4 @@
-import { AppError } from "../../../../../shared/errors/AppError";
+import { AppError } from "./AppError";
 
 export class InvalidRefreshTokenError extends AppError {
   constructor() {
