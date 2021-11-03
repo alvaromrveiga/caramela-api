@@ -1,13 +1,13 @@
-import { EtherealMailProvider } from "../../../../shared/container/providers/MailProvider/implementations/EtherealMailProvider";
+import { mock } from "jest-mock-extended";
+
+import { IMailProvider } from "../../../../shared/container/providers/MailProvider/IMailProvider";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
-import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
 import { ForgotPasswordEmailUseCase } from "./ForgotPasswordEmailUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
-let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository;
-let etherealMailProvider: EtherealMailProvider;
+let mailProviderMock: IMailProvider;
 let forgotPasswordEmailUseCase: ForgotPasswordEmailUseCase;
 let createUserUseCase: CreateUserUseCase;
 
@@ -17,15 +17,13 @@ describe("Login User use case", () => {
 
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository();
-    etherealMailProvider = new EtherealMailProvider();
+    mailProviderMock = mock<IMailProvider>();
 
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
 
     forgotPasswordEmailUseCase = new ForgotPasswordEmailUseCase(
       inMemoryUsersRepository,
-      inMemoryUsersTokensRepository,
-      etherealMailProvider
+      mailProviderMock
     );
 
     await createUserUseCase.execute({
@@ -40,11 +38,15 @@ describe("Login User use case", () => {
       "tester@mail.com",
       "localhost:3333"
     );
+
+    expect(mailProviderMock.sendMail).toHaveBeenCalled();
   });
 
   it("Should not send forgot password email if user not found", async () => {
     await expect(
       forgotPasswordEmailUseCase.execute("invalidUserEmail", "localhost:3333")
     ).rejects.toEqual(new UserNotFoundError());
+
+    expect(mailProviderMock.sendMail).not.toHaveBeenCalled();
   });
 });
