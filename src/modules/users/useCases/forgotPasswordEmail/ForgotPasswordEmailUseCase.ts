@@ -40,11 +40,14 @@ export class ForgotPasswordEmailUseCase {
   }
 
   getGeneratedToken(user: User): string {
-    const token = sign({ id: user.id }, resetPasswordTokenSecret, {
-      subject: user.email,
-      issuer: user.updated_at.toISOString(),
-      expiresIn: `${resetPasswordTokenExpiresInHours}h`,
-    });
+    const token = sign(
+      { updated_at: user.updated_at.toISOString() },
+      resetPasswordTokenSecret,
+      {
+        subject: user.email,
+        expiresIn: `${resetPasswordTokenExpiresInHours}h`,
+      }
+    );
 
     return token;
   }
