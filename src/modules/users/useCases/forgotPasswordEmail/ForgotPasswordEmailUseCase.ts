@@ -49,7 +49,7 @@ export class ForgotPasswordEmailUseCase {
 
   private makeTokenUsableOnce(user: User): string {
     // When the password change the secret will be invalid, making the token usable only once
-    return user.password + user.created_at.toISOString();
+    return user.password + user.created_at.getTime();
   }
 
   private async sendEmail(
