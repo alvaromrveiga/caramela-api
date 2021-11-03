@@ -1,10 +1,7 @@
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
-import {
-  resetPasswordTokenExpiresInHours,
-  resetPasswordTokenSecret,
-} from "../../../../config/auth";
+import { resetPasswordTokenExpiresInHours } from "../../../../config/auth";
 import { IMailProvider } from "../../../../shared/container/providers/MailProvider/IMailProvider";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
@@ -29,7 +26,7 @@ export class ForgotPasswordEmailUseCase {
     await this.sendEmail(user, token, hostname);
   }
 
-  async getValidatedUser(email: string): Promise<User> {
+  private async getValidatedUser(email: string): Promise<User> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
@@ -39,25 +36,32 @@ export class ForgotPasswordEmailUseCase {
     return user;
   }
 
-  getGeneratedToken(user: User): string {
-    const token = sign(
-      { updated_at: user.updated_at.toISOString() },
-      resetPasswordTokenSecret,
-      {
-        subject: user.email,
-        expiresIn: `${resetPasswordTokenExpiresInHours}h`,
-      }
-    );
+  private getGeneratedToken(user: User): string {
+    const resetPasswordTokenSecret = this.makeTokenUsableOnce(user);
+
+    const token = sign({}, resetPasswordTokenSecret, {
+      subject: user.email,
+      expiresIn: `${resetPasswordTokenExpiresInHours}h`,
+    });
 
     return token;
   }
 
-  async sendEmail(user: User, token: string, hostname?: string): Promise<void> {
+  private makeTokenUsableOnce(user: User): string {
+    // When the password change the secret will be invalid, making the token usable only once
+    return user.password + user.created_at.toISOString();
+  }
+
+  private async sendEmail(
+    user: User,
+    token: string,
+    hostname?: string
+  ): Promise<void> {
     if (!hostname) {
       throw new NoHostnameError();
     }
 
-    const resetPasswordLink = `${hostname}/password/reset?token=${token}`;
+    const resetPasswordLink = `${hostname}/resetpassword/${user.id}/${token}`;
 
     await this.mailProvider.sendMail({
       to: user.email,
