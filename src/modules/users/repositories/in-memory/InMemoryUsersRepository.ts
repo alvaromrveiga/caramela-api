@@ -10,7 +10,12 @@ export class InMemoryUsersRepository implements IUsersRepository {
   }
 
   async createAndSave(data: ICreateUserDTO): Promise<User> {
-    const user = new User({ ...data, email: data.email.toLowerCase() });
+    const user = new User({
+      ...data,
+      email: data.email.toLowerCase(),
+    });
+
+    Object.assign(user, { created_at: new Date(), updated_at: new Date() });
 
     const userAlreadyExistsIndex = this.users.findIndex((user) => {
       return user.email === data.email;
