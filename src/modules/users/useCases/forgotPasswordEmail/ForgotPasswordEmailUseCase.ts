@@ -46,8 +46,6 @@ export class ForgotPasswordEmailUseCase {
       expiresIn: `${resetPasswordTokenExpiresInHours}h`,
     });
 
-    console.log(token);
-
     return token;
   }
 
