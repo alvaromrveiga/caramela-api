@@ -12,9 +12,6 @@ let forgotPasswordEmailUseCase: ForgotPasswordEmailUseCase;
 let createUserUseCase: CreateUserUseCase;
 
 describe("Login User use case", () => {
-  // Set timeout to await the fake email to be "sent" and console logged
-  jest.setTimeout(15000);
-
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
     mailProviderMock = mock<IMailProvider>();
