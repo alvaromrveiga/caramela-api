@@ -1,12 +1,13 @@
-import dayjs from "dayjs";
+import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
-import { v4 as uuidv4 } from "uuid";
 
-import { resetPasswordTokenExpiresInHours } from "../../../../config/auth";
+import {
+  resetPasswordTokenExpiresInHours,
+  resetPasswordTokenSecret,
+} from "../../../../config/auth";
 import { IMailProvider } from "../../../../shared/container/providers/MailProvider/IMailProvider";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
 import { NoHostnameError } from "./errors/NoHostnameError";
 
@@ -16,9 +17,6 @@ export class ForgotPasswordEmailUseCase {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
 
-    @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
-
     @inject("MailProvider")
     private mailProvider: IMailProvider
   ) {}
@@ -26,7 +24,7 @@ export class ForgotPasswordEmailUseCase {
   async execute(email: string, hostname?: string): Promise<void> {
     const user = await this.getValidatedUser(email);
 
-    const token = await this.getGeneratedToken(user.id);
+    const token = this.getGeneratedToken(user);
 
     await this.sendEmail(user, token, hostname);
   }
@@ -41,18 +39,14 @@ export class ForgotPasswordEmailUseCase {
     return user;
   }
 
-  async getGeneratedToken(userId: string): Promise<string> {
-    const token = uuidv4();
-
-    const expiration_date = dayjs()
-      .add(resetPasswordTokenExpiresInHours, "hour")
-      .toDate();
-
-    await this.usersTokensRepository.createAndSave({
-      user_id: userId,
-      refresh_token: token,
-      expiration_date,
+  getGeneratedToken(user: User): string {
+    const token = sign({ id: user.id }, resetPasswordTokenSecret, {
+      subject: user.email,
+      issuer: user.updated_at.toISOString(),
+      expiresIn: `${resetPasswordTokenExpiresInHours}h`,
     });
+
+    console.log(token);
 
     return token;
   }
