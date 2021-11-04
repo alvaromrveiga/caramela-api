@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 
 import { resetPasswordTokenExpiresInHours } from "../../../../config/auth";
 import { IMailProvider } from "../../../../shared/container/providers/MailProvider/IMailProvider";
+import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
@@ -49,7 +50,7 @@ export class ForgotPasswordEmailUseCase {
 
   private makeTokenUsableOnce(user: User): string {
     // When the password change the secret will be invalid, making the token usable only once
-    return user.password + user.created_at.getTime();
+    return getResetPasswordTokenSecret(user);
   }
 
   private async sendEmail(
