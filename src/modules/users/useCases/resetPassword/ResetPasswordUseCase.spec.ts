@@ -160,7 +160,7 @@ describe("Reset Password use case", () => {
       const resetPasswordTokenSecret = getResetPasswordTokenSecret(user);
 
       const token = sign({}, resetPasswordTokenSecret, {
-        subject: "another email",
+        subject: user.email,
         expiresIn: `1`,
       });
 
