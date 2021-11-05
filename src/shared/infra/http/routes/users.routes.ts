@@ -7,6 +7,7 @@ import { LoginUserController } from "../../../../modules/users/useCases/loginUse
 import { LogoutAllUserController } from "../../../../modules/users/useCases/logoutAllUser/LogoutAllUserController";
 import { LogoutUserController } from "../../../../modules/users/useCases/logoutUser/LogoutUserController";
 import { RefreshTokenController } from "../../../../modules/users/useCases/refreshToken/RefreshTokenController";
+import { ResetPasswordController } from "../../../../modules/users/useCases/resetPassword/ResetPasswordController";
 import { ShowPrivateUserController } from "../../../../modules/users/useCases/showPrivateUser/ShowPrivateUserController";
 import { ShowPublicUserController } from "../../../../modules/users/useCases/showPublicUser/ShowPublicUserController";
 import { ShowTokensController } from "../../../../modules/users/useCases/showTokens/ShowTokensController";
@@ -21,6 +22,11 @@ usersRoutes.post("/signup", new CreateUserController().handle);
 usersRoutes.post("/login", new LoginUserController().handle);
 usersRoutes.post("/refresh-token", new RefreshTokenController().handle);
 usersRoutes.post("/forgot", new ForgotPasswordEmailController().handle);
+
+usersRoutes.post(
+  "/resetpassword/:id/:token",
+  new ResetPasswordController().handle
+);
 
 usersRoutes.post(
   "/users/logout",
