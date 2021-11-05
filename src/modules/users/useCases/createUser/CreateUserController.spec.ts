@@ -11,12 +11,18 @@ describe("Create User controller", () => {
   beforeAll(async () => {
     if (!connection) {
       connection = await createConnection();
-      await connection.runMigrations();
     }
   });
 
-  afterAll(async () => {
+  beforeEach(async () => {
+    await connection.runMigrations();
+  });
+
+  afterEach(async () => {
     await connection.dropDatabase();
+  });
+
+  afterAll(async () => {
     await connection.close();
   });
 
@@ -50,6 +56,15 @@ describe("Create User controller", () => {
   });
 
   it("Should not create user with email already in use", async () => {
+    await request(app)
+      .post("/signup")
+      .send({
+        name: "Tester2",
+        email: "tester@mail.com",
+        password: "tester2Pa$$w0rd",
+      })
+      .expect(201);
+
     await request(app)
       .post("/signup")
       .send({

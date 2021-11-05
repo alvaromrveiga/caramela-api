@@ -12,8 +12,11 @@ describe("Update User Avatar controller", () => {
   beforeAll(async () => {
     if (!connection) {
       connection = await createConnection();
-      await connection.runMigrations();
     }
+  });
+
+  beforeEach(async () => {
+    await connection.runMigrations();
 
     await request(app).post("/signup").send({
       name: "Tester",
@@ -29,8 +32,11 @@ describe("Update User Avatar controller", () => {
     token = user.body.token;
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.dropDatabase();
+  });
+
+  afterAll(async () => {
     await connection.close();
   });
 

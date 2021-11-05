@@ -22,7 +22,6 @@ describe("Reset Password controller", () => {
   });
 
   beforeEach(async () => {
-    await connection.dropDatabase();
     await connection.runMigrations();
 
     await request(app).post("/signup").send({
@@ -44,6 +43,10 @@ describe("Reset Password controller", () => {
         expiresIn: `${resetPasswordTokenExpiresInHours}h`,
       });
     }
+  });
+
+  afterEach(async () => {
+    await connection.dropDatabase();
   });
 
   afterAll(async () => {

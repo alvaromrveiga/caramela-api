@@ -10,8 +10,11 @@ describe("Login User controller", () => {
   beforeAll(async () => {
     if (!connection) {
       connection = await createConnection();
-      await connection.runMigrations();
     }
+  });
+
+  beforeEach(async () => {
+    await connection.runMigrations();
 
     await request(app).post("/signup").send({
       name: "Tester",
@@ -20,8 +23,11 @@ describe("Login User controller", () => {
     });
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.dropDatabase();
+  });
+
+  afterAll(async () => {
     await connection.close();
   });
 

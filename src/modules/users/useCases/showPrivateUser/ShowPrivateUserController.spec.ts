@@ -11,8 +11,11 @@ describe("Show Private User controller", () => {
   beforeAll(async () => {
     if (!connection) {
       connection = await createConnection();
-      await connection.runMigrations();
     }
+  });
+
+  beforeEach(async () => {
+    await connection.runMigrations();
 
     await request(app).post("/signup").send({
       name: "Tester",
@@ -28,8 +31,11 @@ describe("Show Private User controller", () => {
     token = response.body.token;
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.dropDatabase();
+  });
+
+  afterAll(async () => {
     await connection.close();
   });
 

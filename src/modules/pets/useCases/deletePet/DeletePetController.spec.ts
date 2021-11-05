@@ -15,8 +15,11 @@ describe("Delete Pet controller", () => {
   beforeAll(async () => {
     if (!connection) {
       connection = await createConnection();
-      await connection.runMigrations();
     }
+  });
+
+  beforeEach(async () => {
+    await connection.runMigrations();
 
     await request(app).post("/signup").send({
       name: "FirstTester",
@@ -81,8 +84,11 @@ describe("Delete Pet controller", () => {
     // petTwoId = response.body.id;
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.dropDatabase();
+  });
+
+  afterAll(async () => {
     await connection.close();
   });
 
