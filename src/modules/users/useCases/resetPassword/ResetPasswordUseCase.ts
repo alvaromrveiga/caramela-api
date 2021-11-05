@@ -7,6 +7,7 @@ import { minimumPasswordLength } from "../../../../config/password";
 import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
 import { User } from "../../infra/typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
 import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
 import { InvalidTokenError } from "./errors/InvalidTokenError";
@@ -15,7 +16,10 @@ import { InvalidTokenError } from "./errors/InvalidTokenError";
 export class ResetPasswordUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+
+    @inject("UsersTokensRepository")
+    private usersTokensRepository: IUsersTokensRepository
   ) {}
 
   async execute(id: string, token: string, newPassword: string): Promise<void> {
@@ -23,13 +27,15 @@ export class ResetPasswordUseCase {
 
     this.verifyToken(user, token);
 
-    if (newPassword.length < minimumPasswordLength) {
+    if (!newPassword || newPassword.length < minimumPasswordLength) {
       throw new InvalidPasswordCreationError();
     }
 
     user.password = await hash(newPassword, saltRounds);
 
     await this.usersRepository.createAndSave(user);
+
+    await this.usersTokensRepository.deleteAllByUserId(user.id);
   }
 
   private async getValidatedUser(id: string): Promise<User> {
