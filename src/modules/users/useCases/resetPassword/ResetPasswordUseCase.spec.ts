@@ -5,21 +5,35 @@ import { resetPasswordTokenExpiresInHours } from "../../../../config/auth";
 import { minimumPasswordLength } from "../../../../config/password";
 import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
+import { LoginUserUseCase } from "../loginUser/LoginUserUseCase";
 import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
 import { InvalidTokenError } from "./errors/InvalidTokenError";
 import { ResetPasswordUseCase } from "./ResetPasswordUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
+let inMemoryUsersTokensRepository: InMemoryUsersTokensRepository;
 let resetPasswordUseCase: ResetPasswordUseCase;
 let createUserUseCase: CreateUserUseCase;
+let loginUserUseCase: LoginUserUseCase;
 
 describe("Reset Password use case", () => {
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    resetPasswordUseCase = new ResetPasswordUseCase(inMemoryUsersRepository);
+    inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository();
+
+    resetPasswordUseCase = new ResetPasswordUseCase(
+      inMemoryUsersRepository,
+      inMemoryUsersTokensRepository
+    );
+
     createUserUseCase = new CreateUserUseCase(inMemoryUsersRepository);
+    loginUserUseCase = new LoginUserUseCase(
+      inMemoryUsersRepository,
+      inMemoryUsersTokensRepository
+    );
 
     await createUserUseCase.execute({
       name: "Tester",
@@ -31,8 +45,17 @@ describe("Reset Password use case", () => {
   it("Should reset user password", async () => {
     let user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
 
+    await loginUserUseCase.execute(
+      "tester@mail.com",
+      "testerPa$$w0rd",
+      "Tester PC 127.0.0.1"
+    );
+
     expect(user).toBeDefined();
     if (user) {
+      let tokens = await inMemoryUsersTokensRepository.findByUserId(user.id);
+      expect(tokens.length).toEqual(1);
+
       const resetPasswordTokenSecret = getResetPasswordTokenSecret(user);
 
       const token = sign({}, resetPasswordTokenSecret, {
@@ -41,6 +64,9 @@ describe("Reset Password use case", () => {
       });
 
       await resetPasswordUseCase.execute(user.id, token, "newTesterPa$$word");
+
+      tokens = await inMemoryUsersTokensRepository.findByUserId(user.id);
+      expect(tokens.length).toEqual(0);
     }
 
     user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
