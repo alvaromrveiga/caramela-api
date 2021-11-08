@@ -18,4 +18,8 @@ export class AppointmentsRepository implements IAppointmentsRepository {
 
     return appointment;
   }
+
+  async findById(appointmentId: string): Promise<Appointment | undefined> {
+    return this.repository.findOne({ id: appointmentId });
+  }
 }
