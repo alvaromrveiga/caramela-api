@@ -5,6 +5,7 @@ import { CreateAppointmentUseCase } from "./CreateAppointmentUseCase";
 
 export class CreateAppointmentController {
   async handle(req: Request, res: Response): Promise<Response> {
+    const { userId } = res.locals;
     const { pet_id, motive, veterinary, weight_kg, vaccines, comments } =
       req.body;
 
@@ -12,7 +13,7 @@ export class CreateAppointmentController {
       CreateAppointmentUseCase
     );
 
-    const appointment = await createAppointmentUseCase.execute({
+    const appointment = await createAppointmentUseCase.execute(userId, {
       pet_id,
       motive,
       veterinary,
