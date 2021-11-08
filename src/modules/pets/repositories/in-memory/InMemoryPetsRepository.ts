@@ -25,6 +25,12 @@ export class InMemoryPetsRepository implements IPetsRepository {
     return pet;
   }
 
+  async findById(petId: string): Promise<Pet | undefined> {
+    return this.pets.find((pet) => {
+      return pet.id === petId;
+    });
+  }
+
   async findByUserAndPetId(
     userId: string,
     petId: string

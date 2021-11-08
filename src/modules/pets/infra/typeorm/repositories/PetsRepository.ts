@@ -19,6 +19,10 @@ export class PetsRepository implements IPetsRepository {
     return pet;
   }
 
+  async findById(petId: string): Promise<Pet | undefined> {
+    return this.repository.findOne({ id: petId });
+  }
+
   async findByUserAndPetId(
     userId: string,
     petId: string
