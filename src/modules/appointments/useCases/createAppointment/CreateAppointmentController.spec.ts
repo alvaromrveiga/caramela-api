@@ -79,6 +79,20 @@ describe("Create Appointment controller", () => {
     expect(dayjs(response.body.created_at).isValid()).toBeTruthy();
   });
 
+  it("Should not create appointment if user is unauthenticated", async () => {
+    await request(app)
+      .post("/appointments")
+      .send({
+        pet_id: "76ffc9ec-c106-4a2c-8251-4b7131640446",
+        motive: "Anti-Rabies vaccine",
+        veterinary: "Daisy",
+        weight_kg: 5.5,
+        vaccines: "Anti-Rabies",
+        comments: "The pet is overweight",
+      })
+      .expect(401);
+  });
+
   it("Should not create appointment if pet is invalid", async () => {
     await request(app)
       .post("/appointments")
