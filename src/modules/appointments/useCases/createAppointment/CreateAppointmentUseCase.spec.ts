@@ -13,6 +13,7 @@ let inMemoryPetsRepository: InMemoryPetsRepository;
 let inMemoryAppointmentsRepository: InMemoryAppointmentsRepository;
 let createAppointmentUseCase: CreateAppointmentUseCase;
 
+let userId: string;
 let petId: string;
 
 describe("Create Appointment use case", () => {
@@ -36,6 +37,8 @@ describe("Create Appointment use case", () => {
 
     expect(user).toBeDefined();
     if (user) {
+      userId = user.id;
+
       const pet = await inMemoryPetsRepository.createAndSave({
         user_id: user.id,
         name: "Petster",
@@ -47,7 +50,7 @@ describe("Create Appointment use case", () => {
   });
 
   it("Should create appointment", async () => {
-    const appointment = await createAppointmentUseCase.execute({
+    const appointment = await createAppointmentUseCase.execute(userId, {
       pet_id: petId,
       motive: "Anti-Rabies vaccine",
       veterinary: "Daisy",
@@ -66,9 +69,22 @@ describe("Create Appointment use case", () => {
     expect(appointment.created_at).toBeInstanceOf(Date);
   });
 
+  it("Should not create appointment if user is invalid", async () => {
+    await expect(
+      createAppointmentUseCase.execute("invalidUser", {
+        pet_id: petId,
+        motive: "Anti-Rabies vaccine",
+        veterinary: "Daisy",
+        weight_kg: 5.5,
+        vaccines: "Anti-Rabies",
+        comments: "The pet is overweight",
+      })
+    ).rejects.toEqual(new PetNotFoundError());
+  });
+
   it("Should not create appointment if pet is invalid", async () => {
     await expect(
-      createAppointmentUseCase.execute({
+      createAppointmentUseCase.execute(userId, {
         pet_id: "invalidPet",
         motive: "Anti-Rabies vaccine",
         veterinary: "Daisy",
@@ -81,7 +97,7 @@ describe("Create Appointment use case", () => {
 
   it("Should not create appointment if motive invalid", async () => {
     await expect(
-      createAppointmentUseCase.execute({
+      createAppointmentUseCase.execute(userId, {
         pet_id: petId,
         motive: "",
         veterinary: "Daisy",
@@ -94,7 +110,7 @@ describe("Create Appointment use case", () => {
 
   it("Should not create appointment if veterinary invalid", async () => {
     await expect(
-      createAppointmentUseCase.execute({
+      createAppointmentUseCase.execute(userId, {
         pet_id: petId,
         motive: "Anti-Rabies vaccine",
         veterinary: "",
