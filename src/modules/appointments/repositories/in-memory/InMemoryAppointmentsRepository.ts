@@ -14,6 +14,8 @@ export class InMemoryAppointmentsRepository implements IAppointmentsRepository {
 
     Object.assign(appointment, { created_at: new Date() });
 
+    this.appointmentsRepository.push(appointment);
+
     return appointment;
   }
 
