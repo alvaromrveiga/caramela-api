@@ -24,4 +24,10 @@ export class InMemoryAppointmentsRepository implements IAppointmentsRepository {
       return appointment.id === appointmentId;
     });
   }
+
+  async findAllByPetId(petId: string): Promise<Appointment[]> {
+    return this.appointmentsRepository.filter((appointment) => {
+      return appointment.pet_id === petId;
+    });
+  }
 }

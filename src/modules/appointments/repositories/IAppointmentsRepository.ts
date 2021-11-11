@@ -5,4 +5,6 @@ export interface IAppointmentsRepository {
   createAndSave(data: ICreateAppointmentDTO): Promise<Appointment>;
 
   findById(appointmentId: string): Promise<Appointment | undefined>;
+
+  findAllByPetId(petId: string): Promise<Appointment[]>;
 }

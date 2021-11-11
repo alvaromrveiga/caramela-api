@@ -22,4 +22,8 @@ export class AppointmentsRepository implements IAppointmentsRepository {
   async findById(appointmentId: string): Promise<Appointment | undefined> {
     return this.repository.findOne({ id: appointmentId });
   }
+
+  async findAllByPetId(petId: string): Promise<Appointment[]> {
+    return this.repository.find({ pet_id: petId });
+  }
 }
