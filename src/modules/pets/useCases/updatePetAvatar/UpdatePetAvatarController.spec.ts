@@ -36,7 +36,7 @@ describe("Update Pet Avatar controller", () => {
     token = user.body.token;
 
     let response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",
@@ -61,7 +61,7 @@ describe("Update Pet Avatar controller", () => {
     token = user.body.token;
 
     response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
@@ -73,7 +73,7 @@ describe("Update Pet Avatar controller", () => {
     petOneId = response.body.id;
 
     response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
@@ -97,7 +97,7 @@ describe("Update Pet Avatar controller", () => {
     const buffer = Buffer.from("some data");
 
     const response = await request(app)
-      .patch(`/users/pets/${petTwoId}/avatar`)
+      .patch(`/pets/${petTwoId}/avatar`)
       .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", buffer, "testFile.png")
       .expect(200);
@@ -114,7 +114,7 @@ describe("Update Pet Avatar controller", () => {
 
   it("Should not update pet avatar if file is invalid", async () => {
     await request(app)
-      .patch(`/users/pets/${petTwoId}/avatar`)
+      .patch(`/pets/${petTwoId}/avatar`)
       .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", "")
       .expect(400);
@@ -124,7 +124,7 @@ describe("Update Pet Avatar controller", () => {
     const buffer = Buffer.from("some data");
 
     await request(app)
-      .patch(`/users/pets/${petOneId}/avatar`)
+      .patch(`/pets/${petOneId}/avatar`)
       .attach("avatar", buffer, "testFile.png")
       .expect(401);
   });
@@ -133,7 +133,7 @@ describe("Update Pet Avatar controller", () => {
     const buffer = Buffer.from("some data");
 
     await request(app)
-      .patch(`/users/pets/${otherUserPetId}/avatar`)
+      .patch(`/pets/${otherUserPetId}/avatar`)
       .set({ Authorization: `Bearer ${token}` })
       .attach("avatar", buffer, "testFile.png")
       .expect(404);

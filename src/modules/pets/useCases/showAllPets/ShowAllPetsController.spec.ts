@@ -31,7 +31,7 @@ describe("Show All Pets controller", () => {
     token = user.body.token;
 
     await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
@@ -42,7 +42,7 @@ describe("Show All Pets controller", () => {
       });
 
     await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
@@ -63,13 +63,13 @@ describe("Show All Pets controller", () => {
 
   it("Should show all user pets", async () => {
     await request(app)
-      .get("/users/pets")
+      .get("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
   });
 
   it("Should not show all user pets if unauthenticated", async () => {
-    await request(app).get("/users/pets").send().expect(401);
+    await request(app).get("/pets").send().expect(401);
   });
 });

@@ -35,7 +35,7 @@ describe("Create Appointment controller", () => {
     token = user.body.token;
 
     const response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",

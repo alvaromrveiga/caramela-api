@@ -35,7 +35,7 @@ describe("Show Pet controller", () => {
     token = user.body.token;
 
     let response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",
@@ -60,7 +60,7 @@ describe("Show Pet controller", () => {
     token = user.body.token;
 
     response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
@@ -72,7 +72,7 @@ describe("Show Pet controller", () => {
     petOneId = response.body.id;
 
     response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
@@ -94,7 +94,7 @@ describe("Show Pet controller", () => {
 
   it("Should show pet", async () => {
     const response = await request(app)
-      .get(`/users/pets/${petTwoId}`)
+      .get(`/pets/${petTwoId}`)
       .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
@@ -107,12 +107,12 @@ describe("Show Pet controller", () => {
   });
 
   it("Should not show if unauthenticated", async () => {
-    await request(app).get(`/users/pets/${petOneId}`).send().expect(401);
+    await request(app).get(`/pets/${petOneId}`).send().expect(401);
   });
 
   it("Should not show another user's pet", async () => {
     await request(app)
-      .get(`/users/pets/${otherUserPetId}`)
+      .get(`/pets/${otherUserPetId}`)
       .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(404);

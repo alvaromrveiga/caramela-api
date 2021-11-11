@@ -35,7 +35,7 @@ describe("Update Pet controller", () => {
     token = user.body.token;
 
     let response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",
@@ -60,7 +60,7 @@ describe("Update Pet controller", () => {
     token = user.body.token;
 
     response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
@@ -72,7 +72,7 @@ describe("Update Pet controller", () => {
     petOneId = response.body.id;
 
     response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "TicTic",
@@ -94,7 +94,7 @@ describe("Update Pet controller", () => {
 
   it("Should not update pet if unauthenticated", async () => {
     await request(app)
-      .put(`/users/pets/${petOneId}`)
+      .put(`/pets/${petOneId}`)
       .send({
         name: "Miau",
         weight_kg: 2.5,
@@ -107,7 +107,7 @@ describe("Update Pet controller", () => {
 
   it("Should not update other user's pet", async () => {
     await request(app)
-      .put(`/users/pets/${otherUserPetId}`)
+      .put(`/pets/${otherUserPetId}`)
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Miau",
@@ -121,7 +121,7 @@ describe("Update Pet controller", () => {
 
   it("Should not update pet with invalid fields", async () => {
     await request(app)
-      .put(`/users/pets/${petOneId}`)
+      .put(`/pets/${petOneId}`)
       .set({ Authorization: `Bearer ${token}` })
       .send({
         id: "bf467e4f-c0aa-4b62-9d98-cb66cb2f8d17",
@@ -136,7 +136,7 @@ describe("Update Pet controller", () => {
 
   it("Should update pet", async () => {
     const response = await request(app)
-      .put(`/users/pets/${petOneId}`)
+      .put(`/pets/${petOneId}`)
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Miau",

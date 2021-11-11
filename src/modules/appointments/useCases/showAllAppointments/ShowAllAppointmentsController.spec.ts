@@ -34,7 +34,7 @@ describe("Show All Appointments controller", () => {
     token = user.body.token;
 
     let response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
@@ -70,7 +70,7 @@ describe("Show All Appointments controller", () => {
     token = user.body.token;
 
     response = await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Bark",

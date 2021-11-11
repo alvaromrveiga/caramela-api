@@ -41,7 +41,7 @@ describe("Create Pet controller", () => {
 
   it("Should create pet", async () => {
     await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
@@ -55,7 +55,7 @@ describe("Create Pet controller", () => {
 
   it("Should not create pet if user already has a pet with the same name", async () => {
     await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow",
@@ -68,7 +68,7 @@ describe("Create Pet controller", () => {
 
   it("Should not create pet if unauthenticated", async () => {
     await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .send({
         name: "Meow",
         gender: "Female",
@@ -81,7 +81,7 @@ describe("Create Pet controller", () => {
 
   it("Should not create pet if name is invalid", async () => {
     await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         gender: "Female",
@@ -94,7 +94,7 @@ describe("Create Pet controller", () => {
 
   it("Should not create pet if species is invalid", async () => {
     await request(app)
-      .post("/users/pets")
+      .post("/pets")
       .set({ Authorization: `Bearer ${token}` })
       .send({
         name: "Meow2",

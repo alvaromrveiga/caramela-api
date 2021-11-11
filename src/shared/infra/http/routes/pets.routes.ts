@@ -11,38 +11,34 @@ import { upload } from "../middleware/upload";
 
 const petsRoutes = Router();
 
-petsRoutes.post(
-  "/users/pets",
-  ensureAuthenticated,
-  new CreatePetController().handle
-);
+petsRoutes.post("/pets", ensureAuthenticated, new CreatePetController().handle);
 
 petsRoutes.get(
-  "/users/pets",
+  "/pets",
   ensureAuthenticated,
   new ShowAllPetsController().handle
 );
 
 petsRoutes.get(
-  "/users/pets/:id",
+  "/pets/:id",
   ensureAuthenticated,
   new ShowPetController().handle
 );
 
 petsRoutes.delete(
-  "/users/pets/:id",
+  "/pets/:id",
   ensureAuthenticated,
   new DeletePetController().handle
 );
 
 petsRoutes.put(
-  "/users/pets/:id",
+  "/pets/:id",
   ensureAuthenticated,
   new UpdatePetController().handle
 );
 
 petsRoutes.patch(
-  "/users/pets/:id/avatar",
+  "/pets/:id/avatar",
   ensureAuthenticated,
   upload.single("avatar"),
   new UpdatePetAvatarController().handle
