@@ -40,12 +40,12 @@ describe("Logout User controller", () => {
   });
 
   it("Should not logout user if unauthenticated", async () => {
-    await request(app).post("/users/logout").send().expect(401);
+    await request(app).post("/logout").send().expect(401);
   });
 
   it("Should logout user", async () => {
     await request(app)
-      .post("/users/logout")
+      .post("/logout")
       .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
