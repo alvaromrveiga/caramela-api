@@ -113,6 +113,12 @@ describe("Show Appointment use case", () => {
     ).rejects.toEqual(new AppointmentNotFoundError());
   });
 
+  it("Should not show appointment if user is invalid", async () => {
+    await expect(
+      showAppointmentUseCase.execute("invalidUser", appointmentId)
+    ).rejects.toEqual(new AppointmentNotFoundError());
+  });
+
   it("Should not show other user appointment", async () => {
     await expect(
       showAppointmentUseCase.execute(userId, otherUserAppointmentId)
