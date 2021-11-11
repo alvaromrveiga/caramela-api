@@ -43,6 +43,7 @@ describe("Create Appointment use case", () => {
         user_id: user.id,
         name: "Petster",
         species: "Cat",
+        weight_kg: 2,
       });
 
       petId = pet.id;
@@ -67,6 +68,13 @@ describe("Create Appointment use case", () => {
     expect(appointment.vaccines).toEqual("Anti-Rabies");
     expect(appointment.comments).toEqual("The pet is overweight");
     expect(appointment.created_at).toBeInstanceOf(Date);
+
+    const pet = await inMemoryPetsRepository.findById(petId);
+
+    expect(pet).toBeDefined();
+    if (pet) {
+      expect(pet.weight_kg).toEqual(5.5);
+    }
   });
 
   it("Should not create appointment if user is invalid", async () => {
