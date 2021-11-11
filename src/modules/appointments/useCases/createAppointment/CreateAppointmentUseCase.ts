@@ -26,6 +26,8 @@ export class CreateAppointmentUseCase {
 
     const appointment = await this.appointmentsRepository.createAndSave(data);
 
+    await this.updatePetWeight(userId, data);
+
     return appointment;
   }
 
@@ -38,6 +40,18 @@ export class CreateAppointmentUseCase {
     this.validateMotive(data.motive);
 
     this.validateVeterinary(data.veterinary);
+  }
+
+  private async updatePetWeight(
+    userId: string,
+    data: ICreateAppointmentDTO
+  ): Promise<void> {
+    const pet = await getValidatedPet(userId, data.pet_id, this.petsRepository);
+
+    if (data.weight_kg) {
+      pet.weight_kg = data.weight_kg;
+      await this.petsRepository.createAndSave(pet);
+    }
   }
 
   private validateMotive(motive: string): void {
