@@ -1,11 +1,11 @@
 import { inject, injectable } from "tsyringe";
 
 import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 
 @injectable()
-export class LogoutUserUseCase {
+export class LogoutAllUserUseCase {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
@@ -14,17 +14,9 @@ export class LogoutUserUseCase {
     private usersTokensRepository: IUsersTokensRepository
   ) {}
 
-  async execute(userId: string, machineInfo: string): Promise<void> {
+  async execute(userId: string): Promise<void> {
     await getValidatedUser(userId, this.usersRepository);
 
-    const refreshToken =
-      await this.usersTokensRepository.findByUserAndMachineInfo(
-        userId,
-        machineInfo
-      );
-
-    if (refreshToken) {
-      await this.usersTokensRepository.deleteById(refreshToken.id);
-    }
+    await this.usersTokensRepository.deleteAllByUserId(userId);
   }
 }

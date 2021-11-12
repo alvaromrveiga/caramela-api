@@ -1,10 +1,10 @@
 import { validate } from "uuid";
 
 import { AuthenticationError } from "../../../../shared/errors/AuthenticationError";
-import { User } from "../../infra/typeorm/entities/User";
-import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { User } from "../../../users/infra/typeorm/entities/User";
+import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
 import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
-import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { LoginUserUseCase } from "../loginUser/LoginUserUseCase";
 import { ShowTokensUseCase } from "./ShowTokensUseCase";
 

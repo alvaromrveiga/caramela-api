@@ -1,9 +1,9 @@
 import { mock } from "jest-mock-extended";
 
 import { IMailProvider } from "../../../../shared/container/providers/MailProvider/IMailProvider";
-import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
-import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
-import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
+import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
+import { UserNotFoundError } from "../../../users/useCases/showPublicUser/errors/UserNotFoundError";
 import { ForgotPasswordEmailUseCase } from "./ForgotPasswordEmailUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;

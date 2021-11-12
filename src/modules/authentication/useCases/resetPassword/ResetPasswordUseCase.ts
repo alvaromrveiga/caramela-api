@@ -5,11 +5,11 @@ import { inject, injectable } from "tsyringe";
 import { saltRounds } from "../../../../config/bcrypt";
 import { minimumPasswordLength } from "../../../../config/password";
 import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
-import { User } from "../../infra/typeorm/entities/User";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { User } from "../../../users/infra/typeorm/entities/User";
+import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
+import { InvalidPasswordCreationError } from "../../../users/useCases/createUser/errors/InvalidPasswordCreationError";
+import { UserNotFoundError } from "../../../users/useCases/showPublicUser/errors/UserNotFoundError";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
-import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
-import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
 import { InvalidTokenError } from "./errors/InvalidTokenError";
 
 @injectable()

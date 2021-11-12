@@ -6,9 +6,9 @@ import {
   tokenSecret,
 } from "../../../../config/auth";
 import { InvalidRefreshTokenError } from "../../../../shared/errors/InvalidRefreshTokenError";
-import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
 import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
-import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { LoginUserUseCase } from "../loginUser/LoginUserUseCase";
 import { RefreshTokenUseCase } from "./RefreshTokenUseCase";
 

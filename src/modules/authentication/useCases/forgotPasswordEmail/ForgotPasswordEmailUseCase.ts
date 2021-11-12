@@ -4,9 +4,9 @@ import { inject, injectable } from "tsyringe";
 import { resetPasswordTokenExpiresInHours } from "../../../../config/auth";
 import { IMailProvider } from "../../../../shared/container/providers/MailProvider/IMailProvider";
 import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
-import { User } from "../../infra/typeorm/entities/User";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
+import { User } from "../../../users/infra/typeorm/entities/User";
+import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
+import { UserNotFoundError } from "../../../users/useCases/showPublicUser/errors/UserNotFoundError";
 import { NoHostnameError } from "./errors/NoHostnameError";
 
 @injectable()

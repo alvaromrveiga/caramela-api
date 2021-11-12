@@ -7,8 +7,8 @@ import { minimumPasswordLength } from "../../../../config/password";
 import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
 import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
-import { User } from "../../infra/typeorm/entities/User";
-import { UsersRepository } from "../../infra/typeorm/repositories/UsersRepository";
+import { User } from "../../../users/infra/typeorm/entities/User";
+import { UsersRepository } from "../../../users/infra/typeorm/repositories/UsersRepository";
 
 let connection: Connection;
 let user: User;

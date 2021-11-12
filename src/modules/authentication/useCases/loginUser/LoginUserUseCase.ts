@@ -9,8 +9,8 @@ import {
   tokenExpiresIn,
   tokenSecret,
 } from "../../../../config/auth";
-import { User } from "../../infra/typeorm/entities/User";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { User } from "../../../users/infra/typeorm/entities/User";
+import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 import { LoginError } from "./errors/LoginError";
 

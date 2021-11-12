@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 
 import { getValidatedUser } from "../../../../shared/utils/getValidatedUser";
-import { UserTokens } from "../../../authentication/infra/entities/UserTokens";
-import { IUsersTokensRepository } from "../../../authentication/repositories/IUsersTokensRepository";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
+import { UserTokens } from "../../infra/entities/UserTokens";
+import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 
 @injectable()
 export class ShowTokensUseCase {

@@ -5,12 +5,12 @@ import "./providers/MailProvider";
 
 import { AppointmentsRepository } from "../../modules/appointments/infra/typeorm/repositories/AppointmentsRepository";
 import { IAppointmentsRepository } from "../../modules/appointments/repositories/IAppointmentsRepository";
+import { UsersTokensRepository } from "../../modules/authentication/infra/repositories/UsersTokensRepository";
+import { IUsersTokensRepository } from "../../modules/authentication/repositories/IUsersTokensRepository";
 import { PetsRepository } from "../../modules/pets/infra/typeorm/repositories/PetsRepository";
 import { IPetsRepository } from "../../modules/pets/repositories/IPetsRepository";
 import { UsersRepository } from "../../modules/users/infra/typeorm/repositories/UsersRepository";
-import { UsersTokensRepository } from "../../modules/users/infra/typeorm/repositories/UsersTokensRepository";
 import { IUsersRepository } from "../../modules/users/repositories/IUsersRepository";
-import { IUsersTokensRepository } from "../../modules/users/repositories/IUsersTokensRepository";
 
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",

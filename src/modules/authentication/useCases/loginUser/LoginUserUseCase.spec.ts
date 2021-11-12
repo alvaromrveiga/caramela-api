@@ -1,9 +1,9 @@
 import { verify } from "jsonwebtoken";
 
 import { refreshTokenSecret, tokenSecret } from "../../../../config/auth";
-import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
 import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
-import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { LoginError } from "./errors/LoginError";
 import { LoginUserUseCase } from "./LoginUserUseCase";
 

@@ -1,12 +1,12 @@
 import { Router } from "express";
 
-import { ForgotPasswordEmailController } from "../../../../modules/users/useCases/forgotPasswordEmail/ForgotPasswordEmailController";
-import { LoginUserController } from "../../../../modules/users/useCases/loginUser/LoginUserController";
-import { LogoutAllUserController } from "../../../../modules/users/useCases/logoutAllUser/LogoutAllUserController";
-import { LogoutUserController } from "../../../../modules/users/useCases/logoutUser/LogoutUserController";
-import { RefreshTokenController } from "../../../../modules/users/useCases/refreshToken/RefreshTokenController";
-import { ResetPasswordController } from "../../../../modules/users/useCases/resetPassword/ResetPasswordController";
-import { ShowTokensController } from "../../../../modules/users/useCases/showTokens/ShowTokensController";
+import { ForgotPasswordEmailController } from "../../../../modules/authentication/useCases/forgotPasswordEmail/ForgotPasswordEmailController";
+import { LoginUserController } from "../../../../modules/authentication/useCases/loginUser/LoginUserController";
+import { LogoutAllUserController } from "../../../../modules/authentication/useCases/logoutAllUser/LogoutAllUserController";
+import { LogoutUserController } from "../../../../modules/authentication/useCases/logoutUser/LogoutUserController";
+import { RefreshTokenController } from "../../../../modules/authentication/useCases/refreshToken/RefreshTokenController";
+import { ResetPasswordController } from "../../../../modules/authentication/useCases/resetPassword/ResetPasswordController";
+import { ShowTokensController } from "../../../../modules/authentication/useCases/showTokens/ShowTokensController";
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 
 const authenticationRoutes = Router();

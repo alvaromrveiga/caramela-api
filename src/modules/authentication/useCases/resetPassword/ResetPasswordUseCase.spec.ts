@@ -4,12 +4,12 @@ import { sign } from "jsonwebtoken";
 import { resetPasswordTokenExpiresInHours } from "../../../../config/auth";
 import { minimumPasswordLength } from "../../../../config/password";
 import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
-import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
+import { InvalidPasswordCreationError } from "../../../users/useCases/createUser/errors/InvalidPasswordCreationError";
+import { UserNotFoundError } from "../../../users/useCases/showPublicUser/errors/UserNotFoundError";
 import { InMemoryUsersTokensRepository } from "../../repositories/in-memory/InMemoryUsersTokensRepository";
-import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
-import { InvalidPasswordCreationError } from "../createUser/errors/InvalidPasswordCreationError";
 import { LoginUserUseCase } from "../loginUser/LoginUserUseCase";
-import { UserNotFoundError } from "../showPublicUser/errors/UserNotFoundError";
 import { InvalidTokenError } from "./errors/InvalidTokenError";
 import { ResetPasswordUseCase } from "./ResetPasswordUseCase";
 
