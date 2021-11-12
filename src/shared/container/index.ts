@@ -3,10 +3,10 @@ import { container } from "tsyringe";
 import "./providers/StorageProvider";
 import "./providers/MailProvider";
 
-import { AppointmentsRepository } from "../../modules/appointments/infra/typeorm/repositories/AppointmentsRepository";
-import { IAppointmentsRepository } from "../../modules/appointments/repositories/IAppointmentsRepository";
 import { UsersTokensRepository } from "../../modules/authentication/infra/repositories/UsersTokensRepository";
 import { IUsersTokensRepository } from "../../modules/authentication/repositories/IUsersTokensRepository";
+import { ConsultationsRepository } from "../../modules/consultations/infra/typeorm/repositories/ConsultationsRepository";
+import { IConsultationsRepository } from "../../modules/consultations/repositories/IConsultationsRepository";
 import { PetsRepository } from "../../modules/pets/infra/typeorm/repositories/PetsRepository";
 import { IPetsRepository } from "../../modules/pets/repositories/IPetsRepository";
 import { UsersRepository } from "../../modules/users/infra/typeorm/repositories/UsersRepository";
@@ -24,7 +24,7 @@ container.registerSingleton<IUsersTokensRepository>(
 
 container.registerSingleton<IPetsRepository>("PetsRepository", PetsRepository);
 
-container.registerSingleton<IAppointmentsRepository>(
-  "AppointmentsRepository",
-  AppointmentsRepository
+container.registerSingleton<IConsultationsRepository>(
+  "ConsultationsRepository",
+  ConsultationsRepository
 );
