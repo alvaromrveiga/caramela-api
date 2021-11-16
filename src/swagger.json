@@ -1,0 +1,421 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Caramela API Documentation",
+    "version": "1.0.0",
+    "description": "Save your pets records in your device",
+    "contact": {
+      "email": "alvaromrveiga@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "User management"
+    },
+    {
+      "name": "Authentication",
+      "description": "Session token management"
+    },
+    { "name": "Consultations", "description": "Pets consultations" },
+    { "name": "Pets", "description": "Pets management" }
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["name", "email", "password"]
+              },
+              "example": {
+                "name": "John",
+                "email": "john@email.com",
+                "password": "johnsPassw0rd!"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUserCredentials"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "<b>User input errors</b><br>- Invalid email<br>- Email already in use!<br>- Invalid password! Password should be longer than 8 characters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "Email already in use!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user private information",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUserCredentials"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update user information",
+        "description": "All parameters on requestBody are optional, but if you update password you must provide current password, otherwise it will thrown an error",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "format": "password" },
+                  "currentPassword": { "type": "string", "format": "password" }
+                },
+                "example": {
+                  "name": "John Smith",
+                  "email": "johnsmith@email.com",
+                  "password": "johnSmithPassw0rd!",
+                  "currentPassword": "johnsPassw0rd!"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUserCredentials"
+                }
+              }
+            }
+          },
+          "400":{
+            "description": "<b>User input errors</b><br>- TODO"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/users/profile/avatar": {
+      "patch": {
+        "tags": ["Users"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/refresh-token": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/forgot": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/resetpassword/{id}/{token}": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/users/logout-all": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/users/sessions": {
+      "get": {
+        "tags": ["Authentication"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/consultations": {
+      "post": {
+        "tags": ["Consultations"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/consultations/{id}": {
+      "get": {
+        "tags": ["Consultations"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/pets/{id}/consultations": {
+      "get": {
+        "tags": ["Consultations"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/pets": {
+      "post": {
+        "tags": ["Pets"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Pets"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "get": {
+        "tags": ["Pets"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Pets"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Pets"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    },
+    "/pets/{id}/avatar": {
+      "patch": {
+        "tags": ["Pets"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthenticated"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "PrivateUserCredentials": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "email": { "type": "string", "format": "email" },
+          "name": { "type": "string" },
+          "avatar": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}
