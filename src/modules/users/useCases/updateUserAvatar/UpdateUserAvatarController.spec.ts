@@ -1,6 +1,7 @@
 import request from "supertest";
 import { Connection } from "typeorm";
 
+import { STORAGE_PROVIDER } from "../../../../config/providers";
 import { LocalStorageProvider } from "../../../../shared/container/providers/StorageProvider/implementations/LocalStorageProvider";
 import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
@@ -50,7 +51,7 @@ describe("Update User Avatar controller", () => {
       .expect(200);
 
     // Remove file saved on tmp folder on project root
-    if (process.env.STORAGE === "local") {
+    if (STORAGE_PROVIDER === "local") {
       const response = await request(app)
         .get("/users/profile")
         .set({ Authorization: `Bearer ${token}` })

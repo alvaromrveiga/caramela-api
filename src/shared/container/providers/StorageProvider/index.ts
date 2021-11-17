@@ -1,5 +1,6 @@
 import { container, InjectionToken } from "tsyringe";
 
+import { STORAGE_PROVIDER } from "../../../../config/providers";
 import { LocalStorageProvider } from "./implementations/LocalStorageProvider";
 import { IStorageProvider } from "./IStorageProvider";
 
@@ -11,9 +12,7 @@ const diskStorage: IStorageMap = {
   local: LocalStorageProvider,
 };
 
-const storage = process.env.STORAGE || "local";
-
 container.registerSingleton<IStorageProvider>(
   "StorageProvider",
-  diskStorage[storage]
+  diskStorage[STORAGE_PROVIDER]
 );

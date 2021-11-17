@@ -1,5 +1,6 @@
 import { container, InjectionToken } from "tsyringe";
 
+import { MAIL_PROVIDER } from "../../../../config/providers";
 import { IMailProvider } from "./IMailProvider";
 import { EtherealMailProvider } from "./implementations/EtherealMailProvider";
 
@@ -11,9 +12,7 @@ const mailProvider: IMailProviderMap = {
   ethereal: EtherealMailProvider,
 };
 
-const provider = process.env.MAIL_PROVIDER || "ethereal";
-
 container.registerSingleton<IMailProvider>(
   "MailProvider",
-  mailProvider[provider]
+  mailProvider[MAIL_PROVIDER]
 );

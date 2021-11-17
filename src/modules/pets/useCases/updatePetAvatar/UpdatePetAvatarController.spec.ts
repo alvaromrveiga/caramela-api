@@ -1,6 +1,7 @@
 import request from "supertest";
 import { Connection } from "typeorm";
 
+import { STORAGE_PROVIDER } from "../../../../config/providers";
 import { LocalStorageProvider } from "../../../../shared/container/providers/StorageProvider/implementations/LocalStorageProvider";
 import { app } from "../../../../shared/infra/http/app";
 import createConnection from "../../../../shared/infra/typeorm/connection";
@@ -106,7 +107,7 @@ describe("Update Pet Avatar controller", () => {
     expect(response.body.name).toEqual("TicTic");
 
     // Remove file saved on tmp folder on project root
-    if (process.env.STORAGE === "local") {
+    if (STORAGE_PROVIDER === "local") {
       const localStorageProvider = new LocalStorageProvider();
       localStorageProvider.delete(response.body.avatar, "petsAvatars");
     }
