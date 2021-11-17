@@ -45,12 +45,27 @@ describe("Refresh Token controller", () => {
     await connection.close();
   });
 
-  it("Should refresh token", async () => {
+  it("Should refresh token via body", async () => {
     await request(app)
       .post("/refresh-token")
       .send({
         refreshToken,
       })
+      .expect(200);
+  });
+
+  it("Should refresh token via query", async () => {
+    await request(app)
+      .post(`/refresh-token?token=${refreshToken}`)
+      .send()
+      .expect(200);
+  });
+
+  it("Should refresh token via x-access-token header", async () => {
+    await request(app)
+      .post("/refresh-token")
+      .set("x-access-token", refreshToken)
+      .send()
       .expect(200);
   });
 
