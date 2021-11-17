@@ -71,6 +71,19 @@ describe("Login User use case", () => {
     }
   });
 
+  it("Should login user without passing machineInfo", async () => {
+    const loginResponse = await loginUserUseCase.execute(
+      "tester@mail.com",
+      "testerPa$$w0rd"
+    );
+
+    expect(loginResponse.name).toEqual("Tester");
+    expect(loginResponse.email).toEqual("tester@mail.com");
+
+    verify(loginResponse.token, tokenSecret);
+    verify(loginResponse.refresh_token, refreshTokenSecret);
+  });
+
   it("Should not login user if email is wrong", async () => {
     await expect(
       loginUserUseCase.execute(
