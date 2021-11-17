@@ -6,7 +6,6 @@ import { IMailProvider } from "../../../../shared/container/providers/MailProvid
 import { getResetPasswordTokenSecret } from "../../../../shared/utils/getResetPasswordTokenSecret";
 import { User } from "../../../users/infra/typeorm/entities/User";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
-import { UserNotFoundError } from "../../../users/useCases/showPublicUser/errors/UserNotFoundError";
 import { NoHostnameError } from "./errors/NoHostnameError";
 
 @injectable()
@@ -20,21 +19,13 @@ export class ForgotPasswordEmailUseCase {
   ) {}
 
   async execute(email: string, hostname?: string): Promise<void> {
-    const user = await this.getValidatedUser(email);
-
-    const token = this.getGeneratedToken(user);
-
-    await this.sendEmail(user, token, hostname);
-  }
-
-  private async getValidatedUser(email: string): Promise<User> {
     const user = await this.usersRepository.findByEmail(email);
 
-    if (!user) {
-      throw new UserNotFoundError();
-    }
+    if (user) {
+      const token = this.getGeneratedToken(user);
 
-    return user;
+      await this.sendEmail(user, token, hostname);
+    }
   }
 
   private getGeneratedToken(user: User): string {

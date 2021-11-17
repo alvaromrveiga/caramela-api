@@ -41,10 +41,11 @@ describe("Forgot Password Email controller", () => {
       .expect(200);
   });
 
-  it("Should not send forgotten password email if email is invalid", async () => {
+  it("Should not show error when sending forgotten password email to invalid email", async () => {
+    // Also should not send email. This is being tested on ForgotPasswordEmailUseCase.spec.ts
     await request(app)
       .post("/forgot")
       .send({ email: "notRegisteredUser@mail.com" })
-      .expect(404);
+      .expect(200);
   });
 });

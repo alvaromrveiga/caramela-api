@@ -3,7 +3,6 @@ import { mock } from "jest-mock-extended";
 import { IMailProvider } from "../../../../shared/container/providers/MailProvider/IMailProvider";
 import { InMemoryUsersRepository } from "../../../users/repositories/in-memory/InMemoryUsersRepository";
 import { CreateUserUseCase } from "../../../users/useCases/createUser/CreateUserUseCase";
-import { UserNotFoundError } from "../../../users/useCases/showPublicUser/errors/UserNotFoundError";
 import { ForgotPasswordEmailUseCase } from "./ForgotPasswordEmailUseCase";
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -40,9 +39,10 @@ describe("Login User use case", () => {
   });
 
   it("Should not send forgot password email if user not found", async () => {
-    await expect(
-      forgotPasswordEmailUseCase.execute("invalidUserEmail", "localhost:3333")
-    ).rejects.toEqual(new UserNotFoundError());
+    await forgotPasswordEmailUseCase.execute(
+      "invalidUserEmail",
+      "localhost:3333"
+    );
 
     expect(mailProviderMock.sendMail).not.toHaveBeenCalled();
   });
