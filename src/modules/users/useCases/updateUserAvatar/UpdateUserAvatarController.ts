@@ -12,6 +12,6 @@ export class UpdateUserAvatarController {
 
     const avatar = await updateUserAvatarUseCase.execute(userId, avatarFile);
 
-    return res.json(avatar);
+    return res.json({ avatar });
   }
 }
