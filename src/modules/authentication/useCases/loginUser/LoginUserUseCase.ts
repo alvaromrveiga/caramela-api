@@ -34,7 +34,7 @@ export class LoginUserUseCase {
   async execute(
     email: string,
     password: string,
-    machineInfo: string
+    machineInfo?: string
   ): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
 
@@ -69,7 +69,7 @@ export class LoginUserUseCase {
 
   private async generateTokens(
     user: User,
-    machineInfo: string
+    machineInfo?: string
   ): Promise<{
     token: string;
     refresh_token: string;
@@ -79,23 +79,33 @@ export class LoginUserUseCase {
       expiresIn: tokenExpiresIn,
     });
 
-    const userToken = await this.usersTokensRepository.findByUserAndMachineInfo(
-      user.id,
-      machineInfo
-    );
-
-    if (userToken) {
-      await this.usersTokensRepository.deleteById(userToken.id);
-    }
+    await this.deleteTokenIfMachineAlreadyLogged(user.id, machineInfo);
 
     const refresh_token = await this.createRefreshToken(user, machineInfo);
 
     return { token, refresh_token };
   }
 
+  private async deleteTokenIfMachineAlreadyLogged(
+    userId: string,
+    machineInfo?: string
+  ): Promise<void> {
+    if (machineInfo) {
+      const userToken =
+        await this.usersTokensRepository.findByUserAndMachineInfo(
+          userId,
+          machineInfo
+        );
+
+      if (userToken) {
+        await this.usersTokensRepository.deleteById(userToken.id);
+      }
+    }
+  }
+
   private async createRefreshToken(
     user: User,
-    machineInfo: string
+    machineInfo?: string
   ): Promise<string> {
     const refresh_token = jwt.sign({ email: user.email }, refreshTokenSecret, {
       subject: user.id,
