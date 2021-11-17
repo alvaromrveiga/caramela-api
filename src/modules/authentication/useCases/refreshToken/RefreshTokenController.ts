@@ -6,7 +6,7 @@ import { RefreshTokenUseCase } from "./RefreshTokenUseCase";
 export class RefreshTokenController {
   async handle(req: Request, res: Response): Promise<Response> {
     const refreshToken =
-      req.body.refreshToken || req.headers["x-access-token"] || req.query.token;
+      req.headers["x-access-token"] || req.query.token || req.body.refreshToken;
 
     const refreshTokenUseCase = container.resolve(RefreshTokenUseCase);
 
