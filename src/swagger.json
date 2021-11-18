@@ -17,8 +17,8 @@
       "name": "Authentication",
       "description": "Session token management"
     },
-    { "name": "Consultations", "description": "Pets consultations" },
-    { "name": "Pets", "description": "Pets management" }
+    { "name": "Pets", "description": "Pets management" },
+    { "name": "Consultations", "description": "Pets consultations" }
   ],
   "paths": {
     "/signup": {
@@ -26,6 +26,7 @@
         "tags": ["Users"],
         "summary": "Create a new user",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -39,7 +40,7 @@
               },
               "example": {
                 "name": "John",
-                "email": "john@email.com",
+                "email": "john@mail.com",
                 "password": "johnsPassw0rd!"
               }
             }
@@ -78,8 +79,8 @@
     "/users/profile": {
       "get": {
         "tags": ["Users"],
-        "summary": "Get user private information",
-        "security": [{ "bearerAuth": [] }],
+        "summary": "Get your user private information",
+        "security": [{ "bearerToken": [] }],
         "responses": {
           "200": {
             "description": "OK",
@@ -98,10 +99,10 @@
       },
       "put": {
         "tags": ["Users"],
-        "summary": "Update user information",
-        "description": "All parameters on requestBody are optional, but if you update password you must provide current password, otherwise it will thrown an error",
-        "security": [{ "bearerAuth": [] }],
+        "summary": "Update your user information",
+        "security": [{ "bearerToken": [] }],
         "requestBody": {
+          "description": "<u>All</u> properties on requestBody are <u>optional</u>, but if you update password you must provide current password, otherwise it will thrown an error",
           "content": {
             "application/json": {
               "schema": {
@@ -133,8 +134,21 @@
               }
             }
           },
-          "400":{
-            "description": "<b>User input errors</b><br>- TODO"
+          "400": {
+            "description": "<b>User input errors</b><br>- Invalid update!<br>- Invalid current password!<br>- Invalid password! Password should be longer than 8 characters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string" }
+                  },
+                  "example": {
+                    "error": "Invalid update!"
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthenticated"
@@ -143,9 +157,32 @@
       },
       "delete": {
         "tags": ["Users"],
-        "description": "",
-        "parameters": [],
+        "summary": "Delete your user, pets and consultations",
+        "security": [{ "bearerToken": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": { "type": "string" }
+                },
+                "required": ["password"],
+                "example": {
+                  "password": "johnsPassw0rd!"
+                }
+              }
+            }
+          }
+        },
         "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "400": {
+            "description": "Invalid password"
+          },
           "401": {
             "description": "Unauthenticated"
           }
@@ -155,18 +192,44 @@
     "/users/{id}": {
       "get": {
         "tags": ["Users"],
-        "description": "",
+        "summary": "Show public user information",
+        "security": [{ "bearerToken": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": { "type": "string" },
+                    "name": { "type": "string" },
+                    "created_at": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }
@@ -174,9 +237,45 @@
     "/users/profile/avatar": {
       "patch": {
         "tags": ["Users"],
-        "description": "",
-        "parameters": [],
+        "summary": "Update your user avatar",
+        "description": "Allow .jpeg/jpg and .png files up to 2MB",
+        "security": [{ "bearerToken": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
+          "200": {
+            "description": "Update and return filename saved with random hash concatenated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": { "type": "string" }
+                  }
+                },
+                "example": {
+                  "avatar": "2a30c73dea4e98650805a8a8cfdcc669-IMG_3926.jpg"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "<b>User input errors</b><br>- Invalid file format<br>- File too large<br>- No file selected"
+          },
           "401": {
             "description": "Unauthenticated"
           }
@@ -186,41 +285,249 @@
     "/login": {
       "post": {
         "tags": ["Authentication"],
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "summary": "Generate user session token",
+        "requestBody": {
+          "required": true,
+          "description": "machineInfo is <u>optional</u>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "format": "password" },
+                  "machineInfo": { "type": "string" }
+                },
+                "required": ["email", "password"],
+                "example": {
+                  "email": "john@mail.com",
+                  "password": "johnsPassw0rd!",
+                  "machineInfo": "John's PC 127.0.0.1"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "email": { "type": "string", "format": "email" },
+                    "token": { "type": "string", "format": "jsonwebtoken" },
+                    "refresh_token": { "type": "string", "format": "token" }
+                  },
+                  "example": {
+                    "name": "John",
+                    "email": "john@mail.com",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4iLCJpYXQiOjE1MTYyMzkwMjJ9.A6Ak1IC1KhtSzAor4-i-bZhmCHQya-sRlPy9-DGgQwA"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid email or password!"
+          }
+        }
       }
     },
     "/refresh-token": {
       "post": {
         "tags": ["Authentication"],
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "summary": "Refresh token time",
+        "description": "Use the refresh_token from /login route to generate a new token when it expires<br>Token expires in 15min and refresh_token in 180 days<br><br>The refresh token <u>may be passed via request</u> <b>body, headers or query</b>",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "required": false,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-access-token",
+            "required": false,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid token"
+          },
+          "500": {
+            "description": "JWT malformed"
+          }
+        }
       }
     },
     "/forgot": {
       "post": {
         "tags": ["Authentication"],
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "summary": "Send a password recovery email",
+        "description": "To prevent spam using one of my emails, this route is using Ethereal Email for docs and emails won't be delivered, if you want to test this and /resetpassword route, you will need to clone the repository. The sent ethereal email link will be logged on console.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/resetpassword/{id}/{token}": {
       "post": {
         "tags": ["Authentication"],
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "summary": "Reset password link received from email",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "jwt"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newPassword": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "required": ["newPassword"],
+                "example": {
+                  "newPassword": "johnNewPassw0rd!"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid new password"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "JWT malformed or token already used"
+          }
+        }
       }
     },
     "/logout": {
       "post": {
         "tags": ["Authentication"],
-        "description": "",
-        "parameters": [],
+        "summary": "Remove this session refresh token",
+        "security": [{ "bearerToken": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "machineInfo": {
+                    "type": "string"
+                  }
+                },
+                "required": ["machineInfo"],
+                "example": {
+                  "machineInfo": "John's PC 127.0.0.1"
+                }
+              }
+            }
+          }
+        },
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthenticated"
           }
@@ -230,9 +537,12 @@
     "/users/logout-all": {
       "post": {
         "tags": ["Authentication"],
-        "description": "",
-        "parameters": [],
+        "summary": "Remove all your refresh tokens",
+        "security": [{ "bearerToken": [] }],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthenticated"
           }
@@ -242,59 +552,22 @@
     "/users/sessions": {
       "get": {
         "tags": ["Authentication"],
-        "description": "",
-        "parameters": [],
+        "summary": "Show all sessions",
+        "security": [{ "bearerToken": [] }],
         "responses": {
-          "401": {
-            "description": "Unauthenticated"
-          }
-        }
-      }
-    },
-    "/consultations": {
-      "post": {
-        "tags": ["Consultations"],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "401": {
-            "description": "Unauthenticated"
-          }
-        }
-      }
-    },
-    "/consultations/{id}": {
-      "get": {
-        "tags": ["Consultations"],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthenticated"
-          }
-        }
-      }
-    },
-    "/pets/{id}/consultations": {
-      "get": {
-        "tags": ["Consultations"],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserToken"
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthenticated"
           }
@@ -304,9 +577,45 @@
     "/pets": {
       "post": {
         "tags": ["Pets"],
-        "description": "",
-        "parameters": [],
+        "summary": "Create a new pet",
+        "security": [{ "bearerToken": [] }],
+        "requestBody": {
+          "description": "Gender, weight_kg and birthday are <u>optional</u>",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "Caramela" },
+                  "species": { "type": "string", "example": "Hamster" },
+                  "gender": { "type": "string", "example": "Female" },
+                  "weight_kg": { "type": "number", "example": 0.13 },
+                  "birthday": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2020-02-20T00:31:20.949Z"
+                  }
+                },
+                "required": ["name", "species"]
+              }
+            }
+          }
+        },
         "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "<b>User input error</b><br>- Invalid pet name<br>- Invalid pet species"
+          },
           "401": {
             "description": "Unauthenticated"
           }
@@ -314,9 +623,22 @@
       },
       "get": {
         "tags": ["Pets"],
-        "description": "",
-        "parameters": [],
+        "summary": "Show all your pets",
+        "security": [{ "bearerToken": [] }],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthenticated"
           }
@@ -326,52 +648,132 @@
     "/pets/{id}": {
       "get": {
         "tags": ["Pets"],
-        "description": "",
+        "summary": "Show pet",
+        "security": [{ "bearerToken": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Pet not found"
           }
         }
       },
       "delete": {
         "tags": ["Pets"],
-        "description": "",
+        "summary": "Delete pet",
+        "security": [{ "bearerToken": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Pet not found"
           }
         }
       },
       "put": {
         "tags": ["Pets"],
-        "description": "",
+        "summary": "Update pet information",
+        "security": [{ "bearerToken": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
           }
         ],
+        "requestBody": {
+          "description": "<u>All</u> properties on requestBody are <u>optional</u>",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "Caramelinha" },
+                  "species": { "type": "string", "example": "Syrian Hamster" },
+                  "gender": { "type": "string", "example": "Male" },
+                  "weight_kg": { "type": "number", "example": 0.14 },
+                  "birthday": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2019-02-20T00:31:20.949Z"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid update"
+          },
           "401": {
             "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Pet not found"
           }
         }
       }
@@ -379,18 +781,195 @@
     "/pets/{id}/avatar": {
       "patch": {
         "tags": ["Pets"],
-        "description": "",
+        "summary": "Update pet avatar",
+        "description": "Allow .jpeg/jpg and .png files up to 2MB",
+        "security": [{ "bearerToken": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pet" }
+              }
+            }
+          },
+          "400": {
+            "description": "<b>User input errors</b><br>- Invalid file format<br>- File too large<br>- No file selected"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Pet not found"
+          }
+        }
+      }
+    },
+    "/consultations": {
+      "post": {
+        "tags": ["Consultations"],
+        "summary": "Create a new consultation",
+        "description": "If a weight is provided, it replaces the pet's current one",
+        "security": [{ "bearerToken": [] }],
+        "requestBody": {
+          "description": "weight_kg, vaccines and comments are <u>optional</u>",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pet_id": { "type": "string", "format": "uuid" },
+                  "motive": {
+                    "type": "string",
+                    "example": "Anti-Rabies vaccine"
+                  },
+                  "veterinary": { "type": "string", "example": "Patricia" },
+                  "weight_kg": { "type": "number", "example": 10.8 },
+                  "vaccines": { "type": "string", "example": "Anti-Rabies" },
+                  "comments": {
+                    "type": "string",
+                    "example": "The pet is overweight"
+                  }
+                },
+                "required": ["pet_id", "motive", "veterinary"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Consultation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "<b>User input errors</b><br>- Empty motive<br>- Empty veterinary"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Pet not found"
+          }
+        }
+      }
+    },
+    "/consultations/{id}": {
+      "get": {
+        "tags": ["Consultations"],
+        "summary": "Show consultation",
+        "security": [{ "bearerToken": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Consultation"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Consultation not found"
+          }
+        }
+      }
+    },
+    "/pets/{id}/consultations": {
+      "get": {
+        "tags": ["Consultations"],
+        "summary": "Show all consultations of a pet",
+        "security": [{ "bearerToken": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Consultation"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Pet not found"
           }
         }
       }
@@ -398,7 +977,7 @@
   },
   "components": {
     "securitySchemes": {
-      "bearerAuth": {
+      "bearerToken": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
@@ -410,10 +989,71 @@
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "email": { "type": "string", "format": "email" },
-          "name": { "type": "string" },
-          "avatar": { "type": "string" },
+          "name": { "type": "string", "example": "Carl" },
+          "avatar": {
+            "type": "string",
+            "example": "2a30c73dea4e98650805a8a8cfdcc669-IMG_3926.jpg"
+          },
           "created_at": { "type": "string", "format": "date-time" },
           "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "UserToken": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "refresh_token": {
+            "type": "string",
+            "format": "jwt",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          },
+          "machine_info": {
+            "type": "string",
+            "example": "John's PC 127.0.0.1"
+          },
+          "expiration_date": { "type": "string", "format": "date-time" },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "user_id": { "type": "string", "format": "uuid" },
+          "avatar": {
+            "type": "string",
+            "example": "2a30c73dea4e98650805a8a8cfdcc669-IMG_3926.jpg"
+          },
+          "name": { "type": "string", "example": "Caramela" },
+          "species": { "type": "string", "example": "Hamster" },
+          "gender": { "type": "string", "example": "Female" },
+          "weight_kg": { "type": "number", "example": 0.13 },
+          "birthday": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-02-20T00:31:20.949Z"
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Consultation": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "pet_id": { "type": "string", "format": "uuid" },
+          "motive": {
+            "type": "string",
+            "example": "Anti-Rabies vaccine"
+          },
+          "veterinary": { "type": "string", "example": "Patricia" },
+          "weight_kg": { "type": "number", "example": 10.8 },
+          "vaccines": { "type": "string", "example": "Anti-Rabies" },
+          "comments": {
+            "type": "string",
+            "example": "The pet is overweight"
+          },
+          "created_at": { "type": "string", "format": "date-time" }
         }
       }
     }
