@@ -1,8 +1,9 @@
 node_modules
-.env
 coverage
+build
+
+.vscode
+.env
 
 tmp/*
 !tmp/.gitkeep
-
-.vscode
