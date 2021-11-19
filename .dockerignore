@@ -1,0 +1,14 @@
+node_modules
+coverage
+build
+
+.git
+.vscode
+.env
+
+tmp/*
+!tmp/.gitkeep
+
+docker-compose.yml
+.eslintignore
+.eslintrc.json
