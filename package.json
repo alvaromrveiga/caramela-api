@@ -22,6 +22,8 @@
     "validator": "^13.6.0"
   },
   "scripts": {
+    "start": "node dist/src/shared/infra/http/server.js",
+    "postinstall": "tsc",
     "dev": "ts-node-dev -r dotenv/config --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
     "test": "NODE_ENV=test jest --watch --detectOpenHandles --runInBand",
