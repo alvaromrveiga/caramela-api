@@ -33,6 +33,8 @@ if (databaseURL) {
       rejectUnauthorized: false,
     },
   };
+  ormConfig.migrations = ["./dist/src/shared/infra/typeorm/migrations/**.js"];
+  ormConfig.entities = ["./dist/src/modules/**/entities/**.js"];
 }
 
 module.exports = { ...ormConfig };
