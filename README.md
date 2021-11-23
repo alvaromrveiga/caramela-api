@@ -62,4 +62,4 @@ A coleção de requisições para testar o projeto no [Insomnia](https://insomni
     - From File
     - Selecione o arquivo Insomnia_caramela-api.json dentro da pasta assets na raiz do projeto
 
-<img src="https://raw.githubusercontent.com/alvaromrveiga/caramela-api/main/assets/Screenshot_Insomnia_caramela-api.png?token=AFLQFJGGLN5BLYKAEI6Z7VDBTVYEG" />
+![Insomnia requests](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Screenshot_Insomnia_caramela-api.png)
