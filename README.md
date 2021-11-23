@@ -52,3 +52,14 @@ docker logs -f caramela-api
 ```bash
 yarn test:all
 ```
+
+### Requisições
+A coleção de requisições para testar o projeto no [Insomnia](https://insomnia.rest/download) pode ser encontrada [aqui](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Insomnia_caramela-api.json). 
+  - Para importar no Insomnia:
+    - Clique na engrenagem no canto superior direito
+    - Aba de Data 
+    - Import Data
+    - From File
+    - Selecione o arquivo Insomnia_caramela-api.json dentro da pasta assets na raiz do projeto
+
+<img src="https://raw.githubusercontent.com/alvaromrveiga/caramela-api/main/assets/Screenshot_Insomnia_caramela-api.png?token=AFLQFJGGLN5BLYKAEI6Z7VDBTVYEG" />
