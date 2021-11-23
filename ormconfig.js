@@ -1,15 +1,15 @@
 const pgConnectionString = require("pg-connection-string");
 
 if (process.env.DATABASE_URL) {
-  const database = pgConnectionString.parse(process.env.DATABASE_URL);
-
+  const databaseConfig = pgConnectionString.parse(process.env.DATABASE_URL);
+  console.log(databaseConfig);
   const ormConfig = {
     type: "postgres",
-    host: database.host,
-    port: database.port,
-    username: database.user,
-    password: database.password,
-    database: database.database,
+    host: databaseConfig.host,
+    port: databaseConfig.port,
+    username: databaseConfig.user,
+    password: databaseConfig.password,
+    database: databaseConfig.database,
     ssl: false,
     extra: {},
     migrations: ["./src/shared/infra/typeorm/migrations/**.ts"],
@@ -31,5 +31,6 @@ if (process.env.DATABASE_URL) {
     ormConfig.cli.migrationsDir = ".dist/src/shared/infra/typeorm/migrations";
   }
 
+  console.log(ormConfig);
   module.exports = { ...ormConfig };
 }
