@@ -53,7 +53,7 @@ docker logs -f caramela-api
 yarn test:all
 ```
 
-### Requisições
+### Requisições no Insomnia
 A coleção de requisições para testar o projeto no [Insomnia](https://insomnia.rest/download) pode ser encontrada [aqui](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Insomnia_caramela-api.json). 
   - Para importar no Insomnia:
     - Clique na engrenagem no canto superior direito
