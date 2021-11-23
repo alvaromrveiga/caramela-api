@@ -20,6 +20,7 @@
 
 1. Você precisará do [Node.js](https://nodejs.org/en/) e recomendo que use o [Docker](https://docs.docker.com/get-docker/) e [Docker Compose](https://docs.docker.com/compose/install/)
     - Se não quiser usar o Docker, precisará subir sua própria instância do [PosgreSQL](https://www.postgresql.org/)
+
 1. Iniciar servidor
 ```bash
 # Clona o projeto para sua máquina
@@ -40,11 +41,13 @@ yarn typeorm migration:run
 
 # O servidor abrirá na porta 3333. Você pode acessar os docs em http://localhost:3333/docs/
 ```
+
 3. Para olhar os logs use:
 ```bash
 # Dependendo da sua instalação pode ser necessário usar sudo logo antes do comando abaixo
 docker logs -f caramela-api
 ```
+
 4. Para rodar os testes:
 ```bash
 yarn test:all
