@@ -26,6 +26,7 @@
     "build": "tsc",
     "dev": "ts-node-dev -r dotenv/config --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
+    "typeorm:prod": "NODE_ENV=prod node -r dotenv/config node_modules/typeorm/cli.js",
     "test": "NODE_ENV=test jest --watch --detectOpenHandles --runInBand",
     "test:all": "NODE_ENV=test jest --watchAll --detectOpenHandles --runInBand"
   },
