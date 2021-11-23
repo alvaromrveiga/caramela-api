@@ -22,7 +22,7 @@
     "validator": "^13.6.0"
   },
   "scripts": {
-    "start": "NODE_ENV=prod node dist/src/shared/infra/http/server.js",
+    "start": "NODE_ENV=prod node -r dotenv/config dist/src/shared/infra/http/server.js",
     "build": "tsc",
     "dev": "ts-node-dev -r dotenv/config --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
