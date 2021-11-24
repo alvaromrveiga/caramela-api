@@ -1,14 +1,12 @@
 const pgConnectionString = require("pg-connection-string");
 
-const databaseConfig = pgConnectionString.parse(process.env.DATABASE_URL);
-
 const ormConfig = {
   type: "postgres",
-  host: databaseConfig.host,
-  port: databaseConfig.port,
-  username: databaseConfig.user,
-  password: databaseConfig.password,
-  database: databaseConfig.database,
+  host: "localhost",
+  port: "5432",
+  username: "postgres",
+  password: "docker",
+  database: "caramela",
   ssl: false,
   extra: {},
   migrations: ["./src/shared/infra/typeorm/migrations/**.ts"],
@@ -19,6 +17,13 @@ const ormConfig = {
 };
 
 if (process.env.NODE_ENV === "prod") {
+  const databaseConfig = pgConnectionString.parse(process.env.DATABASE_URL);
+
+  ormConfig.host = databaseConfig.host;
+  ormConfig.port = databaseConfig.port;
+  ormConfig.username = databaseConfig.user;
+  ormConfig.password = databaseConfig.password;
+  ormConfig.database = databaseConfig.database;
   ormConfig.ssl = true;
   ormConfig.extra = {
     ssl: {
