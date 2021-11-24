@@ -52,7 +52,7 @@ yarn typeorm migration:run
 # O servidor abrirá na porta 3333. Você pode acessar os docs em http://localhost:3333/docs/
 ```
 
-3. Crie um arquivo .env na raiz do projeto preenchendo as informações descritas no .env.example
+3. Crie um arquivo .env na raiz do projeto preenchendo as informações descritas no [.env.example](https://github.com/alvaromrveiga/caramela-api/blob/main/.env.example)
 
 4. Para olhar os logs use:
 ```bash
