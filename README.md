@@ -14,7 +14,7 @@
    * [🔧 Instalação](#-instalação)
    * [🖇️ Requisições no Insomnia](#%EF%B8%8F-requisições-no-insomnia)
    * [💻 Tecnologias](#-tecnologias)
-   * [📄 Licença](-licença)
+   * [📄 Licença](#-licença)
 <!--te-->
 
 ## 📌 Features
