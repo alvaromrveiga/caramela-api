@@ -6,10 +6,9 @@
   <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"/>
   <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white"/>
   <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/>
-  <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge"/></p>
+  <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/></p>
 
-### 📌 Features
+## 📌 Features
 - [x] CRUD de usuário
 - [x] Upload de foto de usuário
 - [x] Autenticação de usuário
@@ -18,7 +17,7 @@
 - [x] Upload de foto de pet 
 - [x] Criação e leitura de Consultas
 
-### 🔧 Instalação
+## 🔧 Instalação
 
 1. Você precisará do [Node.js](https://nodejs.org/en/) e recomendo que use o [Docker](https://docs.docker.com/get-docker/) e [Docker Compose](https://docs.docker.com/compose/install/)
     - Se não quiser usar o Docker, precisará subir sua própria instância do [PosgreSQL](https://www.postgresql.org/)
@@ -55,7 +54,7 @@ docker logs -f caramela-api
 yarn test:all
 ```
 
-### 🖇️ Requisições no Insomnia
+## 🖇️ Requisições no Insomnia
 A coleção de 22 requisições para testar o projeto no [Insomnia](https://insomnia.rest/download) pode ser encontrada [aqui](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Insomnia_caramela-api.json). 
   - Para importar no Insomnia:
     - Clique na engrenagem no canto superior direito
@@ -66,28 +65,28 @@ A coleção de 22 requisições para testar o projeto no [Insomnia](https://inso
 
 ![Insomnia requests](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Screenshot_Insomnia_caramela-api.png)
 
-### 💻 Tecnologias utilizadas
-- [<img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white"/>](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev)
-- [<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/>](https://nodejs.org/en/) e [<img src="https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white"/>](https://expressjs.com/)
-- [Express async errors](https://github.com/davidbanham/express-async-errors)
-- [<img src="https://img.shields.io/badge/Docker-2CA5E0?style=flat-square&logo=docker&logoColor=white"/>](https://www.docker.com/)
-- [<img src="https://img.shields.io/badge/Heroku-430098?style=flat-square&logo=heroku&logoColor=white"/>](https://www.heroku.com/) para deploy
-- [TypeORM](https://typeorm.io/#/) com [<img src="https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white"/>](https://www.postgresql.org/)
+## 💻 Tecnologias utilizadas
+- [Typescript](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev) para minimizar erros e compilar em tempo real
+- [Node.js](https://nodejs.org/en/) e [Express](https://expressjs.com/) para construir o servidor
+- [Express async errors](https://github.com/davidbanham/express-async-errors) para lidar com erros assíncronos
+- [Docker](https://www.docker.com/) para facilitar instalação
+- [Heroku](https://www.heroku.com/) para deploy
+- [TypeORM](https://typeorm.io/#/) com [PostgreSQL](https://www.postgresql.org/) para armazenar dados
 - [Multer](https://www.npmjs.com/package/multer) para upload de arquivos
-- [<img src="https://img.shields.io/badge/JWT-000000?style=flat-square&logo=JSON%20web%20tokens&logoColor=white"/>](https://jwt.io/) para token de login e refresh token
+- [Json Web Token](https://jwt.io/) para token de login e refresh token
 - [Bcrypt](https://github.com/kelektiv/node.bcrypt.js) para hashs de senhas
-- [Nodemailer](https://nodemailer.com/about/)
+- [Nodemailer](https://nodemailer.com/about/) para envio de emails
 - [Ethereal Mail](https://ethereal.email/) para teste de emails
-- [DayJS](https://day.js.org/)
-- [<img src="https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=Swagger&logoColor=white"/>](https://github.com/scottie1984/swagger-ui-express) para documentação
+- [Day.js](https://day.js.org/) para cálculos envolvendo datas
+- [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express) para documentação
 - [Tsyringe](https://github.com/microsoft/tsyringe) para injeção de dependência
-- [Uuid](https://github.com/uuidjs/uuid)
+- [Uuid](https://github.com/uuidjs/uuid) para gerar uuids
 - [Validator](https://github.com/validatorjs/validator.js) para validar emails
-- [dotenv](https://github.com/motdotla/dotenv)
+- [Dotenv](https://github.com/motdotla/dotenv) para carregar variáveis de ambiente do arquivo .env
 - [Pg-connection-string](https://www.npmjs.com/package/pg-connection-string) para organizar a variável de ambiente database_url
-- [<img src="https://img.shields.io/badge/Jest-C21325?style=flat-square&logo=jest&logoColor=white"/>](https://jestjs.io/), [ts-jest](https://github.com/kulshekhar/ts-jest), [jest-mock-extended](https://github.com/marchaos/jest-mock-extended) and [SuperTest](https://github.com/visionmedia/supertest) para testes
-- [<img src="https://img.shields.io/badge/eslint-3A33D1?style=flat-square&logo=eslint&logoColor=white"/>](https://eslint.org/)
-- [<img src="https://img.shields.io/badge/prettier-1A2C34?style=flat-square&logo=prettier&logoColor=F7BA3E"/>](https://prettier.io/) para formatação de código
+- [Jest](https://jestjs.io/), [ts-jest](https://github.com/kulshekhar/ts-jest), [jest-mock-extended](https://github.com/marchaos/jest-mock-extended) e [SuperTest](https://github.com/visionmedia/supertest) para testes
+- [ESLint](https://eslint.org/) para linting
+- [Prettier](https://prettier.io/) para formatação de código
 
-### 📄 Licença
+## 📄 Licença
 [MIT](https://github.com/alvaromrveiga/caramela-api/blob/main/LICENSE)
