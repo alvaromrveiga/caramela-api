@@ -8,6 +8,15 @@
   <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white"/>
   <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/></p>
 
+## Tabela de conteúdos
+<!--ts-->
+   * [📌 Features](#-features)
+   * [🔧 Instalação](#-instalação)
+   * [🖇️ Requisições no Insomnia](#%EF%B8%8F-requisições-no-insomnia)
+   * [💻 Tecnologias](#-tecnologias)
+   * [📄 Licença](-licença)
+<!--te-->
+
 ## 📌 Features
 - [x] CRUD de usuário
 - [x] Upload de foto de usuário
@@ -65,7 +74,7 @@ A coleção de 22 requisições para testar o projeto no [Insomnia](https://inso
 
 ![Insomnia requests](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Screenshot_Insomnia_caramela-api.png)
 
-## 💻 Tecnologias utilizadas
+## 💻 Tecnologias
 - [Typescript](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev) para minimizar erros e compilar em tempo real
 - [Node.js](https://nodejs.org/en/) e [Express](https://expressjs.com/) para construir o servidor
 - [Express async errors](https://github.com/davidbanham/express-async-errors) para lidar com erros assíncronos
