@@ -75,27 +75,27 @@ A coleção de 22 requisições para testar o projeto no [Insomnia](https://inso
 ![Insomnia requests](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Screenshot_Insomnia_caramela-api.png)
 
 ## 💻 Tecnologias
-- [Typescript](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev) para minimizar erros e compilar em tempo real
-- [Node.js](https://nodejs.org/en/) e [Express](https://expressjs.com/) para construir o servidor
-- [Express async errors](https://github.com/davidbanham/express-async-errors) para lidar com erros assíncronos
-- [Docker](https://www.docker.com/) para facilitar instalação
-- [Heroku](https://www.heroku.com/) para deploy
-- [TypeORM](https://typeorm.io/#/) com [PostgreSQL](https://www.postgresql.org/) para armazenar dados
-- [Multer](https://www.npmjs.com/package/multer) para upload de arquivos
-- [Json Web Token](https://jwt.io/) para token de login e refresh token
-- [Bcrypt](https://github.com/kelektiv/node.bcrypt.js) para hashs de senhas
-- [Nodemailer](https://nodemailer.com/about/) para envio de emails
-- [Ethereal Mail](https://ethereal.email/) para teste de emails
-- [Day.js](https://day.js.org/) para cálculos envolvendo datas
-- [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express) para documentação
-- [Tsyringe](https://github.com/microsoft/tsyringe) para injeção de dependência
-- [Uuid](https://github.com/uuidjs/uuid) para gerar uuids
-- [Validator](https://github.com/validatorjs/validator.js) para validar emails
-- [Dotenv](https://github.com/motdotla/dotenv) para carregar variáveis de ambiente do arquivo .env
-- [Pg-connection-string](https://www.npmjs.com/package/pg-connection-string) para organizar a variável de ambiente database_url
-- [Jest](https://jestjs.io/), [ts-jest](https://github.com/kulshekhar/ts-jest), [jest-mock-extended](https://github.com/marchaos/jest-mock-extended) e [SuperTest](https://github.com/visionmedia/supertest) para testes
-- [ESLint](https://eslint.org/) para linting
-- [Prettier](https://prettier.io/) para formatação de código
+- [Typescript](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev) - minimizar erros e compilar em tempo real)
+- [Node.js](https://nodejs.org/en/) e [Express](https://expressjs.com/) - construir o servidor
+- [Express async errors](https://github.com/davidbanham/express-async-errors) - lidar com erros assíncronos
+- [Docker](https://www.docker.com/) - facilitar instalação
+- [Heroku](https://www.heroku.com/) - deploy
+- [TypeORM](https://typeorm.io/#/) com [PostgreSQL](https://www.postgresql.org/) - armazenar dados
+- [Multer](https://www.npmjs.com/package/multer) - upload de arquivos
+- [Json Web Token](https://jwt.io/) - token de login e refresh token
+- [Bcrypt](https://github.com/kelektiv/node.bcrypt.js) - hashs de senhas
+- [Nodemailer](https://nodemailer.com/about/) - envio de emails
+- [Ethereal Mail](https://ethereal.email/) - teste de emails
+- [Day.js](https://day.js.org/) - cálculos envolvendo datas
+- [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express) - documentação
+- [Tsyringe](https://github.com/microsoft/tsyringe) - injeção de dependência
+- [Uuid](https://github.com/uuidjs/uuid) - gerar uuids
+- [Validator](https://github.com/validatorjs/validator.js) - validar emails
+- [Dotenv](https://github.com/motdotla/dotenv) - carregar variáveis de ambiente do arquivo .env
+- [Pg-connection-string](https://www.npmjs.com/package/pg-connection-string) - organizar a variável de ambiente database_url
+- [Jest](https://jestjs.io/), [ts-jest](https://github.com/kulshekhar/ts-jest), [jest-mock-extended](https://github.com/marchaos/jest-mock-extended) e [SuperTest](https://github.com/visionmedia/supertest) - testes
+- [ESLint](https://eslint.org/) - linting
+- [Prettier](https://prettier.io/) - formatação de código
 
 ## 📄 Licença
 [MIT](https://github.com/alvaromrveiga/caramela-api/blob/main/LICENSE)
