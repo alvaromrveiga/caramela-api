@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white"/>
   <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/></p>
 
-## Tabela de conteúdos
+## 📑 Tabela de conteúdos
 <!--ts-->
    * [📌 Features](#-features)
    * [🔧 Instalação](#-instalação)
