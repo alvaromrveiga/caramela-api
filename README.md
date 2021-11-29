@@ -22,9 +22,11 @@
 - [x] CRUD de usuário
 - [x] Upload de foto de usuário
 - [x] Autenticação de usuário
+  - [x] JWT, Refresh Token e Refresh Token Rotation
 - [x] Envio de e-mail ✉️
-- [x] CRUD de pets 😸 🐶 🐹 🐭 🐰 🐴 🐮 🐷
-- [x] Upload de foto de pet 
+  - [x] Reset de senha
+- [x] CRUD de pets
+- [x] Upload de foto de pet 😸 🐶 🐭 🐰
 - [x] Criação e leitura de Consultas
 
 ## 📚 Demo
