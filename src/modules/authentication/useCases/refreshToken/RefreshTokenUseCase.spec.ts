@@ -26,6 +26,7 @@ describe("Refresh Token use case", () => {
     inMemoryUsersTokensRepository = new InMemoryUsersTokensRepository();
 
     refreshTokenUseCase = new RefreshTokenUseCase(
+      inMemoryUsersRepository,
       inMemoryUsersTokensRepository
     );
     loginUserUseCase = new LoginUserUseCase(
@@ -47,12 +48,37 @@ describe("Refresh Token use case", () => {
     ));
   });
 
-  it("Should refresh token", async () => {
+  it("Should refresh token and rotate refresh_token", async () => {
     const user = await inMemoryUsersRepository.findByEmail("tester@mail.com");
 
-    const token = await refreshTokenUseCase.execute(refreshToken);
+    // Wait 1 second to let the rotated refresh token be different from the first refresh token
+    // If they are generated at the same second they will be exactly equal since the iat and exp will be the same
+    await new Promise((r) => setTimeout(r, 1000));
 
-    const { sub: userId } = verify(token, tokenSecret) as { sub: string };
+    const tokens = await refreshTokenUseCase.execute(refreshToken);
+
+    expect(
+      await inMemoryUsersTokensRepository.findByRefreshToken(refreshToken)
+    ).toBeUndefined();
+
+    expect(
+      await inMemoryUsersTokensRepository.findByRefreshToken(
+        tokens.refresh_token
+      )
+    ).toBeDefined();
+
+    let { sub: userId } = verify(tokens.token, tokenSecret) as {
+      sub: string;
+    };
+
+    expect(user).toBeDefined();
+    if (user) {
+      expect(userId).toEqual(user.id);
+    }
+
+    ({ sub: userId } = verify(tokens.refresh_token, refreshTokenSecret) as {
+      sub: string;
+    });
 
     expect(user).toBeDefined();
     if (user) {
@@ -79,5 +105,16 @@ describe("Refresh Token use case", () => {
       new InvalidRefreshTokenError()
     );
   });
+
+  it("Should not refresh token with a token that was already rotated", async () => {
+    // Wait 1 second to let the rotated refresh token be different from the first refresh token
+    // If they are generated at the same second they will be exactly equal since the iat and exp will be the same
+    await new Promise((r) => setTimeout(r, 1000));
+
+    await refreshTokenUseCase.execute(refreshToken);
+
+    await expect(refreshTokenUseCase.execute(refreshToken)).rejects.toEqual(
+      new InvalidRefreshTokenError()
+    );
+  });
 });
-//

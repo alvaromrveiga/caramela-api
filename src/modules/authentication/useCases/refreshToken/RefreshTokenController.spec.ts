@@ -46,27 +46,36 @@ describe("Refresh Token controller", () => {
   });
 
   it("Should refresh token via body", async () => {
-    await request(app)
+    const response = await request(app)
       .post("/refresh-token")
       .send({
         refreshToken,
       })
       .expect(200);
+
+    expect(response.body).toHaveProperty("token");
+    expect(response.body).toHaveProperty("refresh_token");
   });
 
   it("Should refresh token via query", async () => {
-    await request(app)
+    const response = await request(app)
       .post(`/refresh-token?token=${refreshToken}`)
       .send()
       .expect(200);
+
+    expect(response.body).toHaveProperty("token");
+    expect(response.body).toHaveProperty("refresh_token");
   });
 
   it("Should refresh token via x-access-token header", async () => {
-    await request(app)
+    const response = await request(app)
       .post("/refresh-token")
       .set("x-access-token", refreshToken)
       .send()
       .expect(200);
+
+    expect(response.body).toHaveProperty("token");
+    expect(response.body).toHaveProperty("refresh_token");
   });
 
   it("Should not refresh token if refresh token is invalid", async () => {
@@ -92,5 +101,25 @@ describe("Refresh Token controller", () => {
           "SI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
       })
       .expect(500);
+  });
+
+  it("Should not refresh token with a token that was already rotated", async () => {
+    // Wait 1 second to let the rotated refresh token be different from the first refresh token
+    // If they are generated at the same second they will be exactly equal since the iat and exp will be the same
+    await new Promise((r) => setTimeout(r, 1000));
+
+    await request(app)
+      .post("/refresh-token")
+      .send({
+        refreshToken,
+      })
+      .expect(200);
+
+    await request(app)
+      .post("/refresh-token")
+      .send({
+        refreshToken,
+      })
+      .expect(400);
   });
 });
