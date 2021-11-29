@@ -20,5 +20,10 @@ export interface IUsersTokensRepository {
 
   deleteById(tokenId: string): Promise<void>;
 
+  deleteByUserIdAndRefreshToken(
+    userId: string,
+    refreshToken: string
+  ): Promise<void>;
+
   deleteAllByUserId(userId: string): Promise<void>;
 }

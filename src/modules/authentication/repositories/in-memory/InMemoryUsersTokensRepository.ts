@@ -60,6 +60,19 @@ export class InMemoryUsersTokensRepository implements IUsersTokensRepository {
     this.usersTokens.splice(tokenIndex, 1);
   }
 
+  async deleteByUserIdAndRefreshToken(
+    userId: string,
+    refreshToken: string
+  ): Promise<void> {
+    const tokenIndex = this.usersTokens.findIndex((userToken) => {
+      return (
+        userToken.user_id === userId && userToken.refresh_token === refreshToken
+      );
+    });
+
+    this.usersTokens.splice(tokenIndex, 1);
+  }
+
   async deleteAllByUserId(userId: string): Promise<void> {
     this.usersTokens = this.usersTokens.filter((userToken) => {
       return userToken.user_id !== userId;

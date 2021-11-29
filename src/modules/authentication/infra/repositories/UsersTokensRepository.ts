@@ -61,6 +61,16 @@ export class UsersTokensRepository implements IUsersTokensRepository {
     await this.repository.delete({ id: tokenId });
   }
 
+  async deleteByUserIdAndRefreshToken(
+    userId: string,
+    refreshToken: string
+  ): Promise<void> {
+    await this.repository.delete({
+      user_id: userId,
+      refresh_token: refreshToken,
+    });
+  }
+
   async deleteAllByUserId(userId: string): Promise<void> {
     const userTokens = await this.repository.find({ user_id: userId });
     await this.repository.remove(userTokens);
