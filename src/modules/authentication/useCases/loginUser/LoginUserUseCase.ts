@@ -1,14 +1,9 @@
 import { compare } from "bcrypt";
-import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
-import {
-  refreshTokenExpiresInDays,
-  refreshTokenSecret,
-  tokenExpiresIn,
-  tokenSecret,
-} from "../../../../config/auth";
+import { tokenExpiresIn, tokenSecret } from "../../../../config/auth";
+import { createRefreshToken } from "../../../../shared/utils/createRefreshToken";
 import { User } from "../../../users/infra/typeorm/entities/User";
 import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
@@ -81,7 +76,11 @@ export class LoginUserUseCase {
 
     await this.deleteTokenIfMachineAlreadyLogged(user.id, machineInfo);
 
-    const refresh_token = await this.createRefreshToken(user, machineInfo);
+    const refresh_token = await createRefreshToken(
+      user,
+      this.usersTokensRepository,
+      machineInfo
+    );
 
     return { token, refresh_token };
   }
@@ -101,28 +100,5 @@ export class LoginUserUseCase {
         await this.usersTokensRepository.deleteById(userToken.id);
       }
     }
-  }
-
-  private async createRefreshToken(
-    user: User,
-    machineInfo?: string
-  ): Promise<string> {
-    const refresh_token = jwt.sign({ email: user.email }, refreshTokenSecret, {
-      subject: user.id,
-      expiresIn: `${refreshTokenExpiresInDays}d`,
-    });
-
-    const refreshTokenExpirationDate = dayjs()
-      .add(refreshTokenExpiresInDays, "day")
-      .toDate();
-
-    await this.usersTokensRepository.createAndSave({
-      user_id: user.id,
-      refresh_token,
-      expiration_date: refreshTokenExpirationDate,
-      machine_info: machineInfo,
-    });
-
-    return refresh_token;
   }
 }
