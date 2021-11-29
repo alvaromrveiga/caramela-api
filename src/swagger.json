@@ -341,7 +341,7 @@
       "post": {
         "tags": ["Authentication"],
         "summary": "Refresh token time",
-        "description": "Use the refresh_token from /login route to generate a new token when it expires<br>Token expires in 15min and refresh_token in 180 days<br><br>The refresh token <u>may be passed via request</u> <b>body, headers or query</b>",
+        "description": "Use the refresh_token from /login route to generate a new token when it expires<br>Token expires in 15min and refresh_token in 180 days, but it is rotated each time this route is called.<br><br>The refresh token <u>may be passed via request</u> <b>body, headers or query</b>",
         "parameters": [
           {
             "in": "query",
