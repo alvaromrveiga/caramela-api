@@ -503,25 +503,6 @@
         "tags": ["Authentication"],
         "summary": "Remove this session refresh token",
         "security": [{ "bearerToken": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "machineInfo": {
-                    "type": "string"
-                  }
-                },
-                "required": ["machineInfo"],
-                "example": {
-                  "machineInfo": "John's PC 127.0.0.1"
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
