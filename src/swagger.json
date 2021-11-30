@@ -288,21 +288,19 @@
         "summary": "Generate user session token",
         "requestBody": {
           "required": true,
-          "description": "machineInfo is <u>optional</u>",
+          "description": "machineInfo is received from request headers <i>ip, \"user-agent\", \"accept-language\"</i> and is used <u>only</u> to identify session tokens",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "email": { "type": "string", "format": "email" },
-                  "password": { "type": "string", "format": "password" },
-                  "machineInfo": { "type": "string" }
+                  "password": { "type": "string", "format": "password" }
                 },
                 "required": ["email", "password"],
                 "example": {
                   "email": "john@mail.com",
-                  "password": "johnsPassw0rd!",
-                  "machineInfo": "John's PC 127.0.0.1"
+                  "password": "johnsPassw0rd!"
                 }
               }
             }
