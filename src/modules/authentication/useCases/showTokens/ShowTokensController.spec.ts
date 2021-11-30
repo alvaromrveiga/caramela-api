@@ -26,7 +26,6 @@ describe("Show Tokens controller", () => {
     await request(app).post("/login").send({
       email: "otherTester@mail.com",
       password: "testerPa$$w0rd",
-      machineInfo: "Other Tester PC 127.0.0.1",
     });
 
     await request(app).post("/signup").send({
@@ -38,19 +37,11 @@ describe("Show Tokens controller", () => {
     await request(app).post("/login").send({
       email: "tester@mail.com",
       password: "testerPa$$w0rd",
-      machineInfo: "Tester PC 127.0.0.1",
-    });
-
-    await request(app).post("/login").send({
-      email: "tester@mail.com",
-      password: "testerPa$$w0rd",
-      machineInfo: "Tester's Work PC 192.168.0.1",
     });
 
     const response = await request(app).post("/login").send({
       email: "tester@mail.com",
       password: "testerPa$$w0rd",
-      machineInfo: "Tester Phone 127.0.0.1",
     });
 
     token = response.body.token;
@@ -64,14 +55,14 @@ describe("Show Tokens controller", () => {
     await connection.close();
   });
 
-  it("Should show tokens", async () => {
+  it("Should show one session for two same login machines", async () => {
     const response = await request(app)
       .get("/users/sessions")
       .set({ Authorization: `Bearer ${token}` })
       .send()
       .expect(200);
 
-    expect(response.body.length).toEqual(3);
+    expect(response.body.length).toEqual(1);
   });
 
   it("Should not show tokens if unauthenticated", async () => {
