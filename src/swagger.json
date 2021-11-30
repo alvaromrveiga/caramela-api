@@ -288,7 +288,7 @@
         "summary": "Generate user session token",
         "requestBody": {
           "required": true,
-          "description": "machineInfo is received from request headers <i>ip, \"user-agent\", \"accept-language\"</i> and is used <u>only</u> to identify session tokens",
+          "description": "machineInfo is received from request headers <i>ip, \"user-agent\", \"accept-language\"</i> and is used <u>only</u> to identify session tokens<br>You can check it on <i>/users/sessions</i> route after login",
           "content": {
             "application/json": {
               "schema": {
