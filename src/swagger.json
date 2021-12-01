@@ -408,7 +408,7 @@
       "post": {
         "tags": ["Authentication"],
         "summary": "Send a password recovery email",
-        "description": "To prevent spam using one of my emails, this route is using Ethereal Email for docs and emails won't be delivered, if you want to test this and /resetpassword route, you will need to clone the repository. The sent ethereal email link will be logged on console.",
+        "description": "To prevent spam using one of my emails, this route is using Ethereal Email for docs and emails won't be delivered, if you want to test this and /resetpassword route, you will need to clone the repository. The sent ethereal email link will be logged on console or you can use Sendgrid that is also supported in this project.",
         "requestBody": {
           "required": true,
           "content": {
