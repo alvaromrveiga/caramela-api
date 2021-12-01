@@ -21,7 +21,7 @@ describe("Forgot Password Email controller", () => {
 
     await request(app).post("/signup").send({
       name: "Tester",
-      email: "tester@mail.com",
+      email: "tester@example.com",
       password: "testerPa$$w0rd",
     });
   });
@@ -37,7 +37,7 @@ describe("Forgot Password Email controller", () => {
   it("Should send forgotten password email", async () => {
     await request(app)
       .post("/forgot")
-      .send({ email: "tester@mail.com" })
+      .send({ email: "tester@example.com" })
       .expect(200);
   });
 
