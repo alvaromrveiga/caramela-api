@@ -94,6 +94,7 @@ A coleção de 22 requisições para testar o projeto no [Insomnia](https://inso
 - [Bcrypt](https://github.com/kelektiv/node.bcrypt.js) - hashs de senhas
 - [Nodemailer](https://nodemailer.com/about/) - envio de emails
 - [Ethereal Mail](https://ethereal.email/) - teste de emails
+- [Sendgrid Email API](https://sendgrid.com/solutions/email-api/) - envio de emails gratuito
 - [Day.js](https://day.js.org/) - cálculos envolvendo datas
 - [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express) - documentação
 - [Tsyringe](https://github.com/microsoft/tsyringe) - injeção de dependência
