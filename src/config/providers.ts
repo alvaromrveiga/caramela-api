@@ -1,6 +1,5 @@
 // Which mail provider to use
-// Currently has only ethereal
-const mailProviders = ["ethereal"];
+const mailProviders = ["ethereal", "sendgrid"];
 const MAIL_PROVIDER = mailProviders[0];
 
 // Where to store the files
