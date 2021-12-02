@@ -286,6 +286,7 @@
       "post": {
         "tags": ["Authentication"],
         "summary": "Generate user session token",
+        "description": "When you login, copy the <b>token</b> without \" \" from the server response body and paste it on the <b>Authorize</b> button on the top right of this page. This will allow you to use all the routes with locks on the right.",
         "requestBody": {
           "required": true,
           "description": "machineInfo is received from request headers <i>ip, \"user-agent\", \"accept-language\"</i> and is used <u>only</u> to identify session tokens<br>You can check it on <i>/users/sessions</i> route after login",
