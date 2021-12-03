@@ -1,4 +1,5 @@
 import { sign } from "jsonwebtoken";
+import { resolve } from "path";
 import { inject, injectable } from "tsyringe";
 
 import { resetPasswordTokenExpiresInHours } from "../../../../config/auth";
@@ -55,11 +56,21 @@ export class ForgotPasswordEmailUseCase {
 
     const resetPasswordLink = `${hostname}/resetpassword/${user.id}/${token}`;
 
+    const htmlTemplatePath = resolve(
+      __dirname,
+      "views",
+      "forgotPasswordEmail.hbs"
+    );
+
     await this.mailProvider.sendMail({
       to: user.email,
       subject: "Reset password",
       text: `Hello ${user.name}, here is the link to reset your password: ${resetPasswordLink}`,
-      html: `<p>Hello ${user.name}, here is the link to reset your password: ${resetPasswordLink}</p>`,
+      htmlTemplatePath,
+      variables: {
+        name: user.name,
+        link: resetPasswordLink,
+      },
     });
   }
 }
