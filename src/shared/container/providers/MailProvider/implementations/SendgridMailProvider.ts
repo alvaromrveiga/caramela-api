@@ -1,5 +1,6 @@
 import sgMail from "@sendgrid/mail";
 
+import { parseHandlebarsFile } from "../../../../utils/parseHandlebarsFile";
 import { IMailProvider } from "../IMailProvider";
 
 export class SendgridMailProvider implements IMailProvider {
@@ -7,8 +8,14 @@ export class SendgridMailProvider implements IMailProvider {
     to: string;
     subject: string;
     text: string;
-    html: string;
+    htmlTemplatePath: string;
+    variables?: { [key: string]: string | number | boolean };
   }): Promise<void> {
+    const templateHTML = parseHandlebarsFile(
+      content.htmlTemplatePath,
+      content.variables
+    );
+
     let from = "";
 
     if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_EMAIL) {
@@ -16,8 +23,16 @@ export class SendgridMailProvider implements IMailProvider {
       from = process.env.SENDGRID_EMAIL;
     }
 
-    sgMail.send({ ...content, from }).catch((error) => {
-      console.error(error);
-    });
+    sgMail
+      .send({
+        to: content.to,
+        from,
+        subject: content.subject,
+        text: content.text,
+        html: templateHTML,
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }

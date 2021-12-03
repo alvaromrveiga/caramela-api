@@ -1,5 +1,6 @@
 import nodemailer, { Transporter } from "nodemailer";
 
+import { parseHandlebarsFile } from "../../../../utils/parseHandlebarsFile";
 import { IMailProvider } from "../IMailProvider";
 
 export class EtherealMailProvider implements IMailProvider {
@@ -25,8 +26,14 @@ export class EtherealMailProvider implements IMailProvider {
     to: string;
     subject: string;
     text: string;
-    html: string;
+    htmlTemplatePath: string;
+    variables?: { [key: string]: string | number | boolean };
   }): Promise<void> {
+    const templateHTML = parseHandlebarsFile(
+      content.htmlTemplatePath,
+      content.variables
+    );
+
     const transporter = await this.generateTestAccount();
 
     const message = await transporter.sendMail({
@@ -34,7 +41,7 @@ export class EtherealMailProvider implements IMailProvider {
       from: "Caramela <noreply@caramela.com>",
       subject: content.subject,
       text: content.text,
-      html: content.html,
+      html: templateHTML,
     });
 
     console.log("Email preview URL: %s", nodemailer.getTestMessageUrl(message));

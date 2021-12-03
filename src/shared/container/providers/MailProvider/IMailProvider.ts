@@ -3,6 +3,7 @@ export interface IMailProvider {
     to: string;
     subject: string;
     text: string;
-    html: string;
+    htmlTemplatePath: string;
+    variables?: { [key: string]: string | number | boolean };
   }): Promise<void>;
 }
