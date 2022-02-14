@@ -73,6 +73,9 @@ docker logs -f caramela-api
 yarn test:all
 ```
 
+  - #### Test coverage:
+    ![Test-Coverage](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/test-coverage.png)
+
 ## 🖇️ Requisições no Insomnia
 A coleção de 22 requisições para testar o projeto no [Insomnia](https://insomnia.rest/download) pode ser encontrada [aqui](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Insomnia_caramela-api.json). 
   - Para importar no Insomnia:
