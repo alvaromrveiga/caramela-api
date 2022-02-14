@@ -68,6 +68,8 @@ docker logs -f caramela-api
 
 5. Para rodar os testes:
 ```bash
+# Pode demorar alguns poucos minutos
+# 44 suites e 147 testes
 yarn test:all
 ```
 
