@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white"/>
   <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white"/></p>
 
-## 📑 Tabela de conteúdos
+## 📑 Índice
 <!--ts-->
    * [📌 Features](#-features)
    * [📚 Demo](#-demo)
@@ -73,7 +73,7 @@ docker logs -f caramela-api
 yarn test:all
 ```
 
-  - #### Test coverage:
+  - #### Cobertura dos testes:
     ![Test-Coverage](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/test-coverage.png)
 
 ## 🖇️ Requisições no Insomnia
