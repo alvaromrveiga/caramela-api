@@ -1,5 +1,7 @@
 <h1 align="center">Caramela API</h1>
 <p align="center">API para acompanhar as vacinações, consultas, peso, idade do seu pet</p>
+<p align="center"><b>Read in <a href="https://github.com/alvaromrveiga/caramela-api/blob/main/README.en.md">English</a></b></p>
+
 <p align="center"><a href="https://caramela-api.herokuapp.com/docs/" target="_blank"><b>🔗 Docs e Demo usando Swagger</b></a></p>
 
 <p align="center"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"/>
@@ -35,7 +37,7 @@
 ## 🔧 Instalação
 
 1. Você precisará do [Node.js](https://nodejs.org/en/) e recomendo que use o [Docker](https://docs.docker.com/get-docker/) e [Docker Compose](https://docs.docker.com/compose/install/)
-    - Se não quiser usar o Docker, precisará subir sua própria instância do [PosgreSQL](https://www.postgresql.org/)
+    - Se não quiser usar o Docker, precisará subir sua própria instância do [PostgreSQL](https://www.postgresql.org/)
 
 1. Iniciar servidor
 ```bash
