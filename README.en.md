@@ -15,9 +15,9 @@
    * [📌 Features](#-features)
    * [📚 Demo](#-demo)
    * [🔧 Installation](#-installation)
-   * [🖇️ Insomnia Requests](#%EF%B8%8F-requisições-no-insomnia)
-   * [💻 Technologies](#-tecnologias)
-   * [📄 License](#-licença)
+   * [🖇️ Insomnia Requests](#%EF%B8%8F-insomnia-requests)
+   * [💻 Technologies](#-technologies)
+   * [📄 License](#-license)
 <!--te-->
 
 ## 📌 Features
@@ -37,7 +37,7 @@
 ## 🔧 Installation
 
 1. You will need [Node.js](https://nodejs.org/en/) and [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) are recommended.
-    - If you don't want to use Docker, you will need your own instance of [PosgreSQL](https://www.postgresql.org/)
+    - If you don't want to use Docker, you will need your own instance of [PostgreSQL](https://www.postgresql.org/)
 
 1. Start server
 ```bash
@@ -78,41 +78,41 @@ yarn test:all
   - #### Test coverage:
     ![Test-Coverage](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/test-coverage.png)
 
-## 🖇️ Requisições no Insomnia
-A coleção de 22 requisições para testar o projeto no [Insomnia](https://insomnia.rest/download) pode ser encontrada [aqui](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Insomnia_caramela-api.json). 
-  - Para importar no Insomnia:
-    - Clique na engrenagem no canto superior direito
-    - Aba de Data 
-    - Import Data
-    - From File
-    - Selecione o arquivo Insomnia_caramela-api.json dentro da pasta assets na raiz do projeto
+## 🖇️ Insomnia requests
+The 22 requests collection to test your project on [Insomnia](https://insomnia.rest/download) can be found [here](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Insomnia_caramela-api.json).
+  - To import in Insomnia:
+    - Click the gear symbol on the upper right of the screen
+    - Data tab
+    - Import data
+    - From file
+    - Select the file Insomnia_caramela-api.json inside the assets folder in the root of this project's folder
 
 ![Insomnia requests](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Screenshot_Insomnia_caramela-api.png)
 
-## 💻 Tecnologias
-- [Typescript](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev) - minimizar erros e compilar em tempo real)
-- [Node.js](https://nodejs.org/en/) e [Express](https://expressjs.com/) - construir o servidor
-- [Express async errors](https://github.com/davidbanham/express-async-errors) - lidar com erros assíncronos
-- [Docker](https://www.docker.com/) - facilitar instalação
+## 💻 Technologies
+- [Typescript](https://www.typescriptlang.org/) and [ts-node-dev](https://github.com/wclr/ts-node-dev) - descrease errors and real time compiling
+- [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/) - build the server
+- [Express async errors](https://github.com/davidbanham/express-async-errors) - handle asynchronous errors
+- [Docker](https://www.docker.com/) - make installing easier
 - [Heroku](https://www.heroku.com/) - deploy
-- [TypeORM](https://typeorm.io/#/) com [PostgreSQL](https://www.postgresql.org/) - armazenar dados
-- [Multer](https://www.npmjs.com/package/multer) - upload de arquivos
-- [Json Web Token](https://jwt.io/) - token de login e refresh token
-- [Bcrypt](https://github.com/kelektiv/node.bcrypt.js) - hashs de senhas
-- [Nodemailer](https://nodemailer.com/about/) - envio de emails
-- [Ethereal Mail](https://ethereal.email/) - teste de emails
-- [Sendgrid Email API](https://sendgrid.com/solutions/email-api/) - envio de emails gratuito
-- [Handlebars](https://handlebarsjs.com/) - template de email em HTML
-- [Day.js](https://day.js.org/) - cálculos envolvendo datas
-- [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express) - documentação
-- [Tsyringe](https://github.com/microsoft/tsyringe) - injeção de dependência
-- [Uuid](https://github.com/uuidjs/uuid) - gerar uuids
-- [Validator](https://github.com/validatorjs/validator.js) - validar emails
-- [Dotenv](https://github.com/motdotla/dotenv) - carregar variáveis de ambiente do arquivo .env
-- [Pg-connection-string](https://www.npmjs.com/package/pg-connection-string) - organizar a variável de ambiente database_url
-- [Jest](https://jestjs.io/), [ts-jest](https://github.com/kulshekhar/ts-jest), [jest-mock-extended](https://github.com/marchaos/jest-mock-extended) e [SuperTest](https://github.com/visionmedia/supertest) - testes
+- [TypeORM](https://typeorm.io/#/) with [PostgreSQL](https://www.postgresql.org/) - data storage
+- [Multer](https://www.npmjs.com/package/multer) - file upload
+- [Json Web Token](https://jwt.io/) - login token and refresh token
+- [Bcrypt](https://github.com/kelektiv/node.bcrypt.js) - password hashing
+- [Nodemailer](https://nodemailer.com/about/) - send emails
+- [Ethereal Mail](https://ethereal.email/) - email testing
+- [Sendgrid Email API](https://sendgrid.com/solutions/email-api/) - free email service
+- [Handlebars](https://handlebarsjs.com/) - email template as HTML
+- [Day.js](https://day.js.org/) - dates math
+- [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express) - documentation
+- [Tsyringe](https://github.com/microsoft/tsyringe) - dependency injection
+- [Uuid](https://github.com/uuidjs/uuid) - generate UUIDs
+- [Validator](https://github.com/validatorjs/validator.js) - email validation
+- [Dotenv](https://github.com/motdotla/dotenv) - load environment variables from .env file
+- [Pg-connection-string](https://www.npmjs.com/package/pg-connection-string) - manage database_url environment variable
+- [Jest](https://jestjs.io/), [ts-jest](https://github.com/kulshekhar/ts-jest), [jest-mock-extended](https://github.com/marchaos/jest-mock-extended) and [SuperTest](https://github.com/visionmedia/supertest) - tests
 - [ESLint](https://eslint.org/) - linting
-- [Prettier](https://prettier.io/) - formatação de código
+- [Prettier](https://prettier.io/) - code formatting
 
-## 📄 Licença
+## 📄 License
 [MIT](https://github.com/alvaromrveiga/caramela-api/blob/main/LICENSE)
