@@ -88,7 +88,7 @@ A coleção de 22 requisições para testar o projeto no [Insomnia](https://inso
 ![Insomnia requests](https://github.com/alvaromrveiga/caramela-api/blob/main/assets/Screenshot_Insomnia_caramela-api.png)
 
 ## 💻 Tecnologias
-- [Typescript](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev) - minimizar erros e compilar em tempo real)
+- [Typescript](https://www.typescriptlang.org/) e [ts-node-dev](https://github.com/wclr/ts-node-dev) - minimizar erros e compilar em tempo real
 - [Node.js](https://nodejs.org/en/) e [Express](https://expressjs.com/) - construir o servidor
 - [Express async errors](https://github.com/davidbanham/express-async-errors) - lidar com erros assíncronos
 - [Docker](https://www.docker.com/) - facilitar instalação
