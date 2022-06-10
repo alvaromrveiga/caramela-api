@@ -12,7 +12,7 @@
     "express-async-errors": "^3.1.1",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
-    "multer": "^1.4.3",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.3",
     "pg": "^8.6.0",
     "pg-connection-string": "^2.5.0",
@@ -30,7 +30,7 @@
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
     "typeorm:prod": "NODE_ENV=prod node -r dotenv/config node_modules/typeorm/cli.js",
     "test": "NODE_ENV=test jest --watch --detectOpenHandles --runInBand",
-    "test:all": "NODE_ENV=test jest --watchAll --detectOpenHandles --runInBand"
+    "test:all": "NODE_ENV=test jest --detectOpenHandles --runInBand"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
