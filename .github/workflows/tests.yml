@@ -40,7 +40,7 @@ jobs:
       - name: Create .env
         run: |
           touch .env
-          echo DATABASE_URL="postgresql://postgres:postgres@localhost:5432/caramela_test" >> .env
+          echo DATABASE_URL="postgres://postgres:postgres@localhost:5432/caramela_test" >> .env
           echo JWT_SECRET="Git#Hub1Actions2Secret3" >> .env
           echo REFRESH_TOKEN_SECRET="Git#Hub1Actions2Refresh3Secret4" >> .env
           cat .env
