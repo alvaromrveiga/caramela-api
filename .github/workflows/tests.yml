@@ -37,13 +37,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Create .env.test
+      - name: Create .env
         run: |
-          touch .env.test
-          echo DATABASE_URL="postgresql://postgres:postgres@localhost:5432/caramela_test" >> .env.test
-          echo JWT_SECRET="Git#Hub1Actions2Secret3" >> .env.test
-          echo REFRESH_TOKEN_SECRET="Git#Hub1Actions2Refresh3Secret4" >> .env.test
-          cat .env.test
+          touch .env
+          echo DATABASE_URL="postgresql://postgres:postgres@localhost:5432/caramela_test" >> .env
+          echo JWT_SECRET="Git#Hub1Actions2Secret3" >> .env
+          echo REFRESH_TOKEN_SECRET="Git#Hub1Actions2Refresh3Secret4" >> .env
+          cat .env
       - run: yarn
       - run: yarn build
       - run: yarn test:all
